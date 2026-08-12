@@ -1,0 +1,28 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Hero from '@/components/Hero.astro';
+import Services from '@/components/Services.astro';
+import BeforeAfter from '@/components/BeforeAfter.astro';
+import WhyUs from '@/components/WhyUs.astro';
+import Contact from '@/components/Contact.astro';
+import Footer from '@/components/Footer.astro';
+import MobileCta from '@/components/MobileCta.astro';
+
+const title = "Avto Vakum — Toshkentda 24/7 avto vakuum, palirovka va keramika";
+const description =
+  "Avto vakuum, kuzov kassa prav, palirovka va keramika. Toshkent markazida, kechayu kunduz. Navbatsiz qabul qilamiz — qo'ng'iroq qiling va keling.";
+---
+
+<Layout title={title} description={description}>
+  <Header />
+  <main id="main">
+    <Hero />
+    <BeforeAfter />
+    <Services />
+    <WhyUs />
+    <Contact />
+  </main>
+  <Footer />
+  <MobileCta />
+</Layout>

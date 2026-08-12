@@ -1,0 +1,88 @@
+---
+const reasons = [
+  {
+    title: 'Kechayu kunduz ochiq',
+    text: "Soat 3:00 bo'ladimi yoki bayram kunimi — biz ishlaymiz. Oldindan yozilish shart emas.",
+  },
+  {
+    title: 'Tajribali ustalar',
+    text: '7 yildan ortiq amaliyot, professional kimyo va uskunalar. Har bir ish uchun javob beramiz.',
+  },
+  {
+    title: 'Toshkentda ishonchli',
+    text: "Mahalliy mijozlar va doimiy tavsiyalar. Ishimizni Instagram'da har kuni ko'rsatamiz.",
+  },
+];
+---
+
+<section class="why-us" id="nega-biz">
+  <div class="container">
+    <h2 class="why-us__heading">Nega aynan biz</h2>
+    <div class="why-us__grid">
+      {reasons.map((reason) => (
+        <div class="why-us__item">
+          <h3 class="why-us__item-title">{reason.title}</h3>
+          <p class="why-us__item-text">{reason.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .why-us {
+    margin-top: 36px;
+    background: var(--color-primary);
+    padding-block: 36px;
+  }
+  .why-us__heading {
+    font: 800 28px/1.15 var(--font-heading);
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 26px;
+  }
+  .why-us__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .why-us__item {
+    border-top: 3px solid var(--color-accent);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .why-us__item-title {
+    font: 800 19px/1.25 var(--font-heading);
+    color: #fff;
+  }
+  .why-us__item-text {
+    font: 400 15px/1.6 var(--font-body);
+    color: var(--color-on-primary-muted);
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 860px) {
+    .why-us {
+      margin-top: 92px;
+      padding-block: 76px;
+    }
+    .why-us__heading {
+      font-size: 40px;
+      margin-bottom: 44px;
+    }
+    .why-us__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 44px;
+    }
+    .why-us__item-title {
+      font-size: 22px;
+    }
+    .why-us__item-text {
+      font-size: 16px;
+      line-height: 1.65;
+    }
+  }
+</style>

@@ -1,0 +1,67 @@
+---
+// TODO: replace with a real photo via `<Image>` from `astro:assets` once
+// site photography is available. Kept as a lightweight inline placeholder
+// (no network request) so layout/CLS can be reviewed before assets land.
+interface Props {
+  label: string;
+  ratio?: string;
+  radius?: string;
+  tag?: string;
+  class?: string;
+}
+const {
+  label,
+  ratio = '4 / 3',
+  radius = '0',
+  tag,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  class:list={['img-placeholder', className]}
+  style={`aspect-ratio:${ratio};border-radius:${radius}`}
+  role="img"
+  aria-label={label}
+>
+  {tag && <span class="img-placeholder__tag" style={tag === 'OLDIN' ? 'background:rgba(16,26,40,.78)' : 'background:var(--color-accent)'}>{tag}</span>}
+  <span class="img-placeholder__label">{label}</span>
+</div>
+
+<style>
+  .img-placeholder {
+    position: relative;
+    width: 100%;
+    background:
+      repeating-linear-gradient(
+        135deg,
+        rgba(11, 74, 143, 0.08),
+        rgba(11, 74, 143, 0.08) 10px,
+        transparent 10px,
+        transparent 20px
+      ),
+      var(--color-placeholder-bg);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .img-placeholder__label {
+    display: block;
+    padding: 10px 12px;
+    font: 500 12px/1.4 var(--font-body);
+    color: var(--color-text-faint);
+    background: rgba(255, 255, 255, 0.72);
+    width: 100%;
+  }
+  .img-placeholder__tag {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #fff;
+    font: 700 11px/1 var(--font-heading);
+    letter-spacing: 0.08em;
+    padding: 6px 9px;
+    border-radius: 5px;
+    pointer-events: none;
+  }
+</style>
