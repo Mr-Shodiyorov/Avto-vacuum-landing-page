@@ -1,6 +1,6 @@
 # Avto Vakum — Landing Page
 
-Astro-built landing page for Avto Vakum, a 24/7 car detailing service in Tashkent (avto vakuum, kuzov kassa prav, palirovka, keramika). Built from the [Claude Design](https://claude.ai/design) mockup, static-rendered for performance and SEO, fully responsive (mobile + desktop).
+Astro-built landing page for Avto Vakum, a 24/7 car detailing service in Qarshi (avto vakuum, kuzov kassa prav, palirovka, keramika). Built from the [Claude Design](https://claude.ai/design) mockup, static-rendered for performance and SEO, fully responsive (mobile + desktop).
 
 ## Structure
 

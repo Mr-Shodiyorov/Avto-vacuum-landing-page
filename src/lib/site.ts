@@ -1,9 +1,9 @@
 export const site = {
   name: 'Avto Vakum',
   nameFull: 'Avto Vakum Servis',
-  city: 'Toshkent',
+  city: 'Qarshi',
   description:
-    "Avto vakuum, kuzov kassa prav, palirovka va keramika. Toshkent markazida, kechayu kunduz. Navbatsiz qabul qilamiz — qo'ng'iroq qiling va keling.",
+    "Avto vakuum, kuzov kassa prav, palirovka va keramika. Qarshi markazida, kechayu kunduz. Navbatsiz qabul qilamiz — qo'ng'iroq qiling va keling.",
   url: 'https://avtovakum.uz',
   phones: [
     { display: '+998 (94) 952-07-07', href: 'tel:+998949520707' },
@@ -17,7 +17,7 @@ export const site = {
     handle: '@avto_vakum_senter',
     url: 'https://t.me/avto_vakum_senter',
   },
-  address: "Toshkent sh., [ko'cha nomi], [uy raqami]",
+  address: "Qarshi sh., [ko'cha nomi], [uy raqami]",
   hours: "Har kuni, 24 soat — dam olish kunlarisiz",
 } as const;
 
