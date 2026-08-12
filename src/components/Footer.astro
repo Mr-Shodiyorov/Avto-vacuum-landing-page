@@ -87,10 +87,16 @@ const year = new Date().getFullYear();
     margin-bottom: 2px;
   }
   .site-footer__link {
+    align-self: flex-start;
     font: 500 14px/1.4 var(--font-body);
     color: #fff;
     text-decoration: none;
-    transition: color 0.15s ease;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+  .site-footer__link:hover {
+    transform: translateX(3px);
   }
   .site-footer__col .site-footer__link:first-of-type {
     font: 700 16px/1 var(--font-heading);

@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>QA</title></head>
+<body style="margin:0;font:13px monospace;white-space:pre">
+<div id="results">RUNNING</div>
+<script>
+const WIDTHS = [375, 768, 1440];
+const out = [];
+
+function rectsOverlap(a, b) {
+  return !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top);
+}
+
+function measure(doc, win, width) {
+  const lines = [];
+  const de = doc.documentElement;
+
+  // 1. Horizontal overflow
+  const overflow = de.scrollWidth - de.clientWidth;
+  lines.push(`  h-overflow: ${overflow}px (scrollW=${de.scrollWidth} clientW=${de.clientWidth}) ${overflow <= 0 ? 'OK' : 'FAIL'}`);
+
+  // 2. Any element wider than the viewport
+  const wide = [];
+  doc.querySelectorAll('body *').forEach((el) => {
+    const r = el.getBoundingClientRect();
+    if (r.width > 0 && (r.right > de.clientWidth + 1 || r.left < -1)) {
+      const cs = win.getComputedStyle(el);
+      // Elements clipped by an overflow:hidden ancestor are fine.
+      let clipped = false;
+      for (let p = el.parentElement; p; p = p.parentElement) {
+        if (win.getComputedStyle(p).overflow === 'hidden') { clipped = true; break; }
+      }
+      if (!clipped && cs.position !== 'fixed') {
+        wide.push(`${el.tagName}.${(el.className || '').toString().split(' ')[0]} [${Math.round(r.left)},${Math.round(r.right)}]`);
+      }
+    }
+  });
+  lines.push(`  escaping els: ${wide.length ? wide.slice(0, 6).join(' | ') : 'none OK'}`);
+
+  // 3. Hero badge overlap (each other + the portrait photo)
+  const badges = [...doc.querySelectorAll('.hero__stat-badge')].map((b) => b.getBoundingClientRect());
+  let badgeClashes = 0;
+  for (let i = 0; i < badges.length; i++) {
+    for (let j = i + 1; j < badges.length; j++) {
+      if (rectsOverlap(badges[i], badges[j])) badgeClashes++;
+    }
+  }
+  lines.push(`  badges: ${badges.length}  mutual-overlaps: ${badgeClashes} ${badgeClashes === 0 ? 'OK' : 'FAIL'}`);
+  lines.push(`  badge widths: ${badges.map((b) => Math.round(b.width)).join(', ')}`);
+
+  const photo = doc.querySelector('.hero__portrait');
+  if (photo && width < 860) {
+    const pr = photo.getBoundingClientRect();
+    const over = badges.filter((b) => rectsOverlap(b, pr)).length;
+    lines.push(`  badges over photo (mobile): ${over} ${over === 0 ? 'OK' : 'FAIL'}`);
+  }
+
+  // 4. Marquee containment
+  const mq = doc.querySelector('.marquee');
+  if (mq) {
+    const r = mq.getBoundingClientRect();
+    lines.push(`  marquee: w=${Math.round(r.width)} overflowX=${win.getComputedStyle(mq).overflowX} ${r.width <= de.clientWidth ? 'OK' : 'FAIL'}`);
+  }
+
+  // 5. Shine border present only >=860
+  const shine = doc.querySelector('.shine-border');
+  if (shine) {
+    lines.push(`  shine-border display: ${win.getComputedStyle(shine).display} (expect none <860, block >=860)`);
+  }
+
+  // 6. Reveal elements all end visible
+  const all = [...doc.querySelectorAll('[data-reveal]')];
+  const hidden = all.filter((el) => parseFloat(win.getComputedStyle(el).opacity) < 0.99);
+  const blurred = all.filter((el) => (win.getComputedStyle(el).filter || '').includes('blur'));
+  const reducedMotion = win.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  lines.push(`  reveal els: ${all.length}  still-hidden: ${hidden.length} ${hidden.length === 0 ? 'OK' : 'FAIL'}  still-blurred: ${blurred.length}`);
+  lines.push(`  settled: ${all.filter((el) => el.classList.contains('is-settled')).length}/${all.length}  reducedMotion=${reducedMotion}`);
+  if (hidden.length) {
+    lines.push(`  hidden: ${hidden.slice(0, 5).map((el) => (el.className || '').toString().split(' ')[0]).join(', ')}`);
+  }
+
+  // 7. Count-up finished at its real value
+  const nums = [...doc.querySelectorAll('[data-count-to]')].map(
+    (el) => `${el.textContent.trim()}/${el.dataset.countTo}`,
+  );
+  lines.push(`  counters (shown/target): ${nums.join('  ')}`);
+
+  return lines.join('\n');
+}
+
+async function runWidth(width) {
+  return new Promise((resolve) => {
+    const f = document.createElement('iframe');
+    // Must be genuinely on-screen: IntersectionObserver inside an iframe is
+    // clipped by the frame's own visibility in the parent, so an off-screen
+    // iframe would never fire a single reveal.
+    f.style.cssText = `width:${width}px;height:900px;border:0;position:fixed;top:0;left:0;z-index:9`;
+    f.src = '/';
+    f.onload = async () => {
+      const win = f.contentWindow;
+      const doc = f.contentDocument;
+      // Let entrance animations settle, then scroll the whole page to trigger
+      // every IntersectionObserver reveal, then settle again.
+      await new Promise((r) => setTimeout(r, 1200));
+      const h = doc.documentElement.scrollHeight;
+      for (let y = 0; y < h; y += 400) {
+        win.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 60));
+      }
+      win.scrollTo(0, 0);
+      await new Promise((r) => setTimeout(r, 1800));
+      out.push(`[${width}px]\n` + measure(doc, win, width));
+      f.remove();
+      resolve();
+    };
+    document.body.appendChild(f);
+  });
+}
+
+(async () => {
+  for (const w of WIDTHS) await runWidth(w);
+  document.getElementById('results').textContent = 'DONE\n' + out.join('\n\n');
+})();
+</script>
+</body>
+</html>

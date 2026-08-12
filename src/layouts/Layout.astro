@@ -69,9 +69,18 @@ const jsonLd = {
     <meta name="twitter:description" content={description} />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+
+    <!-- Marks JS as available before first paint so scroll-reveal targets start
+         hidden only when something can actually reveal them. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Asosiy kontentga o'tish</a>
     <slot />
+    <script>
+      import '@/scripts/motion';
+    </script>
   </body>
 </html>

@@ -32,14 +32,14 @@ const items: WorkItem[] = [
 
 <section class="works" id="ishlarimiz">
   <div class="container">
-    <div class="works__heading-group">
+    <div class="works__heading-group" data-reveal>
       <span class="eyebrow">ISHLARIMIZ</span>
       <h2 class="section-heading">Oldin va keyin</h2>
     </div>
 
     <div class="works__grid">
-      {items.map((item) => (
-        <article class="work-card">
+      {items.map((item, i) => (
+        <article class="work-card" data-reveal style={`--reveal-delay:${i * 120}ms`}>
           <div class="work-card__images">
             <ImagePlaceholder label={item.before} tag="OLDIN" ratio="1 / 1" />
             <ImagePlaceholder label={item.after} tag="KEYIN" ratio="1 / 1" />
@@ -74,6 +74,28 @@ const items: WorkItem[] = [
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     overflow: hidden;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .work-card:hover {
+    transform: translateY(-4px);
+    border-color: #cfd8e4;
+    box-shadow: 0 14px 30px rgba(16, 26, 40, 0.1);
+  }
+  /* Hint the transformation: the "before" tag recedes, the "after" tag steps up. */
+  .work-card :global(.img-placeholder__tag) {
+    transition:
+      transform 0.25s ease,
+      opacity 0.25s ease;
+  }
+  .work-card:hover .work-card__images > :global(*:first-child .img-placeholder__tag) {
+    opacity: 0.5;
+    transform: scale(0.96);
+  }
+  .work-card:hover .work-card__images > :global(*:last-child .img-placeholder__tag) {
+    transform: scale(1.08);
   }
   .work-card__images {
     display: grid;

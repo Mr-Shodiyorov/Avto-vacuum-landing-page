@@ -9,7 +9,11 @@ const [phone1, phone2] = site.phones;
 
 <section class="contact" id="aloqa">
   <div class="container">
-    <div class="contact__card">
+    <div class="contact__card" data-reveal style="--reveal-scale:0.98">
+      <span class="shine-border" aria-hidden="true">
+        <span class="shine-border__spin"></span>
+      </span>
+
       <div class="contact__text">
         <h2 class="contact__heading">Qo'ng'iroq qiling — hoziroq qabul qilamiz</h2>
         <p class="contact__lead">
@@ -17,7 +21,7 @@ const [phone1, phone2] = site.phones;
         </p>
 
         <div class="contact__phones">
-          <a class="contact__phone contact__phone--accent" href={phone1.href}>
+          <a class="contact__phone contact__phone--accent shimmer-cta" href={phone1.href}>
             <span>{phone1.display}</span>
             <PhoneIcon size={20} />
           </a>
@@ -66,9 +70,78 @@ const [phone1, phone2] = site.phones;
     padding-block: 40px 48px;
   }
   .contact__card {
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
     gap: 24px;
+  }
+
+  /* --- Shine border ------------------------------------------------------
+     A large gradient square rotates behind the card and is clipped to a 1px
+     ring by an inner cover matching the card surface. The gradient is painted
+     once and only transformed, so the loop stays on the compositor. The card
+     is only a bordered box from 860px up, so the effect is desktop-only. */
+  .shine-border {
+    display: none;
+  }
+
+  @keyframes shineSpin {
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  @media (min-width: 860px) {
+    .shine-border {
+      display: block;
+      position: absolute;
+      /* -1px lines the ring up with the card's own border box. */
+      inset: -1px;
+      z-index: 0;
+      border-radius: calc(var(--radius-xl) + 1px);
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .shine-border__spin {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 150%;
+      aspect-ratio: 1 / 1;
+      transform: translate(-50%, -50%);
+      /* Base tone matches the static border, so only the highlight travels. */
+      background: conic-gradient(
+        from 0deg,
+        var(--color-border) 0deg 250deg,
+        rgba(11, 74, 143, 0.45) 288deg,
+        rgba(245, 135, 31, 0.95) 310deg,
+        rgba(255, 255, 255, 0.95) 320deg,
+        rgba(245, 135, 31, 0.5) 332deg,
+        var(--color-border) 360deg
+      );
+      animation: shineSpin 9s linear infinite;
+    }
+    /* Covers everything but a 1px rim, leaving just the travelling highlight. */
+    .shine-border::after {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border-radius: var(--radius-xl);
+      background: var(--color-surface);
+    }
+    /* Content sits above the ring. */
+    .contact__text,
+    .contact__media {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shine-border__spin {
+      animation: none;
+    }
   }
   .contact__heading {
     font: 800 28px/1.14 var(--font-heading);
@@ -98,22 +171,28 @@ const [phone1, phone2] = site.phones;
     padding: 20px 22px;
     border-radius: 12px;
     text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
   }
   .contact__phone--accent {
     background: var(--color-accent);
     box-shadow: 0 2px 0 var(--color-accent-shadow);
-    transition: background-color 0.15s ease;
   }
   .contact__phone--accent:hover {
     background: var(--color-accent-hover);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 22px rgba(197, 105, 12, 0.32);
   }
   .contact__phone--primary {
     background: var(--color-primary);
     box-shadow: 0 2px 0 var(--color-primary-deeper);
-    transition: background-color 0.15s ease;
   }
   .contact__phone--primary:hover {
     background: var(--color-primary-hover);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 22px rgba(11, 74, 143, 0.28);
   }
   .contact__insta {
     display: flex;
@@ -127,10 +206,15 @@ const [phone1, phone2] = site.phones;
     padding: 19px;
     border-radius: 12px;
     text-decoration: none;
-    transition: border-color 0.15s ease;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      background-color 0.2s ease;
   }
   .contact__insta:hover {
     border-color: var(--color-primary);
+    background: var(--color-badge-bg);
+    transform: translateY(-2px);
   }
   .contact__media {
     display: flex;

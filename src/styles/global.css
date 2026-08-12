@@ -52,6 +52,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -122,11 +123,107 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
+/* ---------------------------------------------------------------------------
+   Motion primitives
+   Every effect animates only `transform` / `opacity` so it stays on the
+   compositor. Scroll reveals are gated behind `.js` (set by an inline script
+   in <head>) so content is never hidden when JS is unavailable.
+   --------------------------------------------------------------------------- */
+
+/* `.is-settled` is added once the reveal transition finishes and drops every
+   reveal rule, so the element's own hover transform/transition takes over
+   cleanly instead of losing a specificity fight with the reveal state. */
+.js [data-reveal]:not(.is-settled) {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-shift, 18px), 0) scale(var(--reveal-scale, 1));
+  filter: blur(var(--reveal-blur, 6px));
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js [data-reveal].is-revealed:not(.is-settled) {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+/* Smaller travel and a lighter blur on phones — less work per frame, and the
+   reveal reads as a settle rather than a slide. */
+@media (max-width: 859px) {
+  .js [data-reveal]:not(.is-settled) {
+    --reveal-shift: 10px;
+    --reveal-blur: 4px;
+  }
+}
+
+/* Shimmer CTA — a single slow light sweep across the primary orange buttons.
+   The band is parked off-canvas for most of the cycle so the effect reads as an
+   occasional gleam rather than a strobe. Transform-only; the gradient is painted
+   once and moved on the compositor. */
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(0) skewX(-18deg);
+  }
+  /* Sweep occupies the first ~18% of the cycle, then rests off the right edge. */
+  18%,
+  100% {
+    transform: translateX(460%) skewX(-18deg);
+  }
+}
+
+.shimmer-cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-cta::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 45%;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmerSweep 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Continuous ambient loops are desktop-only: they save battery on phones and
+   avoid competing with touch scrolling. */
+@media (max-width: 859px) {
+  .shimmer-cta::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .js [data-reveal],
+  .js [data-reveal]:not(.is-settled) {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
+  .shimmer-cta::after,
+  .shine-border__spin {
+    animation: none;
+    opacity: 0;
   }
 }

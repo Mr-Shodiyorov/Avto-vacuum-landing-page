@@ -17,10 +17,10 @@ const reasons = [
 
 <section class="why-us" id="nega-biz">
   <div class="container">
-    <h2 class="why-us__heading">Nega aynan biz</h2>
+    <h2 class="why-us__heading" data-reveal>Nega aynan biz</h2>
     <div class="why-us__grid">
-      {reasons.map((reason) => (
-        <div class="why-us__item">
+      {reasons.map((reason, i) => (
+        <div class="why-us__item" data-reveal style={`--reveal-delay:${i * 120}ms`}>
           <h3 class="why-us__item-title">{reason.title}</h3>
           <p class="why-us__item-text">{reason.text}</p>
         </div>

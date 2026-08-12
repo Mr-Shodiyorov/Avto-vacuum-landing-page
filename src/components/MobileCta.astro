@@ -50,7 +50,12 @@ const primaryPhone = site.phones[0];
     padding: 17px 12px;
     border-radius: 10px;
     text-decoration: none;
-    transition: background-color 0.15s ease;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+  .mobile-cta__call:active {
+    transform: scale(0.98);
   }
   .mobile-cta__call:hover {
     background: var(--color-accent-hover);

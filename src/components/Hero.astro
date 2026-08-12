@@ -7,11 +7,48 @@ import ustaPhoto from '@/assets/usta-hero.png';
 
 const primaryPhone = site.phones[0];
 
-const stats = [
-  { value: '5 000+', label: "tozalangan avtomobil" },
-  { value: '7 yil', label: 'tajribali ustalar' },
-  { value: '40 daq', label: "o'rtacha vakuum vaqti" },
+interface Stat {
+  /** Numeric stats count up on scroll; `text` stats render as-is. */
+  count?: number;
+  text?: string;
+  /** Group thousands with a space, e.g. 5000 -> "5 000". */
+  sep?: boolean;
+  suffix?: string;
+  unit?: string;
+  label: string;
+  icon: string;
+}
+
+const stats: Stat[] = [
+  {
+    count: 5000,
+    sep: true,
+    suffix: '+',
+    label: 'tozalangan avtomobil',
+    icon: '<path d="M3 8.5 6.5 12 13 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  },
+  {
+    count: 7,
+    unit: 'yil',
+    label: 'tajribali ustalar',
+    icon: '<path d="M8 1.5l1.9 4.2 4.6.5-3.5 3.1 1 4.6L8 11.6l-4 2.3 1-4.6L1.5 6.2l4.6-.5L8 1.5Z" fill="#fff"/>',
+  },
+  {
+    count: 40,
+    unit: 'daq',
+    label: "o'rtacha vakuum vaqti",
+    icon: '<circle cx="8" cy="8" r="6" stroke="#fff" stroke-width="1.6"/><path d="M8 4.5V8l2.5 1.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>',
+  },
+  {
+    text: '24/7',
+    label: 'har doim ishlaymiz',
+    icon: '<path d="M8.5 1 3 9.5h3.2L5 15l6-8H7.6L8.5 1Z" fill="#fff"/>',
+  },
 ];
+
+const groupDigits = (value: number) => String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+const headingWords = 'Avtomobilingiz toza — kunning istalgan vaqtida'.split(' ');
 ---
 
 <section class="hero" id="top">
@@ -21,7 +58,14 @@ const stats = [
       24/7 OCHIQ · HOZIR ISHLAYMIZ
     </p>
 
-    <h1 class="hero__heading">Avtomobilingiz toza — kunning istalgan vaqtida</h1>
+    <h1 class="hero__heading">
+      {/* The space lives outside the span: a trailing space *inside* an
+          inline-block is trimmed, which would run the words together both
+          visually and for screen readers. */}
+      {headingWords.map((word, i) => (
+        <Fragment><span class="hero__heading-word" style={`--word-index:${i}`}>{word}</span>{' '}</Fragment>
+      ))}
+    </h1>
 
     <p class="hero__lead">
       Avto vakuum, kuzov kassa prav, palirovka va keramika. Toshkent markazida, kechayu kunduz.
@@ -42,17 +86,29 @@ const stats = [
           class="hero__portrait-img"
         />
       </div>
-      <div class="hero__floating-badge">
-        <span class="hero__floating-badge-icon">{master.experienceYears}</span>
-        <span class="hero__floating-badge-text">
-          <span class="hero__floating-badge-title">{master.experienceLabel}</span>
-          <span class="hero__floating-badge-sub">{master.title} xizmatlari</span>
-        </span>
+
+      <div class="hero__stat-badges">
+        {stats.map((stat) => (
+          <div class="hero__stat-badge">
+            <div class="hero__stat-badge-inner">
+              <span
+                class="hero__stat-badge-icon"
+                set:html={`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">${stat.icon}</svg>`}
+              />
+              <span class="hero__stat-badge-text">
+                {/* Kept on one line: Astro preserves template whitespace, so a
+                    newline here would render as a stray space ("5 000 +"). */}
+                <span class="hero__stat-badge-value">{stat.text ? stat.text : <Fragment><span class="hero__stat-badge-num" data-count-to={stat.count} data-count-sep={stat.sep ? 'true' : undefined}>{stat.sep ? groupDigits(stat.count!) : stat.count}</span>{stat.suffix ?? ''}{stat.unit ? ` ${stat.unit}` : ''}</Fragment>}</span>
+                <span class="hero__stat-badge-label">{stat.label}</span>
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
 
     <div class="hero__cta">
-      <a class="hero__cta-call" href={primaryPhone.href}>
+      <a class="hero__cta-call shimmer-cta" href={primaryPhone.href}>
         <PhoneIcon size={20} />
         {primaryPhone.display}
       </a>
@@ -65,15 +121,6 @@ const stats = [
         <InstagramIcon size={18} />
         {site.instagram.handle}
       </a>
-    </div>
-
-    <div class="hero__stats">
-      {stats.map((stat) => (
-        <div class="hero__stat">
-          <span class="hero__stat-value">{stat.value}</span>
-          <span class="hero__stat-label">{stat.label}</span>
-        </div>
-      ))}
     </div>
   </div>
 </section>
@@ -90,11 +137,25 @@ const stats = [
       'heading'
       'lead'
       'media'
-      'cta'
-      'stats';
+      'cta';
     gap: 20px;
     padding-block: 32px 40px;
   }
+
+  /* --- On-load entrance (blur-fade) -------------------------------------- */
+  @keyframes heroFadeUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, var(--hero-shift, 18px), 0);
+      filter: blur(var(--hero-blur, 8px));
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      filter: blur(0);
+    }
+  }
+
   .hero__badge {
     grid-area: badge;
     display: inline-flex;
@@ -109,25 +170,55 @@ const stats = [
     font: 700 12px/1 var(--font-heading);
     color: var(--color-primary);
     letter-spacing: 0.04em;
+    animation: heroFadeUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+  }
+
+  /* Live status indicator — a slow breathing halo around the green dot. */
+  @keyframes dotPulse {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.55;
+    }
+    70%,
+    100% {
+      transform: scale(2.1);
+      opacity: 0;
+    }
   }
   .hero__badge-dot {
+    position: relative;
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background: var(--color-success);
     flex: none;
   }
+  .hero__badge-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--color-success);
+    animation: dotPulse 2.4s ease-out infinite;
+  }
+
   .hero__heading {
     grid-area: heading;
     font: 800 34px/1.12 var(--font-heading);
     letter-spacing: -0.02em;
     text-wrap: pretty;
   }
+  .hero__heading-word {
+    display: inline-block;
+    animation: heroFadeUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+    animation-delay: calc(80ms + var(--word-index) * 55ms);
+  }
   .hero__lead {
     grid-area: lead;
     font: 400 16px/1.6 var(--font-body);
     color: var(--color-text-muted);
     text-wrap: pretty;
+    animation: heroFadeUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.42s backwards;
   }
   .hero__media {
     grid-area: media;
@@ -138,61 +229,104 @@ const stats = [
   }
   .hero__portrait {
     position: relative;
-    min-height: 280px;
+    min-height: 360px;
     border-radius: 24px;
-    background: radial-gradient(65% 65% at 50% 88%, var(--color-badge-bg) 0%, transparent 70%);
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    background: radial-gradient(65% 65% at 50% 38%, var(--color-badge-bg) 0%, transparent 70%);
     overflow: visible;
   }
   .hero__portrait :global(.hero__portrait-img) {
-    width: auto;
-    max-width: 88%;
+    display: block;
+    width: 100%;
     height: 100%;
     object-fit: contain;
+    object-position: center 18%;
     filter: drop-shadow(0 18px 26px rgba(16, 26, 40, 0.18));
   }
-  .hero__floating-badge {
+
+  /* --- Floating stat badges ---------------------------------------------- */
+  @keyframes heroBadgeIn {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+  @keyframes heroBadgeBob {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -6px, 0);
+    }
+  }
+  .hero__stat-badges {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .hero__stat-badge {
+    animation: heroBadgeIn 0.6s ease-out backwards;
+  }
+  .hero__stat-badge:nth-child(1) {
+    animation-delay: 0.55s;
+  }
+  .hero__stat-badge:nth-child(2) {
+    animation-delay: 0.75s;
+  }
+  .hero__stat-badge:nth-child(3) {
+    animation-delay: 0.95s;
+  }
+  .hero__stat-badge:nth-child(4) {
+    animation-delay: 1.15s;
+  }
+  .hero__stat-badge-inner {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    height: 100%;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 12px;
-    padding: 14px 16px;
+    padding: 11px 12px;
     box-shadow: 0 6px 16px rgba(16, 26, 40, 0.06);
   }
-  .hero__floating-badge-icon {
-    width: 38px;
-    height: 38px;
+  .hero__stat-badge-icon {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: var(--color-primary);
     display: flex;
     align-items: center;
     justify-content: center;
-    font: 800 13px/1 var(--font-heading);
-    color: #fff;
     flex: none;
   }
-  .hero__floating-badge-text {
+  .hero__stat-badge-text {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
+    min-width: 0;
   }
-  .hero__floating-badge-title {
+  .hero__stat-badge-value {
     font: 700 14px/1.2 var(--font-heading);
     color: var(--color-text);
+    font-variant-numeric: tabular-nums;
   }
-  .hero__floating-badge-sub {
-    font: 400 12px/1.2 var(--font-body);
+  .hero__stat-badge-label {
+    font: 400 11px/1.25 var(--font-body);
     color: var(--color-text-faint);
+    text-wrap: pretty;
   }
+
   .hero__cta {
     grid-area: cta;
     display: flex;
     flex-direction: column;
     gap: 14px;
+    animation: heroFadeUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.54s backwards;
   }
   .hero__cta-call,
   .hero__cta-insta {
@@ -203,6 +337,11 @@ const stats = [
     text-decoration: none;
     font-family: var(--font-heading);
     border-radius: 12px;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease;
   }
   .hero__cta-call {
     background: var(--color-accent);
@@ -211,10 +350,11 @@ const stats = [
     font-size: 19px;
     padding: 20px;
     box-shadow: 0 2px 0 var(--color-accent-shadow);
-    transition: background-color 0.15s ease;
   }
   .hero__cta-call:hover {
     background: var(--color-accent-hover);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 22px rgba(197, 105, 12, 0.32);
   }
   .hero__cta-insta {
     display: none;
@@ -224,33 +364,26 @@ const stats = [
     font-weight: 700;
     font-size: 16px;
     padding: 18px;
-    transition: border-color 0.15s ease;
   }
   .hero__cta-insta:hover {
     border-color: var(--color-primary);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 18px rgba(16, 26, 40, 0.1);
   }
-  .hero__stats {
-    grid-area: stats;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    text-align: center;
-  }
-  .hero__stat {
-    background: var(--color-bg);
-    border-radius: 10px;
-    padding: 14px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  .hero__stat-value {
-    font: 800 18px/1 var(--font-heading);
-    color: var(--color-primary);
-  }
-  .hero__stat-label {
-    font: 400 12px/1.3 var(--font-body);
-    color: var(--color-text-faint);
+
+  /* Ambient loops are desktop-only (battery + touch-scroll comfort), and the
+     entrance travels a shorter distance with a lighter blur on small screens. */
+  @media (max-width: 859px) {
+    .hero__grid {
+      --hero-shift: 10px;
+      --hero-blur: 5px;
+    }
+    .hero__stat-badge-inner {
+      animation: none;
+    }
+    .hero__badge-dot::after {
+      animation-duration: 3.6s;
+    }
   }
 
   @media (min-width: 860px) {
@@ -260,8 +393,7 @@ const stats = [
         'badge   media'
         'heading media'
         'lead    media'
-        'cta     media'
-        'stats   media';
+        'cta     media';
       column-gap: 64px;
       row-gap: 26px;
       align-items: center;
@@ -289,27 +421,56 @@ const stats = [
       display: block;
     }
     .hero__portrait {
-      height: 470px;
+      height: 560px;
       min-height: 0;
     }
-    .hero__floating-badge {
+    .hero__stat-badges {
+      display: contents;
+    }
+    .hero__stat-badge {
       position: absolute;
+      width: 178px;
+    }
+    .hero__stat-badge:nth-child(1) {
+      top: 2%;
+      left: -22px;
+    }
+    .hero__stat-badge:nth-child(2) {
+      bottom: 6%;
       left: -26px;
-      bottom: -26px;
-      gap: 14px;
-      padding: 18px 22px;
-      box-shadow: 0 8px 24px rgba(16, 26, 40, 0.1);
     }
-    .hero__floating-badge-icon {
-      width: 44px;
-      height: 44px;
-      font-size: 15px;
+    .hero__stat-badge:nth-child(3) {
+      top: 6%;
+      right: -20px;
     }
-    .hero__floating-badge-title {
-      font-size: 15px;
+    .hero__stat-badge:nth-child(4) {
+      bottom: 4%;
+      right: -22px;
     }
-    .hero__floating-badge-sub {
-      font-size: 13px;
+    .hero__stat-badge-inner {
+      gap: 12px;
+      padding: 13px 15px;
+      box-shadow: 0 8px 20px rgba(16, 26, 40, 0.08);
+      animation: heroBadgeBob 3.6s ease-in-out infinite;
+    }
+    .hero__stat-badge:nth-child(1) .hero__stat-badge-inner {
+      animation-delay: 0s;
+    }
+    .hero__stat-badge:nth-child(2) .hero__stat-badge-inner {
+      animation-delay: -1.2s;
+    }
+    .hero__stat-badge:nth-child(3) .hero__stat-badge-inner {
+      animation-delay: -2.4s;
+    }
+    .hero__stat-badge:nth-child(4) .hero__stat-badge-inner {
+      animation-delay: -0.6s;
+    }
+    .hero__stat-badge-icon {
+      width: 34px;
+      height: 34px;
+    }
+    .hero__stat-badge-label {
+      font-size: 12px;
     }
     .hero__cta {
       flex-direction: row;
@@ -319,42 +480,11 @@ const stats = [
     .hero__cta-call {
       font-size: 19px;
       padding: 20px 30px;
-      box-shadow: 0 2px 0 var(--color-accent-shadow);
     }
     .hero__cta-insta {
       display: flex;
       font-size: 17px;
       padding: 19px 26px;
-    }
-    .hero__stats {
-      display: flex;
-      gap: 28px;
-      text-align: left;
-      padding-top: 8px;
-    }
-    .hero__stat {
-      background: none;
-      padding: 0;
-      gap: 4px;
-      position: relative;
-    }
-    .hero__stat:not(:first-child) {
-      padding-left: 28px;
-    }
-    .hero__stat:not(:first-child)::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: var(--color-border);
-    }
-    .hero__stat-value {
-      font-size: 24px;
-    }
-    .hero__stat-label {
-      font-size: 14px;
     }
   }
 </style>
