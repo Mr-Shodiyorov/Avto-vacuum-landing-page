@@ -1,18 +1,23 @@
 'use client';
 
 /**
- * Scroll-reveal + stat count-up.
+ * Scroll-reveal, stat count-up, and the auto-hide header.
  *
- * Both effects are one-shot (each element is unobserved after firing) and both
- * fall back to the finished state instantly when the visitor prefers reduced
- * motion. Renders nothing — it only drives classes/text on markup the server
- * already sent, so the page is complete without it.
+ * The reveal/count-up effects are one-shot (each element is unobserved after
+ * firing) and, along with the header hide/show, fall back to the finished/
+ * static state instantly when the visitor prefers reduced motion. Renders
+ * nothing — it only drives classes/text on markup the server already sent,
+ * so the page is complete without it.
  */
 
 import { useEffect } from 'react';
 
 const REVEALED = 'is-revealed';
 const SETTLED = 'is-settled';
+const HEADER_HIDDEN = 'is-header-hidden';
+
+/** Ignore scroll jitter under this many px (mobile momentum scroll, bounce). */
+const HEADER_SCROLL_THRESHOLD = 10;
 
 /** Longest possible reveal: max stagger delay + transition duration. */
 const SETTLE_AFTER = 1500;
@@ -68,6 +73,41 @@ export default function Motion() {
       }
     }
 
+    // Auto-hide header: slides up out of view on scroll-down, slides back on
+    // scroll-up, and is always shown at the very top. Skipped entirely under
+    // reduced motion — a nav bar disappearing/reappearing is itself the kind
+    // of motion that setting asks to avoid, so it just stays put (sticky).
+    const header = document.querySelector<HTMLElement>('.site-header');
+    let removeScrollListener: (() => void) | undefined;
+    if (header && !prefersReducedMotion) {
+      let lastY = window.scrollY;
+      let ticking = false;
+
+      const applyScroll = () => {
+        const currentY = window.scrollY;
+        if (currentY <= 0) {
+          header.classList.remove(HEADER_HIDDEN);
+          lastY = currentY;
+        } else if (currentY > lastY + HEADER_SCROLL_THRESHOLD) {
+          header.classList.add(HEADER_HIDDEN);
+          lastY = currentY;
+        } else if (currentY < lastY - HEADER_SCROLL_THRESHOLD) {
+          header.classList.remove(HEADER_HIDDEN);
+          lastY = currentY;
+        }
+        ticking = false;
+      };
+
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(applyScroll);
+      };
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      removeScrollListener = () => window.removeEventListener('scroll', onScroll);
+    }
+
     const counters = document.querySelectorAll<HTMLElement>('[data-count-to]');
     // Markup ships the final value, so reduced-motion (and no-JS) already shows
     // the right number — nothing to do.
@@ -96,6 +136,7 @@ export default function Motion() {
     return () => {
       observers.forEach((observer) => observer.disconnect());
       timeouts.forEach((id) => window.clearTimeout(id));
+      removeScrollListener?.();
     };
   }, []);
 

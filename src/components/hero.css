@@ -239,6 +239,8 @@
   font-size: 19px;
   padding: 20px;
   box-shadow: 0 2px 0 var(--color-accent-shadow);
+  border: none;
+  cursor: pointer;
 }
 .hero__cta-call:hover {
   background: var(--color-accent-hover);

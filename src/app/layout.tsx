@@ -1,29 +1,21 @@
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
+import { Geist } from "next/font/google";
 
 import '@/styles/global.css';
 
 import Motion from '@/components/Motion';
+import PhoneModal from '@/components/PhoneModal';
 import Preloader from '@/components/Preloader';
-import { site } from '@/lib/site';
+import SupportModal from '@/components/SupportModal';
+import { location, site } from '@/lib/site';
+import { cn } from "@/lib/utils";
 
-/**
- * Fonts are self-hosted through `next/font` rather than imported as
- * `@fontsource` stylesheets.
- *
- * The @fontsource route hid the font files one round-trip deeper than they
- * needed to be: the browser had to fetch and parse the CSS bundle before it
- * could even discover the @font-face URLs. `next/font` emits the @font-face
- * inline and a `<link rel="preload">` in the initial HTML, so the download
- * starts immediately — worth a whole RTT on a slow mobile connection.
- *
- * Only the heading face is preloaded. Preloading all four (~95KB) would have
- * them competing with the hero image, which is the LCP element; the body text
- * swaps in a beat later instead, which nobody notices.
- */
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
+
 const manrope = localFont({
   src: '../assets/fonts/manrope-latin-wght-normal.woff2',
-  weight: '200 800', // single variable file covers every weight used
+  weight: '200 800',
   display: 'swap',
   variable: '--font-manrope',
 });
@@ -48,7 +40,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
-  // TODO: add `images: ['/og-image.jpg']` once a real 1200×630 share image exists.
   openGraph: {
     type: 'website',
     siteName: site.nameFull,
@@ -80,7 +71,6 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'AutoRepair',
   name: site.nameFull,
-  // TODO: add `image: `${site.url}/og-image.jpg`` once real photography/OG image is available.
   telephone: site.phones.map((p) => p.href.replace('tel:', '')),
   priceRange: '$$',
   address: {
@@ -89,6 +79,12 @@ const jsonLd = {
     addressLocality: site.city,
     addressCountry: 'UZ',
   },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: location.lat,
+    longitude: location.lng,
+  },
+  hasMap: location.maps.google,
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: [
@@ -109,13 +105,9 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    // The inline script below adds `class="js"` to this element before React
-    // hydrates, so the server HTML and the live DOM are *meant* to differ here.
-    // Without this, React reports it as a hydration error. It only applies to
-    // this element's own attributes — mismatches in children are still caught.
     <html
       lang="uz"
-      className={`${manrope.variable} ${plexSans.variable}`}
+      className={cn(manrope.variable, plexSans.variable, "font-sans", geist.variable)}
       suppressHydrationWarning
     >
       <head>
@@ -123,8 +115,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* Marks JS as available before first paint so scroll-reveal targets start
-            hidden only when something can actually reveal them. */}
         <script
           dangerouslySetInnerHTML={{
             __html: "document.documentElement.classList.add('js')",
@@ -132,13 +122,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        {/* First in the body so its markup is parsed and painted before any
-            page content — the overlay is up on the very first frame. */}
         <Preloader />
         <a className="skip-link" href="#main">
           Asosiy kontentga o&apos;tish
         </a>
         {children}
+        <PhoneModal />
+        <SupportModal />
         <Motion />
       </body>
     </html>

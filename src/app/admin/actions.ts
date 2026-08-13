@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { getCards } from '@/lib/cards';
+import { type CommentsPage, getComments } from '@/lib/comments';
 import { createSession, destroySession, isCorrectPassword, requireSession } from '@/lib/session';
 import { STORAGE_BUCKET } from '@/lib/storage';
 import { supabaseAdmin } from '@/lib/supabase';
@@ -60,7 +61,7 @@ export async function login(
 export async function logout(): Promise<void> {
   await destroySession();
   revalidatePath('/admin', 'layout');
-  redirect('/admin/login');
+  redirect('/');
 }
 
 // -----------------------------------------------------------------------------
@@ -258,4 +259,50 @@ export async function moveCard(formData: FormData): Promise<void> {
   }
 
   revalidateEverything();
+}
+
+// -----------------------------------------------------------------------------
+// Comment moderation
+// -----------------------------------------------------------------------------
+// Comments never appear on the public page, so these only ever need to
+// revalidate '/admin' — never the '/' the card mutations above also touch.
+
+export async function markCommentRead(formData: FormData): Promise<void> {
+  await requireSession();
+
+  const id = String(formData.get('id') ?? '').trim();
+  if (!id) return;
+
+  const { error } = await supabaseAdmin()
+    .from('comments')
+    .update({ is_read: true })
+    .eq('id', id)
+    .eq('is_read', false); // already-read rows skip a needless write
+
+  if (error) {
+    console.error('[comments] mark read failed:', error);
+    return;
+  }
+
+  revalidatePath('/admin');
+}
+
+export async function deleteComment(formData: FormData): Promise<void> {
+  await requireSession();
+
+  const id = String(formData.get('id') ?? '').trim();
+  if (!id) return;
+
+  const { error } = await supabaseAdmin().from('comments').delete().eq('id', id);
+  if (error) {
+    console.error('[comments] delete failed:', error);
+    return;
+  }
+
+  revalidatePath('/admin');
+}
+
+/** Fetches the next page for the "Yana yuklash" button in CommentsAdmin. */
+export async function loadMoreComments(cursor: string): Promise<CommentsPage> {
+  return getComments(cursor);
 }

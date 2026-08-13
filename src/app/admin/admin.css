@@ -286,6 +286,135 @@
   font-size: 15px;
 }
 
+/* --- Tab switch (pill) ------------------------------------------------------
+   An oval track with a sliding highlight `<span>` behind the buttons — the
+   highlight's `transform` is what animates, not a background swap on the
+   buttons themselves, so the motion reads as one piece sliding rather than a
+   flat color flip. */
+
+.admin-switch {
+  position: relative;
+  display: inline-flex;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+.admin-switch__thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: var(--color-primary);
+  transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+  z-index: 0;
+}
+.admin-switch__btn {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 130px;
+  padding: 10px 18px;
+  border: 0;
+  background: transparent;
+  font: 600 14px/1 var(--font-heading);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.admin-switch__btn[data-active='true'] {
+  color: #fff;
+}
+.admin-switch__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #fff;
+  font: 700 11px/1 var(--font-heading);
+}
+
+/* --- Comments ---------------------------------------------------------------- */
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.comment-entry {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  transition: border-color 0.15s ease;
+}
+.comment-entry--unread {
+  cursor: pointer;
+  border-color: var(--color-primary);
+  background: var(--color-badge-bg);
+}
+.comment-entry__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.comment-entry__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 15px/1.2 var(--font-heading);
+  color: var(--color-text);
+}
+.comment-entry--unread .comment-entry__name {
+  font-weight: 800;
+}
+.comment-entry__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+.comment-entry__time {
+  font: 400 13px/1 var(--font-body);
+  color: var(--color-text-faint);
+  white-space: nowrap;
+}
+.comment-entry__phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: 600 14px/1 var(--font-heading);
+  color: var(--color-primary);
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+.comment-entry__phone:hover {
+  text-decoration: underline;
+}
+.comment-entry__message {
+  font: 400 14px/1.55 var(--font-body);
+  color: var(--color-text-soft);
+  margin-bottom: 12px;
+  white-space: pre-wrap;
+}
+.comment-entry__delete {
+  padding: 7px 12px;
+  font-size: 13px;
+}
+
 @media (min-width: 700px) {
   .admin-form__row {
     grid-template-columns: 1fr 1fr;

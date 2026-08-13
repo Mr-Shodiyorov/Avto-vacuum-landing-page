@@ -4,7 +4,6 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import Marquee from '@/components/Marquee';
-import MobileCta from '@/components/MobileCta';
 import Services from '@/components/Services';
 import WhyUs from '@/components/WhyUs';
 
@@ -28,7 +27,6 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
-      <MobileCta />
     </>
   );
 }

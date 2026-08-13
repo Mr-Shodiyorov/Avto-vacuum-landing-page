@@ -24,6 +24,8 @@
   font: 800 16px/1 var(--font-heading);
   padding: 17px 12px;
   border-radius: 10px;
+  border: none;
+  cursor: pointer;
   text-decoration: none;
   transition:
     background-color 0.2s ease,

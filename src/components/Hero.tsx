@@ -1,8 +1,11 @@
+'use client';
+
 import Image from 'next/image';
 
 import ustaPhoto from '@/assets/usta-hero.webp';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import PhoneIcon from '@/components/icons/PhoneIcon';
+import { openPhoneModal } from '@/components/PhoneModal';
 import { master, site } from '@/lib/site';
 
 import './hero.css';
@@ -129,10 +132,14 @@ export default function Hero() {
         </div>
 
         <div className="hero__cta">
-          <a className="hero__cta-call shimmer-cta" href={primaryPhone.href}>
+          <button
+            type="button"
+            className="hero__cta-call shimmer-cta"
+            onClick={openPhoneModal}
+          >
             <PhoneIcon size={20} />
             {primaryPhone.display}
-          </a>
+          </button>
           <a
             className="hero__cta-insta"
             href={site.instagram.url}

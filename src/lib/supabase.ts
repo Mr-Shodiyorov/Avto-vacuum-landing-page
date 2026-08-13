@@ -5,9 +5,11 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 /**
  * Two clients, two privilege levels.
  *
- * - `supabaseRead` uses the anon key. RLS on `before_after_cards` allows it to
- *   SELECT and nothing else, so the worst case for a leak is a public read of
- *   already-public marketing content.
+ * - `supabaseRead` uses the anon key. RLS scopes what it can do per table: SELECT
+ *   only on `before_after_cards` (public marketing content), INSERT only on
+ *   `comments` (the public contact form) — never a read of other people's
+ *   submissions. The worst case for a leak is either already-public content or
+ *   an anonymous write, never a privileged read.
  * - `supabaseAdmin` uses the service role key, which bypasses RLS entirely. It
  *   is only ever called from Server Actions that have already verified the
  *   admin session.

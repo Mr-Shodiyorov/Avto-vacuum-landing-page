@@ -1,8 +1,9 @@
 import { getCards } from '@/lib/cards';
+import { getComments, getUnreadCommentCount } from '@/lib/comments';
 import { requireSession } from '@/lib/session';
 
+import AdminTabs from './admin-tabs';
 import { logout } from './actions';
-import CardsAdmin from './cards-admin';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,14 +12,18 @@ export default async function AdminPage() {
   // actually counts, right next to the data.
   await requireSession();
 
-  const cards = await getCards();
+  const [cards, commentsPage, unreadCount] = await Promise.all([
+    getCards(),
+    getComments(),
+    getUnreadCommentCount(),
+  ]);
 
   return (
     <main className="admin__main">
       <header className="admin__header">
         <div>
           <span className="eyebrow">BOSHQARUV PANELI</span>
-          <h1 className="admin__heading">Oldin va keyin</h1>
+          <h1 className="admin__heading">Admin panel</h1>
         </div>
         <form action={logout}>
           <button className="admin-btn admin-btn--ghost" type="submit">
@@ -27,7 +32,7 @@ export default async function AdminPage() {
         </form>
       </header>
 
-      <CardsAdmin cards={cards} />
+      <AdminTabs cards={cards} commentsPage={commentsPage} unreadCount={unreadCount} />
     </main>
   );
 }

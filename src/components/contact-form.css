@@ -1,0 +1,98 @@
+/* The "leave a message" form — the right-hand panel of the Aloqa section's
+   card (see Contact.tsx). Same input/button language as the rest of the
+   site: `--color-bg` fields, `--radius-sm`, `.shimmer-cta` on the submit. */
+
+.contact-form__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.contact-form__label {
+  font: 600 13px/1.2 var(--font-heading);
+  color: var(--color-text-muted);
+}
+.contact-form__input {
+  font: 400 15px/1.5 var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  width: 100%;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.contact-form__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(11, 74, 143, 0.12);
+}
+.contact-form__textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* Honeypot: off-screen rather than display:none — a field the computed style
+   reports as display:none is exactly what the more careful bots skip. */
+.contact-form__hp {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.contact-form__error {
+  font: 500 14px/1.4 var(--font-body);
+  color: #b3261e;
+  background: #fdeceb;
+  border: 1px solid #f5c6c2;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin: 0;
+}
+.contact-form__success {
+  font: 600 14px/1.4 var(--font-body);
+  color: var(--color-success);
+  background: #eaf8ee;
+  border: 1px solid #cdeeda;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin: 0;
+}
+.contact-form__submit {
+  background: var(--color-accent);
+  color: #fff;
+  font: 800 16px/1 var(--font-heading);
+  padding: 16px 22px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.contact-form__submit:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 22px rgba(197, 105, 12, 0.32);
+}
+.contact-form__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (min-width: 860px) {
+  .contact-form__submit {
+    align-self: flex-start;
+    padding-inline: 32px;
+  }
+}

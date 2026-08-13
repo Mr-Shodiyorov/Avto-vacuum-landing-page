@@ -1,0 +1,260 @@
+/* --- Phone Selection Modal ------------------------------------------------ */
+.phone-modal {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: 100%;
+  max-height: 100dvh;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+
+  opacity: 0;
+  transition:
+    opacity 220ms ease-out,
+    display 260ms allow-discrete,
+    overlay 260ms allow-discrete;
+}
+
+.phone-modal[open] {
+  display: flex;
+  opacity: 1;
+  transition:
+    opacity 260ms ease-in-out,
+    display 320ms allow-discrete,
+    overlay 320ms allow-discrete;
+}
+
+@starting-style {
+  .phone-modal[open] {
+    opacity: 0;
+  }
+}
+
+.phone-modal::backdrop {
+  background: rgba(16, 26, 40, 0);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  transition:
+    background 220ms ease,
+    -webkit-backdrop-filter 220ms ease,
+    backdrop-filter 220ms ease,
+    display 220ms allow-discrete,
+    overlay 220ms allow-discrete;
+}
+
+.phone-modal[open]::backdrop {
+  background: rgba(16, 26, 40, 0.45);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition-duration: 300ms;
+}
+
+@starting-style {
+  .phone-modal[open]::backdrop {
+    background: rgba(16, 26, 40, 0);
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+  }
+}
+
+body:has(.phone-modal[open]) {
+  overflow: hidden;
+}
+
+.phone-modal__box {
+  pointer-events: auto;
+  width: calc(100% - 32px);
+  max-width: 400px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  box-shadow:
+    0 24px 60px rgba(16, 26, 40, 0.25),
+    0 4px 16px rgba(16, 26, 40, 0.08);
+  padding: 24px;
+  color: var(--color-text);
+  transform: translateY(14px) scale(0.96);
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.phone-modal[open] .phone-modal__box {
+  transform: translateY(0) scale(1);
+}
+
+@starting-style {
+  .phone-modal[open] .phone-modal__box {
+    transform: translateY(14px) scale(0.96);
+  }
+}
+
+.phone-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.phone-modal__title {
+  font: 800 20px/1.2 var(--font-heading);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  margin: 0 0 4px;
+}
+
+.phone-modal__subtitle {
+  font: 500 13.5px/1.4 var(--font-body);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.phone-modal__close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.phone-modal__close:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background: var(--color-bg);
+}
+
+.phone-modal__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.phone-modal__option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.phone-modal__option:hover {
+  border-color: var(--color-primary);
+  background: rgba(11, 74, 143, 0.04);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(11, 74, 143, 0.08);
+}
+
+.phone-modal__option--primary {
+  border-color: rgba(245, 135, 31, 0.35);
+  background: rgba(245, 135, 31, 0.04);
+}
+
+.phone-modal__option--primary:hover {
+  border-color: var(--color-accent);
+  background: rgba(245, 135, 31, 0.09);
+  box-shadow: 0 4px 16px rgba(245, 135, 31, 0.15);
+}
+
+.phone-modal__icon-box {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(11, 74, 143, 0.08);
+  border: 1px solid rgba(11, 74, 143, 0.15);
+  color: var(--color-primary);
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.phone-modal__option--primary .phone-modal__icon-box {
+  background: rgba(245, 135, 31, 0.12);
+  border-color: rgba(245, 135, 31, 0.25);
+  color: var(--color-accent);
+}
+
+.phone-modal__details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.phone-modal__tag {
+  font: 700 11px/1 var(--font-heading);
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
+  text-transform: uppercase;
+}
+
+.phone-modal__option:not(.phone-modal__option--primary) .phone-modal__tag {
+  color: var(--color-primary);
+}
+
+.phone-modal__number {
+  font: 800 17px/1.2 var(--font-heading);
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.phone-modal__subtext {
+  font: 400 12.5px/1.2 var(--font-body);
+  color: var(--color-text-faint);
+}
+
+.phone-modal__arrow {
+  color: var(--color-text-faint);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.phone-modal__option:hover .phone-modal__arrow {
+  color: var(--color-primary);
+  transform: translateX(2px);
+}
+
+.phone-modal__footer-badge {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font: 600 12.5px/1 var(--font-body);
+  color: var(--color-text-faint);
+}
+
+.phone-modal__status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+}

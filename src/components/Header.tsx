@@ -1,6 +1,10 @@
+'use client';
+
 import Logo from '@/components/Logo';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import TelegramIcon from '@/components/icons/TelegramIcon';
+import MobileMenu from '@/components/MobileMenu';
+import { openPhoneModal } from '@/components/PhoneModal';
 import { navLinks, site } from '@/lib/site';
 
 import './header.css';
@@ -28,32 +32,21 @@ export default function Header() {
         </nav>
 
         <div className="site-header__actions">
-          <a className="site-header__phone" href={primaryPhone.href}>
+          <button
+            type="button"
+            className="site-header__phone"
+            onClick={openPhoneModal}
+          >
             {primaryPhone.display}
-          </a>
+          </button>
           <a
-            className="site-header__contact-btn"
+            className="site-header__icon-btn"
             href={site.telegram.url}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`Telegram — ${site.telegram.handle}`}
           >
-            <TelegramIcon size={17} />
-            Bog&apos;lanish
-          </a>
-          <a className="site-header__cta" href={primaryPhone.href}>
-            Qo&apos;ng&apos;iroq qilish
-          </a>
-        </div>
-
-        <div className="site-header__mobile-actions">
-          <a
-            className="site-header__icon-btn site-header__icon-btn--telegram"
-            href={site.telegram.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Bog'lanish — Telegram"
-          >
-            <TelegramIcon size={19} color="#fff" />
+            <TelegramIcon size={20} color="#229ED9" />
           </a>
           <a
             className="site-header__icon-btn"
@@ -64,7 +57,16 @@ export default function Header() {
           >
             <InstagramIcon size={20} color="#0B4A8F" />
           </a>
+          <button
+            type="button"
+            className="site-header__cta"
+            onClick={openPhoneModal}
+          >
+            Qo&apos;ng&apos;iroq qilish
+          </button>
         </div>
+
+        <MobileMenu />
       </div>
     </header>
   );

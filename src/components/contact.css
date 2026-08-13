@@ -1,5 +1,11 @@
+/* Top padding only: the section's old bottom padding is gone entirely, not
+   moved. LocationMap renders full-bleed as a sibling of `.container`, right
+   after it, and supplies its own top margin (see location-map.css) — that
+   margin IS the gap between the card and the map. Anything added here as well
+   would stack with it. The map then runs flush to the very bottom of the
+   section, handing off straight to the footer with no gap. */
 .contact {
-  padding-block: 40px 48px;
+  padding-top: 40px;
 }
 .contact__card {
   position: relative;
@@ -63,8 +69,8 @@
     background: var(--color-surface);
   }
   /* Content sits above the ring. */
-  .contact__text,
-  .contact__media {
+  .contact__panel,
+  .contact__divider {
     position: relative;
     z-index: 1;
   }
@@ -76,7 +82,7 @@
   }
 }
 .contact__heading {
-  font: 800 28px/1.14 var(--font-heading);
+  font: 800 30px/1.12 var(--font-heading);
   letter-spacing: -0.02em;
   color: var(--color-text);
   text-wrap: pretty;
@@ -148,47 +154,66 @@
   background: var(--color-badge-bg);
   transform: translateY(-2px);
 }
-.contact__media {
+
+.contact__panel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
-/* Doubled up with `.img-placeholder` so this beats the placeholder's own
-   `display: flex` regardless of stylesheet order. */
-.img-placeholder.contact__map {
-  display: none;
-}
-.contact__info {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 18px;
+
+/* --- Call panel: why-call-now list -----------------------------------------
+   The call panel (heading + lead + 3 buttons) is naturally shorter than the
+   form panel (heading + lead + 4 fields + button). This list is real content,
+   not a spacer — it fills that height with the actual reasons to call rather
+   than empty air below the Instagram link. */
+.contact__perks {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  margin: 28px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+  list-style: none;
 }
-.contact__info-divider {
+.contact__perks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font: 500 14px/1.5 var(--font-body);
+  color: var(--color-text-soft);
+}
+.contact__perk-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--color-badge-bg);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- "YOKI" divider between the call and form panels ------------------- */
+.contact__divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.contact__divider-line {
+  flex: 1;
   height: 1px;
   background: var(--color-border);
 }
-.contact__info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.contact__info-label {
-  font: 600 11px/1 var(--font-body);
+.contact__divider-label {
+  font: 700 12px/1 var(--font-heading);
+  letter-spacing: 0.1em;
   color: var(--color-text-faint);
-  letter-spacing: 0.08em;
-}
-.contact__info-value {
-  font: 500 15px/1.5 var(--font-body);
-  color: var(--color-text);
 }
 
 @media (min-width: 860px) {
   .contact {
-    padding-block: 88px 96px;
+    padding-top: 88px;
   }
   .contact__card {
     background: var(--color-surface);
@@ -196,42 +221,26 @@
     border-radius: var(--radius-xl);
     padding: 56px;
     display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 56px;
-    align-items: center;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 48px;
+    /* `start`, not `center` — with the form panel taller than the call panel,
+       centering would float the call panel's heading down the row instead of
+       lining both titles up at the top of the card. */
+    align-items: start;
   }
   .contact__heading {
-    font-size: 40px;
-    line-height: 1.14;
-    margin-bottom: 0;
+    font-size: 36px;
+    line-height: 1.1;
   }
   .contact__lead {
-    font-size: 17px;
-    max-width: 42ch;
-    margin-bottom: 0;
+    font-size: 16px;
   }
-  .contact__text {
-    display: flex;
+  .contact__divider {
     flex-direction: column;
-    gap: 22px;
+    align-self: stretch;
   }
-  .img-placeholder.contact__map {
-    display: block;
-  }
-  .contact__info {
-    background: none;
-    border: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  .contact__info-divider {
-    display: none;
-  }
-  .contact__info-item {
-    background: var(--color-bg);
-    border-radius: var(--radius-md);
-    padding: 20px;
+  .contact__divider-line {
+    width: 1px;
+    height: auto;
   }
 }

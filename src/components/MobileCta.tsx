@@ -1,18 +1,23 @@
+'use client';
+
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import PhoneIcon from '@/components/icons/PhoneIcon';
+import { openPhoneModal } from '@/components/PhoneModal';
 import { site } from '@/lib/site';
 
 import './mobile-cta.css';
 
-const primaryPhone = site.phones[0];
-
 export default function MobileCta() {
   return (
     <div className="mobile-cta">
-      <a className="mobile-cta__call" href={primaryPhone.href}>
+      <button
+        type="button"
+        className="mobile-cta__call"
+        onClick={openPhoneModal}
+      >
         <PhoneIcon size={18} />
         Qo&apos;ng&apos;iroq
-      </a>
+      </button>
       <a
         className="mobile-cta__insta"
         href={site.instagram.url}

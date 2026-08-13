@@ -1,0 +1,370 @@
+/* =============================================================================
+   Location map — full-bleed strip closing the contact section.
+
+   The map is a real Google embed, but treated as artwork rather than as a
+   widget: desaturated so the brand pin is the only saturated thing on it,
+   feathered into the page at both edges, and covered by a single link. Every
+   colour is a site token.
+   ============================================================================= */
+
+.location {
+  margin-top: 36px;
+}
+
+.location__frame {
+  position: relative;
+  width: 100%;
+  /* Wide and cinematic on desktop, still tall enough to read on a phone. */
+  height: clamp(260px, 38vw, 420px);
+  overflow: hidden;
+  background: var(--color-badge-bg);
+  border-block: 1px solid var(--color-border);
+  isolation: isolate;
+}
+
+.location__embed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  /* Purely visual — the anchor above it owns every click. Also keeps the map
+     from swallowing page scroll on touch. */
+  pointer-events: none;
+  /* Pulls Google's default green/blue palette back so the orange pin reads as
+     the only point of interest. */
+  filter: saturate(0.68) contrast(1.02) brightness(1.03);
+}
+
+/* Feathers the hard top and bottom edges into the page background. */
+.location__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, var(--color-bg) 0%, transparent 14%),
+    linear-gradient(to top, rgba(16, 26, 40, 0.28) 0%, transparent 42%);
+}
+
+/* --- Pin ------------------------------------------------------------------
+   Same vocabulary as the logo mark and the preloader's aperture: a solid core
+   inside an expanding ring. Only transform/opacity animate. */
+
+.location__pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+.location__pin-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2.5px solid var(--color-accent);
+  animation: locationPulse 2600ms cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+}
+
+@keyframes locationPulse {
+  0% {
+    opacity: 0.85;
+    transform: scale(0.6);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+
+/* --- Address card ---------------------------------------------------------- */
+
+.location__card {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 18px;
+  max-width: 460px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  box-shadow: 0 14px 34px rgba(16, 26, 40, 0.16);
+  pointer-events: none;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.location__eyebrow {
+  display: block;
+  font: 700 11px/1 var(--font-heading);
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+.location__address {
+  font: 500 14px/1.5 var(--font-body);
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+
+.location__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 14px/1 var(--font-heading);
+  color: var(--color-primary);
+}
+.location__cta svg {
+  transition: transform 0.25s ease;
+}
+
+/* --- Hit area -------------------------------------------------------------- */
+
+.location__hit {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  cursor: pointer;
+}
+.location__hit:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: -5px;
+}
+
+.location__frame:hover .location__card,
+.location__hit:focus-visible + .location__card {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 42px rgba(16, 26, 40, 0.22);
+}
+.location__frame:hover .location__cta svg {
+  transform: translateX(4px);
+}
+
+/* Below the desktop breakpoint the card is the same full-width overlay but
+   sized down: a taller frame gives the map room to breathe above it, and a
+   two-line clamp on the address stops a long entry from swallowing the pin
+   entirely. */
+@media (max-width: 859px) {
+  .location__frame {
+    height: clamp(340px, 92vw, 460px);
+  }
+  .location__card {
+    max-width: none;
+    padding: 12px 14px;
+    bottom: 14px;
+  }
+  .location__eyebrow {
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+  .location__address {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .location__cta {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 860px) {
+  .location {
+    margin-top: 56px;
+  }
+  .location__card {
+    left: max(var(--gutter), calc((100% - var(--container-max)) / 2 + var(--gutter)));
+    bottom: 28px;
+    padding: 20px 22px;
+  }
+  .location__address {
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .location__pin-pulse {
+    animation: none;
+    opacity: 0.4;
+  }
+}
+
+/* =============================================================================
+   App chooser
+   Same <dialog> choreography as the rest of the site: @starting-style for the
+   entrance, allow-discrete so the exit gets to play.
+   ============================================================================= */
+
+.location-modal {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: 100%;
+  max-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+
+  opacity: 0;
+  transition:
+    opacity 170ms ease-in,
+    display 170ms allow-discrete,
+    overlay 170ms allow-discrete;
+}
+
+.location-modal[open] {
+  display: flex;
+  opacity: 1;
+  transition:
+    opacity 250ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    display 400ms allow-discrete,
+    overlay 400ms allow-discrete;
+}
+
+@starting-style {
+  .location-modal[open] {
+    opacity: 0;
+  }
+}
+
+.location-modal::backdrop {
+  background: rgba(16, 26, 40, 0);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  transition:
+    background 170ms ease,
+    -webkit-backdrop-filter 170ms ease,
+    backdrop-filter 170ms ease,
+    display 170ms allow-discrete,
+    overlay 170ms allow-discrete;
+}
+
+.location-modal[open]::backdrop {
+  background: rgba(16, 26, 40, 0.5);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition-duration: 320ms;
+}
+
+@starting-style {
+  .location-modal[open]::backdrop {
+    background: rgba(16, 26, 40, 0);
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+  }
+}
+
+body:has(.location-modal[open]) {
+  overflow: hidden;
+}
+
+.location-modal__box {
+  pointer-events: auto;
+  width: calc(100% - 32px);
+  max-width: 420px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 22px;
+  box-shadow: 0 24px 60px rgba(16, 26, 40, 0.24);
+  transform: translateY(12px) scale(0.97);
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.location-modal[open] .location-modal__box {
+  transform: translateY(0) scale(1);
+}
+
+@starting-style {
+  .location-modal[open] .location-modal__box {
+    transform: translateY(12px) scale(0.97);
+  }
+}
+
+.location-modal__title {
+  font: 800 19px/1.2 var(--font-heading);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.location-modal__address {
+  font: 400 13px/1.5 var(--font-body);
+  color: var(--color-text-muted);
+  margin: 8px 0 18px;
+}
+
+.location-modal__options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.location-modal__option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  width: 100%;
+  text-align: left;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+.location-modal__option:hover {
+  border-color: var(--color-primary);
+  background: var(--color-badge-bg);
+  transform: translateY(-2px);
+}
+.location-modal__option:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.location-modal__option-name {
+  font: 700 15px/1.2 var(--font-heading);
+  color: var(--color-text);
+}
+.location-modal__option-meta {
+  font: 400 12px/1.2 var(--font-body);
+  color: var(--color-text-faint);
+}
+
+.location-modal__close {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px;
+  background: none;
+  border: 0;
+  font: 600 14px/1 var(--font-heading);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+.location-modal__close:hover {
+  color: var(--color-text);
+  background: var(--color-bg);
+}

@@ -4,6 +4,13 @@
   position: sticky;
   top: 0;
   z-index: 40;
+  transform: translateY(0);
+  transition: transform 0.28s ease-out;
+}
+/* Added by Motion.tsx's scroll-direction listener; skipped under reduced
+   motion, so the header just stays put there instead of hiding. */
+.site-header.is-header-hidden {
+  transform: translateY(-100%);
 }
 .site-header__inner {
   display: flex;
@@ -37,11 +44,9 @@
 .site-header__actions {
   display: none;
 }
-.site-header__mobile-actions {
-  margin-left: auto;
-  display: flex;
-  gap: 10px;
-}
+/* Reused on desktop as the icon-only Instagram button next to the labeled
+   Telegram button — display is gated entirely by `.site-header__actions`
+   above, so this needs no breakpoint of its own. */
 .site-header__icon-btn {
   width: 44px;
   height: 44px;
@@ -58,14 +63,6 @@
 .site-header__icon-btn:hover {
   border-color: var(--color-primary);
 }
-.site-header__icon-btn--telegram {
-  background: var(--color-telegram);
-  border-color: var(--color-telegram);
-}
-.site-header__icon-btn--telegram:hover {
-  background: var(--color-telegram-hover);
-  border-color: var(--color-telegram-hover);
-}
 
 @media (min-width: 860px) {
   .site-header__inner {
@@ -80,7 +77,9 @@
   }
   .site-header__nav {
     display: flex;
-    gap: 30px;
+    /* One link tighter than before now that Manzil makes it five — 30px
+       started crowding the actions column on narrower desktop widths. */
+    gap: 22px;
     margin-left: 20px;
   }
   .site-header__nav a {
@@ -88,6 +87,7 @@
     font: 500 15px/1 var(--font-body);
     color: #3d4a5c;
     text-decoration: none;
+    white-space: nowrap;
     transition: color 0.2s ease;
   }
   .site-header__nav a::after {
@@ -121,27 +121,10 @@
     text-decoration: none;
     white-space: nowrap;
     margin-right: 4px;
-  }
-  .site-header__contact-btn {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    background: var(--color-telegram);
-    color: #fff;
-    font: 700 15px/1 var(--font-heading);
-    padding: 13px 18px;
-    border-radius: 8px;
-    text-decoration: none;
-    white-space: nowrap;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      background-color 0.2s ease;
-  }
-  .site-header__contact-btn:hover {
-    background: var(--color-telegram-hover);
-    transform: translateY(-1px) scale(1.02);
-    box-shadow: 0 8px 18px rgba(34, 158, 217, 0.3);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
   }
   .site-header__cta {
     background: var(--color-accent);
@@ -149,6 +132,8 @@
     font: 700 15px/1 var(--font-heading);
     padding: 14px 22px;
     border-radius: 8px;
+    border: none;
+    cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
     transition:
@@ -160,8 +145,5 @@
     background: var(--color-accent-hover);
     transform: translateY(-1px) scale(1.02);
     box-shadow: 0 8px 18px rgba(197, 105, 12, 0.3);
-  }
-  .site-header__mobile-actions {
-    display: none;
   }
 }
