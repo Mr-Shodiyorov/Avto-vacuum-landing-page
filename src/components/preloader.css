@@ -1,0 +1,396 @@
+/* =============================================================================
+   Preloader — "The Aperture"
+   -----------------------------------------------------------------------------
+   The concept comes straight out of the existing brand mark (src/components/
+   Logo.tsx): a conic ring alternating --color-primary and --color-accent every
+   45deg, wrapped around a white core holding "AV".
+
+   Here that mark is enlarged and choreographed, and then its own core becomes
+   the opening the site is revealed through — the overlay is punched out by a
+   radial mask that expands from the middle of the logo. Nothing fades out; the
+   logo opens.
+
+   No colour is invented. Everything is a site token, or a token passed through
+   color-mix()/opacity for a softer variant.
+
+   The whole sequence is CSS-driven, so it still runs and still finishes with no
+   client JS at all. Preloader.tsx only refines it: holding the exit while the
+   page is genuinely still loading, locking scroll, and unmounting at the end.
+   ============================================================================= */
+
+/* Radius of the hole punched through the overlay. Registered so it can be
+   interpolated — a plain custom property would jump between keyframes. */
+@property --preloader-iris {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+.preloader {
+  /* Now that the aperture travels a sane distance, it can afford a wider,
+     softer edge — this is what makes it read as expanding light rather than a
+     hard-edged circular wipe. */
+  --preloader-feather: 120px;
+  --preloader-mark: 112px;
+
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  /* Exactly the page's own background, so the arrival is seamless: at 0ms this
+     is indistinguishable from the site itself. */
+  background: var(--color-bg);
+
+  /* The aperture. At --preloader-iris: 0 the first stop lands at a negative
+     offset, which clamps to 0 and leaves the mask fully opaque — a solid
+     overlay. As the radius grows, a feathered hole opens from the centre. */
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent calc(var(--preloader-iris) - var(--preloader-feather)),
+    #000 var(--preloader-iris)
+  );
+  mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent calc(var(--preloader-iris) - var(--preloader-feather)),
+    #000 var(--preloader-iris)
+  );
+
+  /* Easing note, arrived at by scrubbing the animation and measuring the hole
+     against the viewport's half-diagonal:
+       - ease-out (.16,1,.3,1) cleared the corners ~200ms into 900ms, then
+         played 700ms of nothing. It snapped.
+       - ease-in-out (.76,0,.24,1) held too long, then cleared in ~250ms.
+     The radius has to overshoot the corners to finish the job, so any time
+     spent at the top of the curve is invisible. A near-linear curve with a
+     soft start keeps the edge travelling at a steady, readable speed for most
+     of the duration and hurries only once it is already off-screen. */
+  animation: preloaderIris 850ms cubic-bezier(0.4, 0, 0.72, 0.72) 1700ms both;
+}
+
+/* Paused by Preloader.tsx while the document is still loading. Pausing also
+   pauses the animation's delay, so the exit is postponed rather than cut short
+   — the build phase keeps evolving underneath because it lives on other
+   elements with their own animations. */
+.preloader.is-holding {
+  animation-play-state: paused;
+}
+
+/* 78vmax is sized against the viewport's half-diagonal, which is what actually
+   has to be cleared: that is ~0.55x vmax on a typical landscape screen and at
+   most ~0.71x on a square one. The old 150vmax overshot by roughly 2.5x, and
+   every pixel of that overshoot was animation time the visitor never saw. */
+@keyframes preloaderIris {
+  from {
+    --preloader-iris: 0px;
+  }
+  99% {
+    --preloader-iris: 78vmax;
+    visibility: visible;
+  }
+  to {
+    --preloader-iris: 80vmax;
+    /* Discrete, and `both` keeps it — so even with no JS the overlay ends up
+       fully out of the way instead of sitting invisible over the page. */
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* --- Stage ---------------------------------------------------------------- */
+
+.preloader__stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  /* The whole composition drifts up a touch as the aperture opens, so the
+     reveal reads as the site rising into place rather than the logo vanishing. */
+  animation: preloaderStageOut 560ms cubic-bezier(0.65, 0, 0.35, 1) 1650ms both;
+}
+
+@keyframes preloaderStageOut {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -14px, 0) scale(1.06);
+  }
+}
+
+/* Soft bloom behind the mark. `closest-side` keeps it circular regardless of
+   the box, and the whole thing is one painted layer that only animates
+   opacity/transform. */
+.preloader__glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(var(--preloader-mark) * 4.6);
+  height: calc(var(--preloader-mark) * 4.6);
+  translate: -50% calc(var(--preloader-mark) * -1.8);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-primary) 13%, transparent),
+    color-mix(in srgb, var(--color-badge-bg) 60%, transparent) 55%,
+    transparent 72%
+  );
+  pointer-events: none;
+  animation:
+    preloaderGlowIn 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both,
+    preloaderBreath 3200ms cubic-bezier(0.65, 0, 0.35, 1) 900ms infinite;
+}
+
+@keyframes preloaderGlowIn {
+  from {
+    opacity: 0;
+    scale: 0.7;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes preloaderBreath {
+  0%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+  50% {
+    opacity: 0.72;
+    scale: 1.06;
+  }
+}
+
+/* --- The mark ------------------------------------------------------------- */
+
+.preloader__mark {
+  position: relative;
+  width: var(--preloader-mark);
+  height: var(--preloader-mark);
+  display: grid;
+  place-items: center;
+  /* ARRIVAL: up out of nothing — scale + opacity + blur, on the site's own
+     reveal easing (the same curve as [data-reveal] in global.css). */
+  animation: preloaderMarkIn 700ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes preloaderMarkIn {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* The brand ring, with the exact 45deg conic pattern from Logo.tsx. */
+.preloader__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--color-primary) 0 45deg,
+    var(--color-accent) 45deg 90deg,
+    var(--color-primary) 90deg 135deg,
+    var(--color-accent) 135deg 180deg,
+    var(--color-primary) 180deg 225deg,
+    var(--color-accent) 225deg 270deg,
+    var(--color-primary) 270deg 315deg,
+    var(--color-accent) 315deg 360deg
+  );
+  /* BUILD: an ease-in-out revolution rather than a constant spin. Each turn
+     winds up and settles, so it reads as a mechanism being driven rather than
+     a spinner idling — and it loops cleanly if the exit has to wait. */
+  animation: preloaderSpin 5200ms cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes preloaderSpin {
+  from {
+    transform: rotate(-18deg);
+  }
+  to {
+    transform: rotate(342deg);
+  }
+}
+
+/* Sits above the ring as a sibling, so the ring turns underneath while the
+   wordmark stays upright — the ratio matches Logo.tsx exactly (69.6%). */
+.preloader__core {
+  position: relative;
+  width: 69.6%;
+  height: 69.6%;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: calc(var(--preloader-mark) * 0.283);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  animation: preloaderCoreBreath 3200ms cubic-bezier(0.65, 0, 0.35, 1) 700ms infinite;
+}
+
+@keyframes preloaderCoreBreath {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.968);
+  }
+}
+
+/* --- Brand ---------------------------------------------------------------- */
+
+.preloader__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  text-align: center;
+}
+
+.preloader__name {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(17px, 4.4vw, 24px);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--color-text);
+  /* BRAND: resolves out of a wide, blurred haze into set type. */
+  animation: preloaderNameIn 800ms cubic-bezier(0.16, 1, 0.3, 1) 600ms both;
+}
+
+@keyframes preloaderNameIn {
+  from {
+    opacity: 0;
+    letter-spacing: 0.5em;
+    filter: blur(11px);
+    transform: translate3d(0, 9px, 0);
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.16em;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.preloader__meta {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  animation: preloaderMetaIn 700ms cubic-bezier(0.16, 1, 0.3, 1) 880ms both;
+}
+
+@keyframes preloaderMetaIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* --- Mobile ---------------------------------------------------------------
+   Same composition and the same identity, with the costly parts trimmed: a
+   smaller mark, a tighter feather, and no letter-spacing animation (that one
+   relayouts the text on every frame, which is the least affordable effect on a
+   phone). Blur radii come down rather than disappearing. */
+@media (max-width: 640px) {
+  .preloader {
+    --preloader-mark: 84px;
+    --preloader-feather: 56px;
+  }
+  .preloader__stage {
+    gap: 24px;
+  }
+  .preloader__glow {
+    width: calc(var(--preloader-mark) * 3.6);
+    height: calc(var(--preloader-mark) * 3.6);
+  }
+  @keyframes preloaderMarkIn {
+    from {
+      opacity: 0;
+      transform: scale(0.84);
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+      filter: blur(0);
+    }
+  }
+  @keyframes preloaderNameIn {
+    from {
+      opacity: 0;
+      filter: blur(7px);
+      transform: translate3d(0, 8px, 0);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  .preloader__name {
+    letter-spacing: 0.16em;
+  }
+}
+
+/* --- Reduced motion -------------------------------------------------------
+   No rotation, no breathing, no aperture, no blur. The mark and wordmark are
+   simply present, and the overlay clears almost immediately. Note this block
+   re-declares the animations rather than relying on the global reduced-motion
+   rule in global.css: that rule collapses durations to 0.01ms, which would fire
+   this timeline's `visibility: hidden` instantly and skip the overlay entirely. */
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    animation: preloaderFadeOut 260ms linear 420ms both;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .preloader__stage,
+  .preloader__glow,
+  .preloader__mark,
+  .preloader__ring,
+  .preloader__core,
+  .preloader__name,
+  .preloader__meta {
+    animation: none !important;
+    opacity: 1;
+    filter: none;
+    transform: none;
+    scale: 1;
+    letter-spacing: normal;
+  }
+  .preloader__name {
+    letter-spacing: 0.16em;
+  }
+
+  @keyframes preloaderFadeOut {
+    to {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+}

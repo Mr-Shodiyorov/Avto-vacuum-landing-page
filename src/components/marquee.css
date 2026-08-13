@@ -1,0 +1,64 @@
+/* Scrolls the track by exactly one copy of the keyword list, then snaps back —
+   invisibly, because copy N+1 is sitting precisely where copy N started.
+   The distance is derived from `--marquee-copies` (set in Marquee.tsx) rather
+   than hard-coded, so the shift and the number of copies stay in step. */
+@keyframes marqueeScroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(-100% / var(--marquee-copies)), 0, 0);
+  }
+}
+
+.marquee {
+  /* overflow:hidden keeps the oversized track from ever widening the page */
+  overflow: hidden;
+  background: var(--color-primary);
+  border-block: 1px solid rgba(255, 255, 255, 0.12);
+  padding-block: 13px;
+  user-select: none;
+}
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 34s linear infinite;
+}
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+.marquee__group {
+  display: flex;
+  flex: none;
+}
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 22px;
+  padding-right: 22px;
+  white-space: nowrap;
+  font: 700 13px/1 var(--font-heading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.marquee__sep {
+  color: var(--color-accent);
+}
+
+@media (min-width: 860px) {
+  .marquee {
+    padding-block: 16px;
+  }
+  .marquee__item {
+    font-size: 14px;
+    gap: 28px;
+    padding-right: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track {
+    animation: none;
+  }
+}

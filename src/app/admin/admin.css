@@ -1,0 +1,302 @@
+/* Admin panel. Reuses the site's tokens, `.work-card`, and `.works__grid` so a
+   card looks here exactly like it does on the landing page — the point of the
+   panel is to edit what you can already see. */
+
+.admin {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.admin__main,
+.admin__auth {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: 28px var(--gutter) 80px;
+}
+
+/* --- Login ---------------------------------------------------------------- */
+
+.admin__auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding-block: 40px;
+}
+.admin-card--auth {
+  width: 100%;
+  max-width: 380px;
+}
+.admin__auth-heading {
+  font: 800 26px/1.15 var(--font-heading);
+  letter-spacing: -0.02em;
+  margin-block: 8px 6px;
+}
+.admin__auth-hint {
+  font: 400 14px/1.5 var(--font-body);
+  color: var(--color-text-muted);
+  margin-bottom: 18px;
+}
+
+/* --- Header / toolbar ----------------------------------------------------- */
+
+.admin__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.admin__heading {
+  font: 800 28px/1.15 var(--font-heading);
+  letter-spacing: -0.02em;
+  margin-top: 6px;
+}
+.admin__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.admin__count,
+.admin__empty {
+  font: 400 14px/1.4 var(--font-body);
+  color: var(--color-text-faint);
+}
+.admin__empty {
+  padding: 28px 0;
+}
+/* The public gallery is a one-row scroller with faded edges. In the panel you
+   are managing the list, not browsing it, so every card stays on screen and
+   wraps normally. Doubled-up selector to outrank `.works__grid` regardless of
+   stylesheet order. */
+.works__grid.admin__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  align-items: start;
+  gap: 16px;
+  overflow: visible;
+  padding-block: 0;
+  scroll-snap-type: none;
+  animation: none;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+.works__grid.admin__grid > .work-card {
+  flex-basis: auto;
+}
+
+/* --- Cards ---------------------------------------------------------------- */
+
+.admin-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+/* The admin copy of a work card is not a hover target — it is a row of
+   controls, so the lift-on-hover of the public card would only be noise.
+   Doubled-up selector so this outranks `.work-card:hover` regardless of which
+   stylesheet the bundler emits first. */
+.work-card.admin-work-card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--color-border);
+}
+.admin-work-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 0 16px 16px;
+}
+.admin-work-card__move {
+  display: inline-flex;
+}
+.admin-work-card__confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* --- Forms ---------------------------------------------------------------- */
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.admin-form__row {
+  display: grid;
+  gap: 14px;
+}
+.admin-form__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.admin-field__label {
+  font: 600 13px/1.2 var(--font-heading);
+  color: var(--color-text-muted);
+}
+.admin-field__input {
+  font: 400 15px/1.4 var(--font-body);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+  width: 100%;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.admin-field__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(11, 74, 143, 0.12);
+}
+.admin-error {
+  font: 500 14px/1.4 var(--font-body);
+  color: #b3261e;
+  background: #fdeceb;
+  border: 1px solid #f5c6c2;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin: 0;
+}
+
+/* --- Image fields --------------------------------------------------------- */
+
+.admin-image {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-image__title {
+  font: 600 13px/1.2 var(--font-heading);
+  color: var(--color-text-muted);
+}
+.admin-image__preview {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  /* A thumbnail, not a lightbox — without this the square grows to half the
+     form's width on a desktop screen and pushes the save button off-screen. */
+  max-width: 260px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-placeholder-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-image__preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.admin-image__empty {
+  font: 400 13px/1.4 var(--font-body);
+  color: var(--color-text-faint);
+}
+.admin-image__controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+/* The file input itself is hidden; the surrounding <label> is the button. */
+.admin-image__pick input[type='file'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.admin-image__pick {
+  position: relative;
+  cursor: pointer;
+}
+.admin-image__pick:focus-within {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+
+.admin-btn {
+  font: 600 14px/1 var(--font-heading);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  padding: 11px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+.admin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.admin-btn--primary {
+  background: var(--color-accent);
+  color: #fff;
+}
+.admin-btn--primary:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+.admin-btn--ghost {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+.admin-btn--ghost:hover:not(:disabled) {
+  border-color: #cfd8e4;
+  background: var(--color-bg);
+}
+.admin-btn--danger {
+  background: #b3261e;
+  color: #fff;
+}
+.admin-btn--danger:hover:not(:disabled) {
+  background: #94201a;
+}
+.admin-btn--danger-text {
+  color: #b3261e;
+}
+.admin-btn--icon {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+  padding: 10px 13px;
+  font-size: 15px;
+}
+
+@media (min-width: 700px) {
+  .admin-form__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 860px) {
+  .admin__main {
+    padding-top: 44px;
+  }
+  .admin__heading {
+    font-size: 34px;
+  }
+}

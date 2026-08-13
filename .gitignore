@@ -1,7 +1,7 @@
 # build output
-dist/
-# generated types
-.astro/
+.next/
+out/
+next-env.d.ts
 
 # dependencies
 node_modules/
@@ -12,10 +12,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# typescript
+*.tsbuildinfo
 
 # environment variables
 .env
 .env.production
+.env*.local
 
 # macOS-specific files
 .DS_Store

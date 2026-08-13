@@ -1,0 +1,40 @@
+/* Photo variant of `.img-placeholder` — same box, same badge/label furniture,
+   with a real image underneath instead of the diagonal stripes. */
+.work-image {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--color-placeholder-bg);
+}
+
+.work-image__img {
+  object-fit: cover;
+}
+
+/* The label bar must sit above the `fill` image, which is absolutely
+   positioned by next/image. */
+.work-image > .img-placeholder__label {
+  position: relative;
+  z-index: 1;
+}
+.work-image > .img-placeholder__tag {
+  z-index: 2;
+}
+
+/* Transparent hit area covering the whole photo. Sits above the label bar so
+   the entire tile is clickable, but below nothing that needs interaction. */
+.work-image__zoom {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+.work-image__zoom:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -3px;
+}

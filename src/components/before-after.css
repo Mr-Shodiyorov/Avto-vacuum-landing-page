@@ -1,0 +1,205 @@
+.works {
+  padding-block: 40px 8px;
+}
+.works__heading-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+/* One horizontal row that scrolls, however many cards there are — adding a
+   fourth should never drop a lonely card onto a second line. */
+.works__grid {
+  --works-fade: 36px;
+
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  /* `proximity`, not `mandatory`: mandatory snapping hijacks every small scroll
+     back to a card boundary, which makes the edge fade jump in steps instead of
+     tracking the drag. This still tidies up when you land near a card. */
+  scroll-snap-type: x proximity;
+  /* `overflow-x: auto` forces overflow-y to compute as `auto` too, which would
+     clip the card's hover lift and shadow. This padding gives them room. */
+  padding-block: 6px 14px;
+  scrollbar-width: thin;
+  scrollbar-color: #cfd8e4 transparent;
+}
+.works__grid > .work-card {
+  flex: 0 0 min(78vw, 320px);
+  scroll-snap-align: start;
+}
+
+/* --- Faded edges ----------------------------------------------------------
+   The fade follows scroll position: the left edge only softens once there is
+   something scrolled off to the left, and the right edge stops softening once
+   you reach the end. A permanently-painted mask would make the very first card
+   look clipped before you had scrolled anywhere.
+
+   `mask-image` itself is NOT an animatable property — putting gradients in
+   keyframes silently does nothing. So the two end alphas are animated instead,
+   as registered custom properties, which do interpolate. The gradient just
+   reads them and is recomputed on every frame. */
+@property --works-edge-start {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+@property --works-edge-end {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+.works__grid {
+  /* The `, 1` fallbacks keep this an opaque, no-op mask on engines without
+     @property, rather than an invalid value. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, var(--works-edge-start, 1)) 0,
+    rgba(0, 0, 0, 1) var(--works-fade),
+    rgba(0, 0, 0, 1) calc(100% - var(--works-fade)),
+    rgba(0, 0, 0, var(--works-edge-end, 1)) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, var(--works-edge-start, 1)) 0,
+    rgba(0, 0, 0, 1) var(--works-fade),
+    rgba(0, 0, 0, 1) calc(100% - var(--works-fade)),
+    rgba(0, 0, 0, var(--works-edge-end, 1)) 100%
+  );
+}
+
+@keyframes works-fade-start {
+  from {
+    --works-edge-start: 1;
+  }
+  to {
+    --works-edge-start: 0;
+  }
+}
+@keyframes works-fade-end {
+  from {
+    --works-edge-end: 0;
+  }
+  to {
+    --works-edge-end: 1;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .works__grid {
+    animation:
+      works-fade-start ease-out both,
+      works-fade-end ease-out both;
+    /* An inactive timeline — which is what a container with nothing to scroll
+       has — drops both animations, so a row that already fits keeps the
+       initial 1/1 values and shows no fade at all. */
+    animation-timeline: scroll(self inline), scroll(self inline);
+    /* Each edge is tied to a short range at its OWN end of the track rather
+       than to the whole scroll length. Spread across the full range, the left
+       edge would only be halfway faded at the halfway point; over 64px it
+       arrives as soon as you start moving, and follows the finger from there.
+       Both must come after the `animation` shorthand, which resets them. */
+    animation-range: 0px 64px, calc(100% - 64px) 100%;
+  }
+}
+
+/* Older engines get a plain fade on both edges. Less clever, still legible. */
+@supports not (animation-timeline: scroll()) {
+  .works__grid {
+    --works-edge-start: 0;
+    --works-edge-end: 0;
+  }
+}
+
+/* The global reduced-motion block forces `animation-duration: .01ms` on every
+   element. Rather than depend on a scroll-driven animation ignoring duration,
+   drop the animation and settle for a static fade on both edges. */
+@media (prefers-reduced-motion: reduce) {
+  .works__grid {
+    animation: none;
+    --works-edge-start: 0;
+    --works-edge-end: 0;
+  }
+}
+.work-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+.work-card:hover {
+  transform: translateY(-4px);
+  border-color: #cfd8e4;
+  box-shadow: 0 14px 30px rgba(16, 26, 40, 0.1);
+}
+/* Hint the transformation: the "before" tag recedes, the "after" tag steps up. */
+.work-card .img-placeholder__tag {
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+.work-card:hover .work-card__images > *:first-child .img-placeholder__tag {
+  opacity: 0.5;
+  transform: scale(0.96);
+}
+.work-card:hover .work-card__images > *:last-child .img-placeholder__tag {
+  transform: scale(1.08);
+}
+.work-card__images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--color-border);
+}
+.work-card__footer {
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.work-card__title {
+  font: 700 15px/1.3 var(--font-heading);
+  color: var(--color-text);
+}
+.work-card__meta {
+  font: 400 13px/1.3 var(--font-body);
+  color: var(--color-text-faint);
+}
+
+@media (min-width: 860px) {
+  .works {
+    padding-block: 88px 20px;
+  }
+  .works__heading-group {
+    margin-bottom: 36px;
+  }
+  .works__grid {
+    --works-fade: 56px;
+    gap: 24px;
+  }
+  /* Exactly three across, same as the old grid — the rest peek in past the
+     fade instead of wrapping onto a new line. */
+  .works__grid > .work-card {
+    flex-basis: calc((100% - 48px) / 3);
+  }
+  .work-card__images > * {
+    height: 230px;
+  }
+  .work-card__footer {
+    padding: 18px 20px;
+  }
+  .work-card__title {
+    font-size: 16px;
+  }
+  .work-card__meta {
+    font-size: 14px;
+  }
+}
