@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 import CloseIcon from '@/components/icons/CloseIcon';
 import PhoneIcon from '@/components/icons/PhoneIcon';
@@ -20,6 +21,7 @@ export function openSupportModal() {
 }
 
 export default function SupportModal() {
+  const t = useTranslations('supportModal');
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
 
@@ -46,7 +48,7 @@ export default function SupportModal() {
       <button
         type="button"
         className="support-widget__trigger"
-        aria-label="Aloqa va Yordam"
+        aria-label={t('triggerAriaLabel')}
         onClick={() => openSupportModal()}
       >
         <span className="support-widget__trigger-dot" />
@@ -67,7 +69,7 @@ export default function SupportModal() {
       <dialog
         ref={dialogRef}
         className="support-modal"
-        aria-label="Avto Vakum Aloqa Markazi"
+        aria-label={t('dialogAriaLabel')}
         onClose={() => setOpen(false)}
         onClick={(e) => {
           if (e.target === dialogRef.current) closeModal();
@@ -76,25 +78,23 @@ export default function SupportModal() {
         <div className="support-modal__box">
           <div className="support-modal__header">
             <div>
-              <h3 className="support-modal__title">{site.name} Support</h3>
+              <h3 className="support-modal__title">{t('title', { name: site.name })}</h3>
               <div className="support-modal__status">
                 <span className="support-modal__status-dot" />
-                <span>Online — tezkor javob</span>
+                <span>{t('status')}</span>
               </div>
             </div>
             <button
               type="button"
               className="support-modal__close"
-              aria-label="Yopish"
+              aria-label={t('closeAriaLabel')}
               onClick={closeModal}
             >
               <CloseIcon size={16} />
             </button>
           </div>
 
-          <p className="support-modal__message">
-            Salom! Sizga qanday yordam bera olamiz? Savollaringiz bo&apos;lsa — bizga yozing yoki qo&apos;ng&apos;iroq qiling.
-          </p>
+          <p className="support-modal__message">{t('message')}</p>
 
           <div className="support-modal__options">
             {/* Telegram Support Option */}
@@ -109,8 +109,8 @@ export default function SupportModal() {
                 <TelegramIcon size={20} color="#229ED9" />
               </div>
               <div className="support-modal__details">
-                <span className="support-modal__option-title">Telegram&apos;da yozish</span>
-                <span className="support-modal__option-sub">Tezkor javob — 5 daqiqa ichida</span>
+                <span className="support-modal__option-title">{t('telegramOptionTitle')}</span>
+                <span className="support-modal__option-sub">{t('telegramOptionSub')}</span>
               </div>
             </a>
 
@@ -124,7 +124,7 @@ export default function SupportModal() {
                 <PhoneIcon size={20} />
               </div>
               <div className="support-modal__details">
-                <span className="support-modal__option-title">Bizga qo&apos;ng&apos;iroq qiling</span>
+                <span className="support-modal__option-title">{t('primaryPhoneOptionTitle')}</span>
                 <span className="support-modal__option-sub">{site.phones[0].display}</span>
               </div>
             </a>
@@ -139,14 +139,14 @@ export default function SupportModal() {
                 <PhoneIcon size={20} />
               </div>
               <div className="support-modal__details">
-                <span className="support-modal__option-title">Qo&apos;shimcha telefon liniyasi</span>
+                <span className="support-modal__option-title">{t('secondaryPhoneOptionTitle')}</span>
                 <span className="support-modal__option-sub">{site.phones[1].display}</span>
               </div>
             </a>
           </div>
 
           <div className="support-modal__footer">
-            <span>O&apos;RTACHA JAVOB BERISH VAQTI: 5 DAQIQA</span>
+            <span>{t('footerText')}</span>
           </div>
         </div>
       </dialog>

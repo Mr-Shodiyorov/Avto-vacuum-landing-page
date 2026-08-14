@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server';
+
 import ContactForm from '@/components/ContactForm';
 import LocationMap from '@/components/LocationMap';
 import InstagramIcon from '@/components/icons/InstagramIcon';
@@ -8,7 +10,10 @@ import './contact.css';
 
 const [phone1, phone2] = site.phones;
 
-export default function Contact() {
+export default async function Contact() {
+  const t = await getTranslations('contact');
+  const perks = t.raw('perks') as string[];
+
   return (
     <section className="contact" id="aloqa">
       <div className="container">
@@ -22,11 +27,8 @@ export default function Contact() {
           </span>
 
           <div className="contact__panel contact__panel--call">
-            <h2 className="contact__heading">Qo&apos;ng&apos;iroq qiling — hoziroq qabul qilamiz</h2>
-            <p className="contact__lead">
-              Ikkala raqam ham 24 soat ishlaydi. Xizmat narxi va bo&apos;sh joyni telefon orqali
-              ayting.
-            </p>
+            <h2 className="contact__heading">{t('callHeading')}</h2>
+            <p className="contact__lead">{t('callLead')}</p>
 
             <div className="contact__phones">
               <a className="contact__phone contact__phone--accent shimmer-cta" href={phone1.href}>
@@ -44,16 +46,12 @@ export default function Contact() {
                 rel="noopener noreferrer"
               >
                 <InstagramIcon size={19} />
-                Instagram — {site.instagram.handle}
+                {t('instagramLink', { handle: site.instagram.handle })}
               </a>
             </div>
 
             <ul className="contact__perks">
-              {[
-                "Narxni va bo'sh joyni shu zahoti bilib olasiz",
-                'Kelish vaqtini birga kelishib olamiz',
-                'Savolingizga darhol javob beramiz',
-              ].map((perk) => (
+              {perks.map((perk) => (
                 <li key={perk}>
                   <span className="contact__perk-icon" aria-hidden="true">
                     <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
@@ -74,17 +72,13 @@ export default function Contact() {
 
           <div className="contact__divider" aria-hidden="true">
             <span className="contact__divider-line" />
-            <span className="contact__divider-label">YOKI</span>
+            <span className="contact__divider-label">{t('divider')}</span>
             <span className="contact__divider-line" />
           </div>
 
           <div className="contact__panel contact__panel--form">
-            <h2 className="contact__heading">
-              Yozib qoldiring — o&apos;zimiz qo&apos;ng&apos;iroq qilamiz
-            </h2>
-            <p className="contact__lead">
-              Ismingiz, telefon raqamingiz va nima kerakligini yozing — tez orada bog&apos;lanamiz.
-            </p>
+            <h2 className="contact__heading">{t('formHeading')}</h2>
+            <p className="contact__lead">{t('formLead')}</p>
             <ContactForm />
           </div>
         </div>

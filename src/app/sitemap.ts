@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 import ustaPhoto from '@/assets/avto-vakum-usta-qarshi.webp';
+import { localeAlternates } from '@/i18n/alternates';
 import { cardsMatchingKeywords, getCards } from '@/lib/cards';
 import { services } from '@/lib/services';
 import { site } from '@/lib/site';
@@ -35,17 +36,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 1,
       images: homeImages,
+      alternates: { languages: localeAlternates('/') },
     },
     ...services.map((service) => {
       const serviceImages = cardsMatchingKeywords(cards, service.keywords)
         .flatMap((card) => [card.before_image_url, card.after_image_url])
         .filter((url): url is string => Boolean(url));
+      const path = `/xizmatlar/${service.slug}/`;
 
       return {
-        url: `${site.url}/xizmatlar/${service.slug}/`,
+        url: `${site.url}${path}`,
         lastModified: new Date(),
         changeFrequency: 'monthly' as const,
         priority: 0.8,
+        alternates: { languages: localeAlternates(path) },
         ...(serviceImages.length > 0 ? { images: serviceImages } : {}),
       };
     }),

@@ -1,5 +1,7 @@
 'use server';
 
+import { getTranslations } from 'next-intl/server';
+
 import { supabaseRead } from '@/lib/supabase';
 
 export interface CommentFormState {
@@ -26,9 +28,12 @@ function isPlausiblePhone(raw: string): boolean {
  * can add rows, never read or modify existing ones.
  */
 export async function submitComment(
+  locale: string,
   _prevState: CommentFormState,
   formData: FormData,
 ): Promise<CommentFormState> {
+  const t = await getTranslations({ locale, namespace: 'contactForm' });
+
   // Honeypot: real visitors never see or fill this field (off-screen in
   // contact-form.css, aria-hidden, removed from the tab order). A filled one
   // means a bot — report success without inserting anything, so it looks like
@@ -42,16 +47,16 @@ export async function submitComment(
   const message = String(formData.get('message') ?? '').trim();
 
   if (!name || !phone || !message) {
-    return { error: "Barcha maydonlarni to'ldiring" };
+    return { error: t('errorRequired') };
   }
   if (!isPlausiblePhone(phone)) {
-    return { error: 'Telefon raqamni tekshiring, masalan: +998 90 123 45 67' };
+    return { error: t('errorPhone') };
   }
 
   const { error } = await supabaseRead().from('comments').insert({ name, phone, message });
   if (error) {
     console.error('[comments] insert failed:', error);
-    return { error: "Yuborishda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring." };
+    return { error: t('errorServer') };
   }
 
   return { ok: true };

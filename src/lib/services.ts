@@ -75,15 +75,6 @@ const figureCeramic = `
 
 export interface ServiceDef {
   slug: string;
-  /** Short name used everywhere: nav, homepage card, H1, title tag. */
-  title: string;
-  /** One-liner for the homepage scroll showcase card. */
-  cardDescription: string;
-  metaTitle: string;
-  metaDescription: string;
-  h1: string;
-  /** 2-4 short paragraphs of real, specific copy for the dedicated page. */
-  paragraphs: string[];
   /**
    * Lowercase substrings matched against a gallery card's `title` to decide
    * whether that before/after pair belongs on this service's page. There is
@@ -97,22 +88,16 @@ export interface ServiceDef {
   viewBox: string;
 }
 
+/**
+ * Structural data only — locale-independent (slug, matching keywords, icon,
+ * colour). The copy (title, description, meta tags, paragraphs) lives in
+ * `messages/<locale>.json` under `services.items.<slug>`, since it varies per
+ * locale. `Services.tsx` and `xizmatlar/[slug]/page.tsx` combine both.
+ */
+
 export const services: ServiceDef[] = [
   {
     slug: 'avto-vakuum',
-    title: 'Avto vakum',
-    cardDescription:
-      "Salonni to'liq tozalash: gilamlar, o'rindiqlar, bagaj va yetib bo'lmaydigan burchaklar.",
-    metaTitle: 'Avto vakum xizmati Qarshi — Avto Vakum',
-    metaDescription:
-      "Qarshida professional avto vakum xizmati — salon, gilam, o'rindiq va bagajni to'liq tozalaymiz. 24/7 ishlaymiz, hoziroq qo'ng'iroq qiling!",
-    h1: 'Avto vakum — Qarshi',
-    paragraphs: [
-      "Avto vakum — avtomobil salonini to'liq, chuqur tozalash xizmati: gilamlar, o'rindiqlar (mato va charm), panel oralig'i, eshik kissalari, bagaj va qo'l yetmaydigan burchaklar — barchasi kuchli sanoat uskunalari va professional kimyo yordamida tozalanadi.",
-      "Ish quruq va nam tozalashni birlashtiradi: avval changyutgich bilan yirik iflos olib tashlanadi, so'ng maxsus kimyoviy vositalar bilan dog'lar va hidlar yo'qotiladi. O'rtacha bitta avtomobilga ~40 daqiqa ketadi — salon holatiga qarab farq qilishi mumkin.",
-      "Har kuni foydalanadigan haydovchilardan tortib, uzoq yo'l safaridan qaytganlar yoki avtomobilini sotishdan oldin tartibga keltirmoqchi bo'lganlargacha — hammaga mos. Tozalash tugagach salon yangi mashinadek hidlaydi va ko'rinadi.",
-      "Qarshi markazida, svetofor oldidagi chorrahada joylashganmiz va 24 soat, dam olish kunlarisiz ishlaymiz — navbatsiz qabul qilamiz.",
-    ],
     keywords: ['vakum', 'vakuum', 'salon'],
     color: 'var(--color-primary)',
     icon: figureVacuum,
@@ -120,18 +105,6 @@ export const services: ServiceDef[] = [
   },
   {
     slug: 'kuzov-kassa-prav',
-    title: 'Kuzov kassa prav',
-    cardDescription: "Bo'yoqsiz vmyatina to'g'rilash va kuzov geometriyasini tiklash.",
-    metaTitle: 'Kuzov kassa prav Qarshi — Avto Vakum',
-    metaDescription:
-      "Qarshida bo'yoqsiz kuzov kassa prav — vmyatinalarni bo'yoqni buzmasdan to'g'irlaymiz. Tez, sifatli, 24/7 xizmat. Qo'ng'iroq qiling!",
-    h1: 'Kuzov kassa prav — Qarshi',
-    paragraphs: [
-      "Kuzov kassa prav (bo'yoqsiz vmyatina to'g'irlash) — kuzovdagi botiq va urilish izlarini bo'yoqni buzmasdan, orqa tomondan maxsus asboblar bilan asta-sekin tortib yoki bosib tekislash usuli.",
-      "Bo'yoq qatlami saqlanib qolgani uchun avtomobilning zavod bo'yog'i buzilmaydi — bu ham tashqi ko'rinishni, ham avtomobil qiymatini saqlab qoladi, va odatiy bo'yash xizmatiga qaraganda ancha tezroq hamda arzonroq.",
-      "Do'kon eshigidan kelgan kichik botiqlardan tortib, do'l yoki to'qnashuv natijasidagi kattaroq shikastgacha — ko'pchilik holatlarni tuzatamiz. Kichik ishlar bir necha soatda, murakkabroqlari bir kun ichida tugaydi.",
-      "Qarshida 7 yildan ortiq tajribaga ega ustalarimiz bu ishni sinchkovlik bilan bajaradi. Manzilimiz — svetofor oldidagi chorraha, 24/7 ochiqmiz.",
-    ],
     keywords: ['kuzov', 'kassa prav', 'rixtovka', "ta'mirlash", 'vmyatina', 'botiq'],
     color: 'var(--color-accent)',
     icon: figureDent,
@@ -139,18 +112,6 @@ export const services: ServiceDef[] = [
   },
   {
     slug: 'palirovka',
-    title: 'Palirovka',
-    cardDescription: "Tashqi sathni jilolash — mayda chiziqlar va xiralikni yo'qotamiz.",
-    metaTitle: 'Palirovka Qarshi — Avto Vakum',
-    metaDescription:
-      "Qarshida professional palirovka xizmati — mayda chiziqlar va xiralikni yo'qotib, kuzovga asl yaltiroqlikni qaytaramiz. 24/7 ishlaymiz.",
-    h1: 'Palirovka — Qarshi',
-    paragraphs: [
-      "Palirovka — avtomobil kuzovining tashqi sathini bosqichma-bosqich jilolab, mayda chiziqlar (swirl), oksidlanish izlari va xiralikni yo'qotish xizmati. Natijada bo'yoq asl chuqur rangi va yaltiroqligini qaytaradi.",
-      'Ish maxsus polirol pastalar va mashinali buferlar bilan bir necha bosqichda olib boriladi — dag\'al abraziv qatlamdan boshlab, nozik yakuniy jilo bilan tugaydi. Har bir panel alohida, diqqat bilan ishlanadi.',
-      'Vaqt o\'tishi bilan quyosh, avtomoyka cho\'tkalari va kundalik ishlatish kuzovda mayda chiziqlar qoldiradi — palirovka bu izlarni olib tashlab, mashinani "yangidek" ko\'rinishga qaytaradi. Odatda keramik qoplashdan oldin ham bajariladi.',
-      "Ish taxminan 1 kun davom etadi, avtomobil holatiga qarab. Qarshi markazida joylashganmiz, 24/7 qabul qilamiz — qo'ng'iroq qiling va vaqtni birga kelishib olamiz.",
-    ],
     keywords: ['palirovka', 'jilo'],
     color: 'var(--color-primary-deep)',
     icon: figurePolish,
@@ -158,18 +119,6 @@ export const services: ServiceDef[] = [
   },
   {
     slug: 'keramika',
-    title: 'Keramika',
-    cardDescription: 'Keramik qoplama: uzoq muddatli himoya, chuqur yorqinlik va oson yuvish.',
-    metaTitle: 'Keramika qoplama Qarshi — Avto Vakum',
-    metaDescription:
-      "Qarshida keramik qoplash xizmati — bo'yoqqa uzoq muddatli himoya va chuqur yaltiroqlik beramiz. Kir yuvish osonlashadi. 24/7 qabul qilamiz.",
-    h1: 'Keramika qoplama — Qarshi',
-    paragraphs: [
-      "Keramik qoplama — bo'yoq ustiga qo'llaniladigan nano-qatlam bo'lib, kuzovni suv, kir, UV nurlari va kimyoviy ta'sirlardan uzoq muddat himoya qiladi. Qoplama bo'yoqqa mustahkam yopishib, chuqur, oynadek yaltiroqlik beradi.",
-      'Qoplangan kuzovga suv tomchilari yopishmay sirg\'alib tushadi — bu avtomobilni yuvishni sezilarli darajada osonlashtiradi va kirning yopishishini kamaytiradi.',
-      "Eng yaxshi natija uchun keramika odatda palirovkadan keyin qo'llaniladi — sath avval tekislanadi, so'ng qoplama tekis va bir xilda yotadi. Qoplama oylab, ba'zan yillab davom etadigan himoya beradi.",
-      "Qarshida, svetofor oldidagi markazimizda, professional kimyo va uskunalar bilan ishlaymiz. 24/7 ochiqmiz — narx va vaqtni telefon orqali kelishib olamiz.",
-    ],
     keywords: ['keramika', 'qoplama'],
     color: 'var(--color-accent-hover)',
     icon: figureCeramic,

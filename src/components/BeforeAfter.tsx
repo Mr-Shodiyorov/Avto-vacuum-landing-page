@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server';
+
 import Lightbox from "@/components/Lightbox";
 import WorkImage from "@/components/WorkImage";
 import { cardImageAlt, getCards, type BeforeAfterCard } from "@/lib/cards";
@@ -27,6 +29,7 @@ function imageObjectsFor(cards: BeforeAfterCard[]) {
  * `src/app/page.tsx`), so visitors get static HTML from the CDN.
  */
 export default async function BeforeAfter() {
+  const t = await getTranslations('beforeAfter');
   const cards = await getCards();
   const imageObjects = imageObjectsFor(cards);
 
@@ -55,8 +58,8 @@ export default async function BeforeAfter() {
 
       <div className="container">
         <div className="works__heading-group" data-reveal>
-          <span className="eyebrow">ISHLARIMIZ</span>
-          <h2 className="section-heading">Oldin va keyin</h2>
+          <span className="eyebrow">{t('eyebrow')}</span>
+          <h2 className="section-heading">{t('heading')}</h2>
         </div>
 
         {/* An empty grid (no rows yet, or a database hiccup) still leaves the
@@ -66,7 +69,7 @@ export default async function BeforeAfter() {
           // A scrollable region has to be reachable and operable by keyboard,
           // which needs a tab stop and a name to announce when it gets one.
           role="region"
-          aria-label="Ishlarimiz galereyasi"
+          aria-label={t('galleryAriaLabel')}
           tabIndex={0}
         >
           {cards.map((card, i) => (

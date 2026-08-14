@@ -1,0 +1,200 @@
+{
+  "seo": {
+    "title": "Avto Vakum Qarshi — 24/7 Car Cleaning & Detailing",
+    "description": "Auto detailing in Qarshi — interior cleaning, polishing, and ceramic coating. Open 24/7, no appointment needed — call now!"
+  },
+  "nav": {
+    "works": "Our Work",
+    "services": "Services",
+    "whyUs": "Why Us",
+    "contact": "Contact",
+    "location": "Location"
+  },
+  "header": {
+    "brandAriaLabel": "{name} — homepage",
+    "navAriaLabel": "Main navigation",
+    "telegramAriaLabel": "Telegram — {handle}",
+    "instagramAriaLabel": "Instagram — {handle}",
+    "callCta": "Call Us"
+  },
+  "mobileMenu": {
+    "menuAriaLabel": "Menu",
+    "navAriaLabel": "Main navigation",
+    "sectionsAriaLabel": "Sections",
+    "closeAriaLabel": "Close menu",
+    "statusBadge": "Open 24/7",
+    "statusSub": "No days off",
+    "locationTitle": "Our Location",
+    "telegram": "Telegram",
+    "instagram": "Instagram",
+    "callCta": "Call Us"
+  },
+  "hero": {
+    "badge": "OPEN 24/7 · WORKING NOW",
+    "heading": "Restore your car's look with Avto Vakum",
+    "lead": "Auto detailing, paintless dent repair, polishing, and ceramic coating. In central Qarshi, day and night. No appointment needed — just call and come by.",
+    "portraitAlt": "{masterTitle} — car cleaning and detailing specialist at the Avto Vakum Qarshi workshop",
+    "stats": {
+      "cleaned": { "label": "cars cleaned" },
+      "experience": { "label": "years of expert craftsmen", "unit": "yrs" },
+      "avgTime": { "label": "average cleaning time", "unit": "min" },
+      "alwaysOpen": { "label": "always open" }
+    }
+  },
+  "beforeAfter": {
+    "eyebrow": "OUR WORK",
+    "heading": "Before & After",
+    "galleryAriaLabel": "Our work gallery"
+  },
+  "services": {
+    "eyebrow": "SERVICES",
+    "heading": "Four Core Services",
+    "note": "We confirm exact pricing by phone — it depends on your car's make and condition.",
+    "moreLink": "Learn more",
+    "items": {
+      "avto-vakuum": {
+        "title": "Auto Detailing",
+        "cardDescription": "Full interior cleaning: carpets, seats, trunk, and hard-to-reach corners.",
+        "metaTitle": "Auto Detailing in Qarshi — Avto Vakum",
+        "metaDescription": "Professional auto detailing in Qarshi — full cleaning of interior, carpets, seats, and trunk. Open 24/7 — call now!",
+        "h1": "Auto Detailing — Qarshi",
+        "paragraphs": [
+          "Auto detailing is a full, deep interior cleaning service: carpets, seats (fabric and leather), panel gaps, door pockets, the trunk, and hard-to-reach corners — all cleaned with powerful industrial equipment and professional chemistry.",
+          "The process combines dry and wet cleaning: loose dirt is vacuumed out first, then special chemical solutions remove stains and odors. It takes about 40 minutes per car on average, depending on the interior's condition.",
+          "It suits everyone — from daily drivers to those returning from a long trip or getting their car ready for sale. Once it's done, the interior looks and smells brand new.",
+          "We're located in central Qarshi, at the intersection by the traffic light, open 24 hours a day with no days off — no appointment needed."
+        ]
+      },
+      "kuzov-kassa-prav": {
+        "title": "Paintless Dent Repair",
+        "cardDescription": "Paintless dent removal and body geometry restoration.",
+        "metaTitle": "Paintless Dent Repair in Qarshi — Avto Vakum",
+        "metaDescription": "Paintless dent repair in Qarshi — we fix dents without damaging the factory paint. Fast, high-quality, available 24/7. Call now!",
+        "h1": "Paintless Dent Repair — Qarshi",
+        "paragraphs": [
+          "Paintless dent repair (PDR) is a method of removing dents and impact marks from the body without damaging the paint — special tools are used from behind the panel to gently push or pull the dent flat.",
+          "Since the paint layer stays intact, the car's factory finish is never disturbed — this preserves both its appearance and resale value, and the whole process is much faster and cheaper than conventional repainting.",
+          "From small door-ding dents to larger damage from hail or a collision — we handle most cases. Small jobs take a few hours; more complex ones are done within a day.",
+          "Our craftsmen, with more than 7 years of experience, handle this work in Qarshi with great care. We're located at the intersection by the traffic light and open 24/7."
+        ]
+      },
+      "palirovka": {
+        "title": "Polishing",
+        "cardDescription": "Exterior polishing — we remove fine scratches and dullness.",
+        "metaTitle": "Car Polishing in Qarshi — Avto Vakum",
+        "metaDescription": "Professional car polishing in Qarshi — we remove fine scratches and dullness, restoring the body's original shine. Open 24/7.",
+        "h1": "Polishing — Qarshi",
+        "paragraphs": [
+          "Polishing is a step-by-step treatment of the car body's surface that removes fine swirl marks, oxidation, and dullness. The result is paint that regains its original deep color and shine.",
+          "The work is done in several stages using special polishing compounds and machine buffers — starting with a coarser abrasive and finishing with a fine final polish. Each panel is treated individually and carefully.",
+          "Over time, sun exposure, car-wash brushes, and everyday use leave fine scratches on the body — polishing removes these marks and brings back that \"like-new\" look. It's also typically done before applying a ceramic coating.",
+          "The job takes about a day, depending on the car's condition. We're located in central Qarshi and open 24/7 — call us and we'll arrange a time that works for you."
+        ]
+      },
+      "keramika": {
+        "title": "Ceramic Coating",
+        "cardDescription": "Ceramic coating: long-lasting protection, deep gloss, and easier washing.",
+        "metaTitle": "Ceramic Coating in Qarshi — Avto Vakum",
+        "metaDescription": "Ceramic coating in Qarshi — we give your paint long-lasting protection and a deep shine. Washing becomes easier. Open 24/7.",
+        "h1": "Ceramic Coating — Qarshi",
+        "paragraphs": [
+          "Ceramic coating is a nano-layer applied over the paint that protects the body from water, dirt, UV rays, and chemical exposure for a long time. It bonds tightly with the paint, giving it a deep, glass-like shine.",
+          "On a coated body, water droplets simply bead up and roll off instead of sticking — this makes washing the car much easier and reduces how much dirt clings to it.",
+          "For the best result, ceramic coating is usually applied after polishing — the surface is leveled first, so the coating goes on smooth and even. The protection lasts for months, sometimes even years.",
+          "At our center in Qarshi, by the traffic light, we work with professional-grade chemicals and equipment. Open 24/7 — we'll confirm price and timing by phone."
+        ]
+      }
+    }
+  },
+  "servicePage": {
+    "breadcrumbAriaLabel": "Breadcrumb",
+    "breadcrumbHome": "Home",
+    "breadcrumbServices": "Services",
+    "eyebrow": "SERVICE",
+    "galleryHeading": "From Our Work",
+    "relatedHeading": "Our Other Services",
+    "ctaLabel": "Call Us"
+  },
+  "whyUs": {
+    "heading": "Why Choose Us",
+    "reasons": [
+      { "title": "Open Day and Night", "text": "Whether it's 3 AM or a holiday — we're working. No appointment needed." },
+      { "title": "Experienced Craftsmen", "text": "Over 7 years of hands-on experience, professional chemicals and equipment. We stand behind every job." },
+      { "title": "Trusted in Qarshi", "text": "Local customers and steady word-of-mouth. We showcase our work on Instagram every day." }
+    ]
+  },
+  "contact": {
+    "callHeading": "Call Us — We're Ready Now",
+    "callLead": "Both numbers are open around the clock. Ask about pricing and availability by phone.",
+    "instagramLink": "Instagram — {handle}",
+    "perks": [
+      "Get pricing and availability instantly",
+      "We'll arrange a time that works for you",
+      "We'll answer your questions right away"
+    ],
+    "divider": "OR",
+    "formHeading": "Leave a Message — We'll Call You Back",
+    "formLead": "Leave your name, phone number, and what you need — we'll get back to you soon."
+  },
+  "contactForm": {
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "phoneLabel": "Phone Number",
+    "phonePlaceholder": "+998 90 123 45 67",
+    "messageLabel": "Message",
+    "messagePlaceholder": "What's this about?",
+    "submitPending": "Sending…",
+    "submitIdle": "Send",
+    "successMessage": "Thank you! We'll be in touch soon.",
+    "errorRequired": "Please fill in all fields",
+    "errorPhone": "Check your phone number, e.g.: +998 90 123 45 67",
+    "errorServer": "Something went wrong while sending. Please try again shortly."
+  },
+  "footer": {
+    "description": "Auto detailing, paintless dent repair, polishing, and ceramic coating. Qarshi, 24/7.",
+    "phoneLabel": "PHONE",
+    "socialLabel": "SOCIAL",
+    "instagramText": "Instagram · {handle}",
+    "telegramText": "Telegram · {handle}",
+    "hours": "Open 24 hours, every day",
+    "copyMobile": "Open 24 hours daily · © {year} Avto Vakum, Qarshi",
+    "copyBottomLeft": "© {year} Avto Vakum · Qarshi",
+    "copyBottomRight": "All rights reserved"
+  },
+  "phoneModal": {
+    "dialogAriaLabel": "Choose a phone number",
+    "title": "Call Us",
+    "subtitle": "Choose the number that's easiest for you",
+    "closeAriaLabel": "Close",
+    "primaryTag": "Primary number · 24/7",
+    "secondaryTag": "Secondary line",
+    "primarySubtext": "Quick response, no waiting",
+    "secondarySubtext": "Always available",
+    "footerBadge": "We're open 24/7 — no days off"
+  },
+  "supportModal": {
+    "triggerAriaLabel": "Contact & Support",
+    "dialogAriaLabel": "Avto Vakum Support Center",
+    "title": "{name} Support",
+    "status": "Online — fast response",
+    "closeAriaLabel": "Close",
+    "message": "Hi! How can we help? If you have any questions, message us or give us a call.",
+    "telegramOptionTitle": "Message on Telegram",
+    "telegramOptionSub": "Fast reply — within 5 minutes",
+    "primaryPhoneOptionTitle": "Call Us",
+    "secondaryPhoneOptionTitle": "Secondary phone line",
+    "footerText": "AVERAGE RESPONSE TIME: 5 MINUTES"
+  },
+  "marquee": [
+    "Auto Detailing",
+    "Ceramic Coating",
+    "Polishing",
+    "Dent Repair",
+    "Interior Cleaning",
+    "24/7 Service"
+  ],
+  "common": {
+    "skipLink": "Skip to main content",
+    "languageSwitcherLabel": "Choose language"
+  }
+}

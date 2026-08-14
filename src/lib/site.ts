@@ -1,10 +1,40 @@
+/**
+ * Base URL used for `metadataBase`, canonical/hreflang tags, JSON-LD, the
+ * sitemap, and robots.txt. Only read server-side (see the `site.url`
+ * consumers — all in generateMetadata/JSON-LD/sitemap.ts/robots.ts).
+ *
+ * - `NEXT_PUBLIC_SITE_URL` set (any environment) → used as-is. Set this in
+ *   Vercel's environment variables to the real production domain.
+ * - Unset in development → `http://localhost:<PORT>`, so canonical/hreflang
+ *   self-reference the dev server instead of production — otherwise a local
+ *   Lighthouse run flags a cross-origin canonical mismatch (the canonical
+ *   tag pointing at avtovakum.uz while the page under test is localhost).
+ * - Unset in production → falls back to the real domain rather than ever
+ *   shipping a localhost URL in metadata, but warns loudly so a missing env
+ *   var doesn't go unnoticed.
+ */
+function resolveSiteUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (envUrl) return envUrl.replace(/\/$/, '');
+
+  if (process.env.NODE_ENV !== 'production') {
+    return `http://localhost:${process.env.PORT ?? 3000}`;
+  }
+
+  console.warn(
+    '[site] NEXT_PUBLIC_SITE_URL is not set in production — falling back to ' +
+      'https://avtovakum.uz. Set it in your deployment environment.',
+  );
+  return 'https://avtovakum.uz';
+}
+
 export const site = {
   name: 'Avto Vakum',
   nameFull: 'Avto Vakum Servis',
   city: 'Qarshi',
   description:
     "Avto vakum Qarshida — 24/7 avtomobil tozalash, palirovka va keramika. Navbatsiz qabul qilamiz, hoziroq qo'ng'iroq qiling!",
-  url: 'https://avtovakum.uz',
+  url: resolveSiteUrl(),
   phones: [
     { display: '+998 (94) 952-07-07', href: 'tel:+998949520707' },
     { display: '+998 (90) 615-67-76', href: 'tel:+998906156776' },
@@ -66,11 +96,13 @@ export const master = {
 // Leading `/` so these still resolve correctly from a route other than the
 // homepage (e.g. a `/xizmatlar/[slug]` page) — a bare `#hash` only scrolls
 // the current page and finds nothing there, since every section these point
-// to only exists on `/`.
+// to only exists on `/`. Labels live in messages/<locale>.json under
+// `nav.<key>`; `href` goes through the locale-aware `Link` from
+// `@/i18n/navigation`, which prefixes it for the current locale.
 export const navLinks = [
-  { label: 'Ishlarimiz', href: '/#ishlarimiz' },
-  { label: 'Xizmatlar', href: '/#xizmatlar' },
-  { label: 'Nega biz', href: '/#nega-biz' },
-  { label: 'Aloqa', href: '/#aloqa' },
-  { label: 'Manzil', href: '/#manzil' },
+  { key: 'works', href: '/#ishlarimiz' },
+  { key: 'services', href: '/#xizmatlar' },
+  { key: 'whyUs', href: '/#nega-biz' },
+  { key: 'contact', href: '/#aloqa' },
+  { key: 'location', href: '/#manzil' },
 ] as const;

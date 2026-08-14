@@ -1,26 +1,16 @@
+import { getTranslations } from 'next-intl/server';
+
 import './why-us.css';
 
-const reasons = [
-  {
-    title: 'Kechayu kunduz ochiq',
-    text: "Soat 3:00 bo'ladimi yoki bayram kunimi — biz ishlaymiz. Oldindan yozilish shart emas.",
-  },
-  {
-    title: 'Tajribali ustalar',
-    text: '7 yildan ortiq amaliyot, professional kimyo va uskunalar. Har bir ish uchun javob beramiz.',
-  },
-  {
-    title: 'Qarshida ishonchli',
-    text: "Mahalliy mijozlar va doimiy tavsiyalar. Ishimizni Instagram'da har kuni ko'rsatamiz.",
-  },
-];
+export default async function WhyUs() {
+  const t = await getTranslations('whyUs');
+  const reasons = t.raw('reasons') as { title: string; text: string }[];
 
-export default function WhyUs() {
   return (
     <section className="why-us" id="nega-biz">
       <div className="container">
         <h2 className="why-us__heading" data-reveal>
-          Nega aynan biz
+          {t('heading')}
         </h2>
         <div className="why-us__grid">
           {reasons.map((reason, i) => (

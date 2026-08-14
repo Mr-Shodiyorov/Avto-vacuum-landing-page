@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import PhoneIcon from '@/components/icons/PhoneIcon';
 import { openPhoneModal } from '@/components/PhoneModal';
 import { site } from '@/lib/site';
@@ -13,11 +15,14 @@ const primaryPhone = site.phones[0];
  * needs to dispatch its open event, which is why it can stay this small
  * instead of pulling the whole page into a client component.
  */
-export default function ServiceCallCta({ label = "Qo'ng'iroq qilish" }: { label?: string }) {
+export default function ServiceCallCta({ label }: { label?: string }) {
+  const t = useTranslations('servicePage');
+  const resolvedLabel = label ?? t('ctaLabel');
+
   return (
     <button type="button" className="service-page__cta-call shimmer-cta" onClick={openPhoneModal}>
       <PhoneIcon size={20} />
-      {label} — {primaryPhone.display}
+      {resolvedLabel} — {primaryPhone.display}
     </button>
   );
 }

@@ -1,10 +1,14 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import Logo from '@/components/Logo';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import TelegramIcon from '@/components/icons/TelegramIcon';
+import LanguageDropdown from '@/components/LanguageDropdown';
 import MobileMenu from '@/components/MobileMenu';
 import { openPhoneModal } from '@/components/PhoneModal';
+import { Link } from '@/i18n/navigation';
 import { navLinks, site } from '@/lib/site';
 
 import './header.css';
@@ -12,26 +16,30 @@ import './header.css';
 const primaryPhone = site.phones[0];
 
 export default function Header() {
+  const t = useTranslations('header');
+  const tNav = useTranslations('nav');
+
   return (
     <header className="site-header">
       <div className="container site-header__inner">
-        <a href="/#top" className="site-header__brand" aria-label={`${site.name} — bosh sahifa`}>
+        <Link href="/#top" className="site-header__brand" aria-label={t('brandAriaLabel', { name: site.name })}>
           <Logo size={46} />
           <span className="site-header__brand-text">
             <span className="site-header__name">AVTO VAKUM</span>
             <span className="site-header__tag">QARSHI · 24/7</span>
           </span>
-        </a>
+        </Link>
 
-        <nav className="site-header__nav" aria-label="Asosiy navigatsiya">
+        <nav className="site-header__nav" aria-label={t('navAriaLabel')}>
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href}>
-              {link.label}
-            </a>
+            <Link key={link.href} href={link.href}>
+              {tNav(link.key)}
+            </Link>
           ))}
         </nav>
 
         <div className="site-header__actions">
+          <LanguageDropdown />
           <button
             type="button"
             className="site-header__phone"
@@ -44,7 +52,7 @@ export default function Header() {
             href={site.telegram.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`Telegram — ${site.telegram.handle}`}
+            aria-label={t('telegramAriaLabel', { handle: site.telegram.handle })}
           >
             <TelegramIcon size={20} color="#229ED9" />
           </a>
@@ -53,7 +61,7 @@ export default function Header() {
             href={site.instagram.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`Instagram — ${site.instagram.handle}`}
+            aria-label={t('instagramAriaLabel', { handle: site.instagram.handle })}
           >
             <InstagramIcon size={20} color="#0B4A8F" />
           </a>
@@ -62,7 +70,7 @@ export default function Header() {
             className="site-header__cta"
             onClick={openPhoneModal}
           >
-            Qo&apos;ng&apos;iroq qilish
+            {t('callCta')}
           </button>
         </div>
 

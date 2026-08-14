@@ -1,15 +1,6 @@
-import './marquee.css';
+import { getTranslations } from 'next-intl/server';
 
-// Decorative keyword strip. Marked aria-hidden — every term here is already
-// announced in the Services section.
-const keywords = [
-  'Avto vakuum',
-  'Keramika',
-  'Palirovka',
-  'Kuzov kassa prav',
-  'Salon tozalash',
-  '24/7 xizmat',
-];
+import './marquee.css';
 
 /**
  * How many times the keyword list is repeated across the track.
@@ -22,7 +13,12 @@ const keywords = [
  */
 const COPIES = 4;
 
-export default function Marquee() {
+export default async function Marquee() {
+  const t = await getTranslations();
+  // Decorative keyword strip. Marked aria-hidden — every term here is already
+  // announced in the Services section.
+  const keywords = t.raw('marquee') as string[];
+
   return (
     <div className="marquee" aria-hidden="true">
       <div

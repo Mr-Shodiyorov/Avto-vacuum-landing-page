@@ -1,3 +1,5 @@
+import { setRequestLocale } from 'next-intl/server';
+
 import BeforeAfter from '@/components/BeforeAfter';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
@@ -14,7 +16,16 @@ import WhyUs from '@/components/WhyUs';
  */
 export const revalidate = 3600;
 
-export default function Home() {
+interface HomeProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function Home({ params }: HomeProps) {
+  const { locale } = await params;
+  // Re-asserted here (root layout already calls this) — next-intl needs it in
+  // every page segment that reads translations for the route to stay static.
+  setRequestLocale(locale);
+
   return (
     <>
       <Header />

@@ -1,0 +1,106 @@
+.lang-dropdown {
+  position: relative;
+}
+
+.lang-dropdown__trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: 700 12px/1 var(--font-heading);
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.lang-dropdown__trigger:hover,
+.lang-dropdown__trigger[aria-expanded='true'] {
+  border-color: var(--color-primary);
+}
+
+.lang-dropdown__chevron {
+  color: var(--color-text-faint);
+  transition: transform 0.18s ease;
+}
+
+.lang-dropdown__trigger[aria-expanded='true'] .lang-dropdown__chevron {
+  transform: rotate(180deg);
+  color: var(--color-primary);
+}
+
+.lang-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  min-width: 168px;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  gap: 2px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow:
+    0 12px 28px rgba(12, 20, 32, 0.14),
+    0 2px 8px rgba(12, 20, 32, 0.08);
+  animation: langDropdownIn 0.15s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+
+@keyframes langDropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.lang-dropdown__item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: background-color 0.15s ease;
+}
+
+.lang-dropdown__item:hover {
+  background: var(--color-badge-bg);
+}
+
+.lang-dropdown__item--active {
+  color: var(--color-primary);
+}
+
+.lang-dropdown__item-code {
+  font: 700 12px/1 var(--font-heading);
+  letter-spacing: 0.03em;
+  min-width: 30px;
+}
+
+.lang-dropdown__item-name {
+  font: 500 13px/1 var(--font-body);
+  color: var(--color-text-muted);
+}
+
+.lang-dropdown__item--active .lang-dropdown__item-name {
+  color: var(--color-primary);
+}
+
+.lang-dropdown__check {
+  margin-left: auto;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}

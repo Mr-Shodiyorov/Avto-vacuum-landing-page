@@ -1,8 +1,8 @@
 "use client"
 
-import Link from "next/link"
 import React from "react"
 import { useRef } from "react"
+import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 import { useMotionValueEvent, useScroll } from "motion/react"
 
@@ -30,12 +30,15 @@ interface Props extends React.ComponentProps<"div"> {
   items: ItemContent[]
   titleClass?: string
   descriptionClass?: string
+  /** Label for the "read more" link under each item, e.g. "Batafsil". */
+  moreLabel?: string
 }
 
 const ScrollRevealContentA = ({
   items,
   titleClass = defaultTitleClass,
   descriptionClass = defaultDescriptionClass,
+  moreLabel = "Batafsil",
   className,
   ...props
 }: Props) => {
@@ -90,6 +93,7 @@ const ScrollRevealContentA = ({
                     viewBox={item.viewBox}
                     color={item.color}
                     href={item.href}
+                    moreLabel={moreLabel}
                     thresholdStart={i / count}
                     thresholdEnd={(i + 1) / count}
                     scrollProgress={scrollProgress}
@@ -162,6 +166,7 @@ const PointItem = ({
   viewBox,
   color,
   href,
+  moreLabel,
   thresholdStart,
   thresholdEnd,
   scrollProgress,
@@ -174,6 +179,7 @@ const PointItem = ({
   viewBox?: string
   color: string
   href?: string
+  moreLabel: string
   thresholdStart: number
   thresholdEnd: number
   scrollProgress: number
@@ -218,7 +224,7 @@ const PointItem = ({
               <p className={cn(defaultDescriptionClass, isActive ? "opacity-100" : "opacity-50")}>{description}</p>
               {href && (
                 <Link href={href} className="services__more-link">
-                  Batafsil
+                  {moreLabel}
                   <span aria-hidden="true">&rarr;</span>
                 </Link>
               )}
@@ -244,7 +250,7 @@ const PointItem = ({
           <p className="services__mobile-card-desc">{description}</p>
           {href && (
             <Link href={href} className="services__more-link">
-              Batafsil
+              {moreLabel}
               <span aria-hidden="true">&rarr;</span>
             </Link>
           )}

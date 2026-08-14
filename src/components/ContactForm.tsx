@@ -2,16 +2,18 @@
 
 import { useActionState, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { submitComment, type CommentFormState } from '@/app/contact-actions';
 
 import './contact-form.css';
 
 function SubmitButton() {
+  const t = useTranslations('contactForm');
   const { pending } = useFormStatus();
   return (
     <button className="contact-form__submit shimmer-cta" type="submit" disabled={pending}>
-      {pending ? 'Yuborilmoqda…' : 'Yuborish'}
+      {pending ? t('submitPending') : t('submitIdle')}
     </button>
   );
 }
@@ -22,11 +24,13 @@ function SubmitButton() {
  * the call panel.
  */
 export default function ContactForm() {
+  const t = useTranslations('contactForm');
+  const locale = useLocale();
   const formRef = useRef<HTMLFormElement>(null);
 
   const [state, formAction] = useActionState<CommentFormState, FormData>(
     async (prevState, formData) => {
-      const result = await submitComment(prevState, formData);
+      const result = await submitComment(locale, prevState, formData);
       // Clears the form only on success — an error must never wipe out what
       // the visitor already typed.
       if (result.ok) formRef.current?.reset();
@@ -46,35 +50,35 @@ export default function ContactForm() {
       </label>
 
       <label className="contact-form__field">
-        <span className="contact-form__label">Ism</span>
+        <span className="contact-form__label">{t('nameLabel')}</span>
         <input
           className="contact-form__input"
           type="text"
           name="name"
-          placeholder="Ismingiz"
+          placeholder={t('namePlaceholder')}
           autoComplete="name"
           required
         />
       </label>
 
       <label className="contact-form__field">
-        <span className="contact-form__label">Telefon raqam</span>
+        <span className="contact-form__label">{t('phoneLabel')}</span>
         <input
           className="contact-form__input"
           type="tel"
           name="phone"
-          placeholder="+998 90 123 45 67"
+          placeholder={t('phonePlaceholder')}
           autoComplete="tel"
           required
         />
       </label>
 
       <label className="contact-form__field">
-        <span className="contact-form__label">Komment</span>
+        <span className="contact-form__label">{t('messageLabel')}</span>
         <textarea
           className="contact-form__input contact-form__textarea"
           name="message"
-          placeholder="Nima haqida?"
+          placeholder={t('messagePlaceholder')}
           rows={4}
           required
         />
@@ -87,7 +91,7 @@ export default function ContactForm() {
       )}
       {state.ok && (
         <p className="contact-form__success" role="status" aria-live="polite">
-          Rahmat! Tez orada bog&apos;lanamiz.
+          {t('successMessage')}
         </p>
       )}
 

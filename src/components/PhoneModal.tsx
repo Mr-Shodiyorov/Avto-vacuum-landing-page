@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 import CloseIcon from '@/components/icons/CloseIcon';
 import PhoneIcon from '@/components/icons/PhoneIcon';
@@ -19,6 +20,7 @@ export function openPhoneModal() {
 }
 
 export default function PhoneModal() {
+  const t = useTranslations('phoneModal');
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
 
@@ -44,7 +46,7 @@ export default function PhoneModal() {
     <dialog
       ref={dialogRef}
       className="phone-modal"
-      aria-label="Telefon raqamini tanlang"
+      aria-label={t('dialogAriaLabel')}
       onClose={() => setOpen(false)}
       onClick={(e) => {
         if (e.target === dialogRef.current) closeModal();
@@ -53,13 +55,13 @@ export default function PhoneModal() {
       <div className="phone-modal__box">
         <div className="phone-modal__header">
           <div>
-            <h3 className="phone-modal__title">Qo&apos;ng&apos;iroq qilish</h3>
-            <p className="phone-modal__subtitle">Bog&apos;lanish uchun qulay raqamni tanlang</p>
+            <h3 className="phone-modal__title">{t('title')}</h3>
+            <p className="phone-modal__subtitle">{t('subtitle')}</p>
           </div>
           <button
             type="button"
             className="phone-modal__close"
-            aria-label="Yopish"
+            aria-label={t('closeAriaLabel')}
             onClick={closeModal}
           >
             <CloseIcon size={16} />
@@ -81,11 +83,11 @@ export default function PhoneModal() {
                 </div>
                 <div className="phone-modal__details">
                   <span className="phone-modal__tag">
-                    {isPrimary ? 'Asosiy raqam · 24/7' : 'Qo\'shimcha liniya'}
+                    {isPrimary ? t('primaryTag') : t('secondaryTag')}
                   </span>
                   <span className="phone-modal__number">{phone.display}</span>
                   <span className="phone-modal__subtext">
-                    {isPrimary ? 'Navbatsiz tezkor javob' : 'Doimiy aloqa'}
+                    {isPrimary ? t('primarySubtext') : t('secondarySubtext')}
                   </span>
                 </div>
                 <div className="phone-modal__arrow">
@@ -109,7 +111,7 @@ export default function PhoneModal() {
 
         <div className="phone-modal__footer-badge">
           <span className="phone-modal__status-dot" />
-          <span>24/7 xizmatdamiz — dam olish kunlarisiz</span>
+          <span>{t('footerBadge')}</span>
         </div>
       </div>
     </dialog>

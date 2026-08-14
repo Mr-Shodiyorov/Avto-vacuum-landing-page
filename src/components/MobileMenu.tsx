@@ -1,21 +1,24 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 import CloseIcon from '@/components/icons/CloseIcon';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import MenuIcon from '@/components/icons/MenuIcon';
 import PhoneIcon from '@/components/icons/PhoneIcon';
 import TelegramIcon from '@/components/icons/TelegramIcon';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import Logo from '@/components/Logo';
 import { openPhoneModal } from '@/components/PhoneModal';
+import { Link } from '@/i18n/navigation';
 import { navLinks, site } from '@/lib/site';
 
 import './mobile-menu.css';
 
-const primaryPhone = site.phones[0];
-
 export default function MobileMenu() {
+  const t = useTranslations('mobileMenu');
+  const tNav = useTranslations('nav');
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
@@ -30,7 +33,7 @@ export default function MobileMenu() {
         ref={triggerRef}
         type="button"
         className="mobile-menu-trigger"
-        aria-label="Menyu"
+        aria-label={t('menuAriaLabel')}
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={() => {
@@ -44,7 +47,7 @@ export default function MobileMenu() {
       <dialog
         className="mobile-menu"
         ref={dialogRef}
-        aria-label="Asosiy navigatsiya"
+        aria-label={t('navAriaLabel')}
         onClose={() => setOpen(false)}
         onClick={(event) => {
           if (event.target === dialogRef.current) closeMenu();
@@ -62,17 +65,19 @@ export default function MobileMenu() {
             <button
               type="button"
               className="mobile-menu__close"
-              aria-label="Menyuni yopish"
+              aria-label={t('closeAriaLabel')}
               onClick={closeMenu}
             >
               <CloseIcon size={18} />
             </button>
           </div>
 
-          <nav className="mobile-menu__nav" aria-label="Bo'limlar">
+          <LanguageSwitcher className="mobile-menu__lang-switch" />
+
+          <nav className="mobile-menu__nav" aria-label={t('sectionsAriaLabel')}>
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href} onClick={closeMenu}>
-                <span>{link.label}</span>
+              <Link key={link.href} href={link.href} onClick={closeMenu}>
+                <span>{tNav(link.key)}</span>
                 <span className="mobile-menu__arrow" aria-hidden="true">
                   <svg
                     width="16"
@@ -87,7 +92,7 @@ export default function MobileMenu() {
                     <path d="m9 18 6-6-6-6" />
                   </svg>
                 </span>
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -95,12 +100,12 @@ export default function MobileMenu() {
             <div className="mobile-menu__info-row">
               <div className="mobile-menu__status-badge">
                 <span className="mobile-menu__status-dot" />
-                <span>24/7 Ochiq</span>
+                <span>{t('statusBadge')}</span>
               </div>
-              <span className="mobile-menu__info-sub">Dam olish kunlarisiz</span>
+              <span className="mobile-menu__info-sub">{t('statusSub')}</span>
             </div>
 
-            <a href="/#manzil" className="mobile-menu__location-box" onClick={closeMenu}>
+            <Link href="/#manzil" className="mobile-menu__location-box" onClick={closeMenu}>
               <div className="mobile-menu__location-icon">
                 <svg
                   width="18"
@@ -117,10 +122,10 @@ export default function MobileMenu() {
                 </svg>
               </div>
               <div className="mobile-menu__location-text">
-                <span className="mobile-menu__location-title">Bizning manzil</span>
+                <span className="mobile-menu__location-title">{t('locationTitle')}</span>
                 <span className="mobile-menu__location-address">{site.address}</span>
               </div>
-            </a>
+            </Link>
           </div>
 
           <div className="mobile-menu__actions">
@@ -132,7 +137,7 @@ export default function MobileMenu() {
               onClick={closeMenu}
             >
               <TelegramIcon size={18} />
-              Telegram
+              {t('telegram')}
             </a>
             <a
               className="mobile-menu__pill mobile-menu__pill--instagram"
@@ -142,7 +147,7 @@ export default function MobileMenu() {
               onClick={closeMenu}
             >
               <InstagramIcon size={18} color="#0B4A8F" />
-              Instagram
+              {t('instagram')}
             </a>
           </div>
 
@@ -155,7 +160,7 @@ export default function MobileMenu() {
             }}
           >
             <PhoneIcon size={19} />
-            Qo&apos;ng&apos;iroq qilish
+            {t('callCta')}
           </button>
         </div>
       </dialog>
