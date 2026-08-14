@@ -11,6 +11,7 @@
  */
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 const REVEALED = 'is-revealed';
 const SETTLED = 'is-settled';
@@ -44,6 +45,8 @@ function runCount(el: HTMLElement, target: number, separated: boolean) {
 }
 
 export default function Motion() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const observers: IntersectionObserver[] = [];
@@ -138,7 +141,7 @@ export default function Motion() {
       timeouts.forEach((id) => window.clearTimeout(id));
       removeScrollListener?.();
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }
