@@ -148,7 +148,7 @@ export default function MobileMenu() {
 
           <button
             type="button"
-            className="mobile-menu__cta"
+            className="mobile-menu__cta mb-5"
             onClick={() => {
               closeMenu();
               openPhoneModal();

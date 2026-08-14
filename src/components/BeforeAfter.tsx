@@ -1,8 +1,8 @@
-import Lightbox from '@/components/Lightbox';
-import WorkImage from '@/components/WorkImage';
-import { getCards } from '@/lib/cards';
+import Lightbox from "@/components/Lightbox";
+import WorkImage from "@/components/WorkImage";
+import { getCards } from "@/lib/cards";
 
-import './before-after.css';
+import "./before-after.css";
 
 /**
  * Reads its cards from Supabase (table `before_after_cards`, managed at /admin).
@@ -38,7 +38,9 @@ export default async function BeforeAfter() {
               className="work-card"
               key={card.id}
               data-reveal
-              style={{ '--reveal-delay': `${i * 120}ms` } as React.CSSProperties}
+              style={
+                { "--reveal-delay": `${i * 120}ms` } as React.CSSProperties
+              }
             >
               <div className="work-card__images">
                 <WorkImage
