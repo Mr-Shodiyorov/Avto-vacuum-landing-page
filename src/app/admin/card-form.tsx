@@ -157,9 +157,9 @@ export default function CardForm({
    * minted by an admin-only Server Action — see `createUploadTicket`. Returns
    * the public URL to store on the row.
    */
-  async function upload(file: File): Promise<string> {
+  async function upload(file: File, titleHint: string): Promise<string> {
     const extension = file.name.split('.').pop() || 'jpg';
-    const ticket = await createUploadTicket(extension);
+    const ticket = await createUploadTicket(extension, titleHint);
 
     const storage = supabaseBrowser().storage.from(STORAGE_BUCKET);
     const { error } = await storage.uploadToSignedUrl(ticket.path, ticket.token, file, {
@@ -175,6 +175,8 @@ export default function CardForm({
     const form = event.currentTarget;
     setState({});
 
+    const titleHint = (form.elements.namedItem('title') as HTMLInputElement | null)?.value ?? '';
+
     let beforeUrl: string;
     let afterUrl: string;
 
@@ -183,8 +185,8 @@ export default function CardForm({
       // Sequential, not parallel: two 5MB uploads at once on a phone connection
       // just make each other slower, and one failing mid-flight is easier to
       // reason about this way.
-      beforeUrl = before.file ? await upload(before.file) : (before.url ?? '');
-      afterUrl = after.file ? await upload(after.file) : (after.url ?? '');
+      beforeUrl = before.file ? await upload(before.file, titleHint) : (before.url ?? '');
+      afterUrl = after.file ? await upload(after.file, titleHint) : (after.url ?? '');
     } catch (error) {
       setState({
         error: `Rasm yuklanmadi: ${error instanceof Error ? error.message : 'nomaʼlum xatolik'}`,
@@ -227,6 +229,13 @@ export default function CardForm({
 
       <form className="admin-form modal__body" onSubmit={handleSubmit}>
         {card && <input type="hidden" name="id" value={card.id} />}
+
+        <p className="admin-hint">
+          Google Rasmlar qidiruvida chiqishi uchun: quyidagi Sarlavhani aniq va tavsifli
+          yozing — masalan <code>Kuzov kassa prav</code>. Rasm fayli shu nom asosida
+          saqlanadi (masalan <code>kuzov-kassa-prav-a1b2c3d4.jpg</code>), fayl nomining
+          o&apos;zi (masalan <code>IMG_2031.jpg</code>) ahamiyatsiz.
+        </p>
 
         <label className="admin-field">
           <span className="admin-field__label">Sarlavha</span>

@@ -15,7 +15,7 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="container site-header__inner">
-        <a href="#top" className="site-header__brand" aria-label={`${site.name} — bosh sahifa`}>
+        <a href="/#top" className="site-header__brand" aria-label={`${site.name} — bosh sahifa`}>
           <Logo size={46} />
           <span className="site-header__brand-text">
             <span className="site-header__name">AVTO VAKUM</span>

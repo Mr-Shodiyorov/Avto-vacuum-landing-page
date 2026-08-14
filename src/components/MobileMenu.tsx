@@ -100,7 +100,7 @@ export default function MobileMenu() {
               <span className="mobile-menu__info-sub">Dam olish kunlarisiz</span>
             </div>
 
-            <a href="#manzil" className="mobile-menu__location-box" onClick={closeMenu}>
+            <a href="/#manzil" className="mobile-menu__location-box" onClick={closeMenu}>
               <div className="mobile-menu__location-icon">
                 <svg
                   width="18"

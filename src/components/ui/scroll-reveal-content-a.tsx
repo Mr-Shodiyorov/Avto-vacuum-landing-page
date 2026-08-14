@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import React from "react"
 import { useRef } from "react"
 import { cn } from "@/lib/utils"
@@ -21,6 +22,8 @@ export interface ItemContent {
   viewBox?: string
   /** CSS color for the panel background — hex or `var(--token)`. */
   color: string
+  /** When set, the title links here and a "Batafsil" line is added below. */
+  href?: string
 }
 
 interface Props extends React.ComponentProps<"div"> {
@@ -86,6 +89,7 @@ const ScrollRevealContentA = ({
                     icon={item.icon}
                     viewBox={item.viewBox}
                     color={item.color}
+                    href={item.href}
                     thresholdStart={i / count}
                     thresholdEnd={(i + 1) / count}
                     scrollProgress={scrollProgress}
@@ -157,6 +161,7 @@ const PointItem = ({
   icon,
   viewBox,
   color,
+  href,
   thresholdStart,
   thresholdEnd,
   scrollProgress,
@@ -168,12 +173,20 @@ const PointItem = ({
   icon: string
   viewBox?: string
   color: string
+  href?: string
   thresholdStart: number
   thresholdEnd: number
   scrollProgress: number
 }) => {
   const barHeightPercentage = getBarPercentageHeight(scrollProgress, thresholdStart, thresholdEnd)
   const isActive = barHeightPercentage > 0
+  const titleContent = href ? (
+    <Link href={href} className="services__title-link">
+      {title}
+    </Link>
+  ) : (
+    title
+  )
   return (
     <div className={cn("flex flex-col interactive w-full", active ? "opacity-100" : "opacity-50")}>
       {/* Desktop/tablet-with-panel (lg+): unchanged from before this figure sat
@@ -201,8 +214,14 @@ const PointItem = ({
           </div>
           <div className="w-[calc(100% - 40px)] pl-4">
             <div className="flex flex-col gap-1">
-              <h3 className={cn(defaultTitleClass, isActive ? "opacity-100" : "opacity-50")}>{title}</h3>
+              <h3 className={cn(defaultTitleClass, isActive ? "opacity-100" : "opacity-50")}>{titleContent}</h3>
               <p className={cn(defaultDescriptionClass, isActive ? "opacity-100" : "opacity-50")}>{description}</p>
+              {href && (
+                <Link href={href} className="services__more-link">
+                  Batafsil
+                  <span aria-hidden="true">&rarr;</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -221,8 +240,14 @@ const PointItem = ({
         </div>
         <div className="services__mobile-card-body">
           <span className="services__mobile-card-number">{number}</span>
-          <h3 className="services__mobile-card-title">{title}</h3>
+          <h3 className="services__mobile-card-title">{titleContent}</h3>
           <p className="services__mobile-card-desc">{description}</p>
+          {href && (
+            <Link href={href} className="services__more-link">
+              Batafsil
+              <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
         </div>
       </div>
     </div>

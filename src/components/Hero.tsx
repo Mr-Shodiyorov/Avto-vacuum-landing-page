@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 
-import ustaPhoto from '@/assets/usta-hero.webp';
+import ustaPhoto from '@/assets/avto-vakum-usta-qarshi.webp';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import PhoneIcon from '@/components/icons/PhoneIcon';
 import { openPhoneModal } from '@/components/PhoneModal';
@@ -53,7 +53,7 @@ const stats: Stat[] = [
 
 const groupDigits = (value: number) => String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
-const headingWords = 'Avtomobilingiz ko‘rinishini bir harakatda tiklang'.split(' ');
+const headingWords = "Avto vakum bilan avtomobilingiz ko'rinishini tiklang".split(' ');
 
 export default function Hero() {
   return (
@@ -81,7 +81,7 @@ export default function Hero() {
         </h1>
 
         <p className="hero__lead">
-          Avto vakuum, kuzov kassa prav, palirovka va keramika. Qarshi markazida, kechayu kunduz.
+          Avto vakum, kuzov kassa prav, palirovka va keramika. Qarshi markazida, kechayu kunduz.
           Navbatsiz qabul qilamiz — qo&apos;ng&apos;iroq qiling va keling.
         </p>
 
@@ -89,7 +89,7 @@ export default function Hero() {
           <div className="hero__portrait">
             <Image
               src={ustaPhoto}
-              alt={`${master.title} — Avto Vakum`}
+              alt={`${master.title} — Avto Vakum Qarshi ustaxonasida avtomobil tozalash va detailing mutaxassisi`}
               width={546}
               height={457}
               priority

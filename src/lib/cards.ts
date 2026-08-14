@@ -41,3 +41,37 @@ export async function getCards(): Promise<BeforeAfterCard[]> {
     return [];
   }
 }
+
+/**
+ * Best-effort match for a service's dedicated page: cards whose `title`
+ * contains one of that service's keywords (see `src/lib/services.ts`).
+ *
+ * There is no `service` column on this table, so this is a text match
+ * against whatever admins typed in — not a guarantee. Callers should treat
+ * an empty result as "no confidently-relevant photos yet" rather than fall
+ * back to showing unrelated work under the wrong service's name.
+ */
+export function cardsMatchingKeywords(
+  cards: BeforeAfterCard[],
+  keywords: string[],
+): BeforeAfterCard[] {
+  return cards.filter((card) => {
+    const haystack = card.title.toLowerCase();
+    return keywords.some((keyword) => haystack.includes(keyword.toLowerCase()));
+  });
+}
+
+/**
+ * Descriptive `<img alt>` / lightbox-caption text for one half of a card,
+ * e.g. "Kuzov kassa prav — Malibu · 2 soat, oldin: vmyatina". Shared by the
+ * homepage gallery and the `/xizmatlar/[slug]` galleries so the two never
+ * drift into different alt-text conventions.
+ */
+export function cardImageAlt(
+  card: BeforeAfterCard,
+  state: 'oldin' | 'keyin',
+  stateLabel: string,
+): string {
+  const context = card.meta ? `${card.title} — ${card.meta}` : card.title;
+  return `${context}, ${state}: ${stateLabel}`;
+}

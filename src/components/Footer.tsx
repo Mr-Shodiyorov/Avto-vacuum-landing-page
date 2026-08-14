@@ -15,7 +15,7 @@ export default function Footer() {
             <span className="site-footer__name">AVTO VAKUM</span>
           </div>
           <p className="site-footer__desc">
-            Avto vakuum, kuzov kassa prav, palirovka va keramika. Qarshi, 24/7.
+            Avto vakum, kuzov kassa prav, palirovka va keramika. Qarshi, 24/7.
           </p>
         </div>
 

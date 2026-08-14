@@ -3,7 +3,7 @@ export const site = {
   nameFull: 'Avto Vakum Servis',
   city: 'Qarshi',
   description:
-    "Avto vakuum, kuzov kassa prav, palirovka va keramika. Qarshi markazida, kechayu kunduz. Navbatsiz qabul qilamiz — qo'ng'iroq qiling va keling.",
+    "Avto vakum Qarshida — 24/7 avtomobil tozalash, palirovka va keramika. Navbatsiz qabul qilamiz, hoziroq qo'ng'iroq qiling!",
   url: 'https://avtovakum.uz',
   phones: [
     { display: '+998 (94) 952-07-07', href: 'tel:+998949520707' },
@@ -11,7 +11,9 @@ export const site = {
   ],
   instagram: {
     handle: '@avto_vakum_senter',
-    url: 'https://instagram.com/avto_vakum_senter',
+    // www + trailing slash: Instagram's own canonical URL for the profile,
+    // and what `sameAs` in the LocalBusiness schema should match exactly.
+    url: 'https://www.instagram.com/avto_vakum_senter/',
   },
   telegram: {
     handle: '@avto_vakum_senter',
@@ -20,6 +22,14 @@ export const site = {
   address: "Qarshi sh., Obodonlashtirish ro'parasi, svetofor oldidagi chorraha",
   hours: "Har kuni, 24 soat — dam olish kunlarisiz",
 } as const;
+
+/**
+ * Stable JSON-LD `@id` for the LocalBusiness node in `src/app/layout.tsx`.
+ * Every `Service` schema on a `/xizmatlar/[slug]` page points its `provider`
+ * at this same URI so Google resolves them as the same business entity
+ * instead of four disconnected ones.
+ */
+export const businessId = `${site.url}/#business`;
 
 /**
  * Physical location of the service.
@@ -53,10 +63,14 @@ export const master = {
   bio: "Professional kimyo va uskunalar bilan ishlaydigan bosh usta — har bir avtomobilga alohida yondashadi.",
 } as const;
 
+// Leading `/` so these still resolve correctly from a route other than the
+// homepage (e.g. a `/xizmatlar/[slug]` page) — a bare `#hash` only scrolls
+// the current page and finds nothing there, since every section these point
+// to only exists on `/`.
 export const navLinks = [
-  { label: 'Ishlarimiz', href: '#ishlarimiz' },
-  { label: 'Xizmatlar', href: '#xizmatlar' },
-  { label: 'Nega biz', href: '#nega-biz' },
-  { label: 'Aloqa', href: '#aloqa' },
-  { label: 'Manzil', href: '#manzil' },
+  { label: 'Ishlarimiz', href: '/#ishlarimiz' },
+  { label: 'Xizmatlar', href: '/#xizmatlar' },
+  { label: 'Nega biz', href: '/#nega-biz' },
+  { label: 'Aloqa', href: '/#aloqa' },
+  { label: 'Manzil', href: '/#manzil' },
 ] as const;

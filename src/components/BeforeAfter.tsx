@@ -1,8 +1,22 @@
 import Lightbox from "@/components/Lightbox";
 import WorkImage from "@/components/WorkImage";
-import { getCards } from "@/lib/cards";
+import { cardImageAlt, getCards, type BeforeAfterCard } from "@/lib/cards";
 
 import "./before-after.css";
+
+/** `ImageObject` entries for every real (non-placeholder) gallery photo. */
+function imageObjectsFor(cards: BeforeAfterCard[]) {
+  const entries: { url: string; alt: string }[] = [];
+  for (const card of cards) {
+    if (card.before_image_url) {
+      entries.push({ url: card.before_image_url, alt: cardImageAlt(card, 'oldin', card.before_label) });
+    }
+    if (card.after_image_url) {
+      entries.push({ url: card.after_image_url, alt: cardImageAlt(card, 'keyin', card.after_label) });
+    }
+  }
+  return entries;
+}
 
 /**
  * Reads its cards from Supabase (table `before_after_cards`, managed at /admin).
@@ -14,9 +28,31 @@ import "./before-after.css";
  */
 export default async function BeforeAfter() {
   const cards = await getCards();
+  const imageObjects = imageObjectsFor(cards);
 
   return (
     <section className="works" id="ishlarimiz">
+      {imageObjects.length > 0 && (
+        <script
+          type="application/ld+json"
+          // Tells Google what each photo actually depicts, since the visible
+          // page only shows a short "OLDIN/KEYIN" tag next to it.
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              imageObjects.map((img) => ({
+                '@context': 'https://schema.org',
+                '@type': 'ImageObject',
+                contentUrl: img.url,
+                url: img.url,
+                caption: img.alt,
+                description: img.alt,
+                representativeOfPage: false,
+              })),
+            ),
+          }}
+        />
+      )}
+
       <div className="container">
         <div className="works__heading-group" data-reveal>
           <span className="eyebrow">ISHLARIMIZ</span>
@@ -46,12 +82,14 @@ export default async function BeforeAfter() {
                 <WorkImage
                   src={card.before_image_url}
                   label={`OLDIN — ${card.before_label}`}
+                  alt={cardImageAlt(card, 'oldin', card.before_label)}
                   tag="OLDIN"
                   zoomable
                 />
                 <WorkImage
                   src={card.after_image_url}
                   label={`KEYIN — ${card.after_label}`}
+                  alt={cardImageAlt(card, 'keyin', card.after_label)}
                   tag="KEYIN"
                   zoomable
                 />

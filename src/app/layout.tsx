@@ -8,7 +8,7 @@ import Motion from '@/components/Motion';
 import PhoneModal from '@/components/PhoneModal';
 import Preloader from '@/components/Preloader';
 import SupportModal from '@/components/SupportModal';
-import { location, site } from '@/lib/site';
+import { businessId, location, site } from '@/lib/site';
 import { cn } from "@/lib/utils";
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
@@ -31,7 +31,7 @@ const plexSans = localFont({
   variable: '--font-plex-sans',
 });
 
-const title = 'Avto Vakum — Qarshida 24/7 avto vakuum, palirovka va keramika';
+const title = 'Avto Vakum Qarshi — 24/7 avtomobil tozalash va detailing xizmati';
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     locale: 'uz_UZ',
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title,
     description: site.description,
   },
@@ -70,7 +70,14 @@ export const viewport: Viewport = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'AutoRepair',
+  '@id': businessId,
   name: site.nameFull,
+  alternateName: site.name,
+  // Trailing slash matches this site's `trailingSlash: true` config — without
+  // it, this route 308-redirects (extensionless metadata routes aren't
+  // exempted the way sitemap.xml/robots.txt are), and structured-data image
+  // URLs should resolve directly rather than through a redirect hop.
+  image: `${site.url}/opengraph-image/`,
   telephone: site.phones.map((p) => p.href.replace('tel:', '')),
   priceRange: '$$',
   address: {
@@ -78,6 +85,10 @@ const jsonLd = {
     streetAddress: site.address,
     addressLocality: site.city,
     addressCountry: 'UZ',
+  },
+  areaServed: {
+    '@type': 'City',
+    name: site.city,
   },
   geo: {
     '@type': 'GeoCoordinates',

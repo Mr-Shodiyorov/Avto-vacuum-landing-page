@@ -27,6 +27,21 @@ export interface ActionState {
 
 const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'] as const;
 
+/**
+ * ASCII-safe slug for a Storage filename, e.g. "Kuzov kassa prav" ->
+ * "kuzov-kassa-prav". Uzbek apostrophe letters (o', g') are dropped rather
+ * than transliterated — "bo'yoq" -> "boyoq" reads fine as a URL segment.
+ */
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .replace(/[ʻʼ'`’]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 40)
+    .replace(/-+$/g, '');
+}
+
 /** Pushes fresh HTML to the public page and the admin list after a change. */
 function revalidateEverything(): void {
   revalidatePath('/'); // the landing page's cached ISR output
@@ -83,8 +98,18 @@ export interface UploadTicket {
  * Storage sidesteps the cap, halves the bytes on the wire, and still keeps the
  * service role key on the server: the browser only ever sees a token scoped to
  * one path in one bucket.
+ *
+ * `titleHint` — the card's own "Sarlavha" field, not the client's file name —
+ * becomes the descriptive part of the stored filename (e.g.
+ * "kuzov-kassa-prav-a1b2c3d4.jpg" instead of a bare UUID), which is what
+ * shows up as the image URL Google Images sees. Never trust a
+ * client-supplied filename as a storage path; this is server-side text the
+ * admin already typed into a form field, sanitized before use.
  */
-export async function createUploadTicket(extension: string): Promise<UploadTicket> {
+export async function createUploadTicket(
+  extension: string,
+  titleHint?: string,
+): Promise<UploadTicket> {
   await requireSession();
 
   const ext = extension.toLowerCase().replace(/^\./, '');
@@ -92,8 +117,11 @@ export async function createUploadTicket(extension: string): Promise<UploadTicke
     throw new Error(`Rasm formati qo'llab-quvvatlanmaydi: .${ext}`);
   }
 
-  // Random name: never trust a client-supplied filename as a storage path.
-  const path = `${crypto.randomUUID()}.${ext}`;
+  const slug = titleHint ? slugify(titleHint) : '';
+  // Short suffix, not a full UUID: the slug already carries the meaning, this
+  // just keeps two uploads for the same title from colliding.
+  const suffix = crypto.randomUUID().slice(0, 8);
+  const path = slug ? `${slug}-${suffix}.${ext}` : `${suffix}.${ext}`;
 
   const { data, error } = await supabaseAdmin()
     .storage.from(STORAGE_BUCKET)

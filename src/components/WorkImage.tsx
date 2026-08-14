@@ -7,8 +7,16 @@ import './work-image.css';
 interface Props {
   /** Public Supabase Storage URL, or null while no photo has been uploaded. */
   src: string | null;
-  /** Descriptive text shown in the bottom bar, e.g. "OLDIN — iflos salon". */
+  /** Short text shown in the bottom bar overlay, e.g. "OLDIN — iflos salon". */
   label: string;
+  /**
+   * Full descriptive text for the `<img alt>` and the lightbox caption, e.g.
+   * "Kuzov kassa prav — Malibu, oldin: vmyatina". Falls back to `label` when
+   * omitted. Kept separate from `label` so the on-screen overlay tag can stay
+   * short while the alt text (read by screen readers and Google Images, never
+   * shown on the card itself) can be as descriptive as it needs to be.
+   */
+  alt?: string;
   tag: 'OLDIN' | 'KEYIN';
   ratio?: string;
   /** Adds a click target that opens the photo in <Lightbox>. */
@@ -27,10 +35,13 @@ interface Props {
 export default function WorkImage({
   src,
   label,
+  alt,
   tag,
   ratio = '1 / 1',
   zoomable = false,
 }: Props) {
+  const imgAlt = alt ?? label;
+
   if (!src) {
     return <ImagePlaceholder label={label} tag={tag} ratio={ratio} />;
   }
@@ -40,7 +51,7 @@ export default function WorkImage({
       <Image
         className="work-image__img"
         src={src}
-        alt={label}
+        alt={imgAlt}
         fill
         // Two images per card: ~200px each in the 3-up desktop grid, half the
         // viewport on phones.
@@ -63,7 +74,7 @@ export default function WorkImage({
           className="work-image__zoom"
           type="button"
           data-lightbox={src}
-          data-lightbox-alt={label}
+          data-lightbox-alt={imgAlt}
           aria-label={`Kattalashtirish: ${label}`}
         />
       )}
