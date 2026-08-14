@@ -37,3 +37,273 @@
     text-align: right;
   }
 }
+
+/* Mobile/tablet showcase card vs. the desktop number+progress-line row are
+   mutually exclusive, split at the same 1024px breakpoint Tailwind's `lg:`
+   uses elsewhere in this component. Both this file and the visibility switch
+   itself now live entirely in plain CSS (not a mix of Tailwind `hidden`/`lg:`
+   utilities and plain-CSS rules) — two mechanisms at the same specificity
+   racing across files is exactly what showed the mobile card on desktop
+   before: this file's unconditional `display: flex` beat the Tailwind
+   `lg:hidden` utility whenever this stylesheet happened to load after
+   Tailwind's, since plain classes and Tailwind's variant classes tie on
+   specificity and only the LAST one in the cascade wins. */
+.services__desktop-row {
+  display: none;
+}
+.services__mobile-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+@media (min-width: 1024px) {
+  .services__desktop-row {
+    display: block;
+  }
+  .services__mobile-card {
+    display: none;
+  }
+}
+.services__mobile-card[data-active] {
+  border-color: var(--color-accent);
+  box-shadow: 0 12px 26px rgba(245, 135, 31, 0.16);
+}
+.services__mobile-card-figure {
+  flex-shrink: 0;
+  width: 76px;
+  height: 76px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.services__mobile-card-body {
+  min-width: 0;
+  flex: 1;
+}
+.services__mobile-card-number {
+  display: block;
+  font: 700 12px/1 var(--font-heading);
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
+  margin-bottom: 4px;
+}
+.services__mobile-card-title {
+  font: 700 16px/1.3 var(--font-heading);
+  color: var(--color-text);
+  margin: 0 0 4px;
+}
+.services__mobile-card-desc {
+  font: 400 13px/1.5 var(--font-body);
+  color: var(--color-text-faint);
+}
+
+@media (min-width: 480px) {
+  .services__mobile-card-figure {
+    width: 88px;
+    height: 88px;
+  }
+  .services__mobile-card-title {
+    font-size: 17px;
+  }
+  .services__mobile-card-desc {
+    font-size: 14px;
+  }
+}
+
+/* Showcase figures ---------------------------------------------------------
+   One figure per service, sitting on the orange panel. Every rule below is
+   the *resting* state: whatever the panel looks like with no animation at
+   all. Motion is added only under [data-active='true'] — the panel the
+   scroll showcase has crossfaded to — so each figure animates in as its
+   service becomes active, and the reduced-motion block at the bottom simply
+   strips the animations to leave these resting states standing. Only
+   transform, opacity and stroke-dashoffset are touched, so nothing reflows. */
+.svc-fig,
+.svc-fig * {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+/* Line-drawn strokes: pathLength="1" normalises every path to one dash unit,
+   so a single keyframe draws any of them regardless of real length. */
+.svc-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+@keyframes svc-draw-in {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+.services [data-active='true'] .svc-draw {
+  animation: svc-draw-in 0.9s ease-out both;
+}
+.services [data-active='true'] .svc-draw--d2 {
+  animation-delay: 0.18s;
+}
+
+/* 01 Avto vakuum — dust drawn up into the nozzle, nozzle breathing. */
+.svc-fig--vac .svc-vac__dust circle {
+  opacity: 0.75;
+}
+
+@keyframes svc-suck {
+  0% {
+    transform: translate(0, 12px) scale(1);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.85;
+  }
+  75% {
+    transform: translate(0, -8px) scale(0.7);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(2px, -18px) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes svc-breathe {
+  50% {
+    transform: translate(0, -2.5px);
+  }
+}
+
+.services [data-active='true'] .svc-vac__dust circle {
+  animation: svc-suck 2.4s cubic-bezier(0.45, 0, 0.3, 1) infinite;
+}
+.services [data-active='true'] .svc-vac__dust circle:nth-child(2) {
+  animation-delay: 0.6s;
+}
+.services [data-active='true'] .svc-vac__dust circle:nth-child(3) {
+  animation-delay: 1.2s;
+}
+.services [data-active='true'] .svc-vac__dust circle:nth-child(4) {
+  animation-delay: 1.8s;
+}
+.services [data-active='true'] .svc-vac__nozzle {
+  animation: svc-breathe 3.2s ease-in-out infinite;
+}
+
+/* 02 Kuzov kassa prav — dent contours collapse inward, puller easing out. */
+.svc-fig--dent .svc-dent__rings ellipse {
+  opacity: 0.45;
+}
+
+@keyframes svc-settle {
+  0% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(0.35);
+    opacity: 0;
+  }
+}
+
+@keyframes svc-pull {
+  50% {
+    transform: translate(0, -5px);
+    opacity: 1;
+  }
+}
+
+.services [data-active='true'] .svc-dent__rings ellipse {
+  animation: svc-settle 3s ease-in-out infinite;
+}
+.services [data-active='true'] .svc-dent__rings ellipse:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.services [data-active='true'] .svc-dent__rings ellipse:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.services [data-active='true'] .svc-dent__pull {
+  animation: svc-pull 3s ease-in-out infinite;
+}
+
+/* 03 Palirovka — buffer pad turning, highlights glinting off the surface. */
+@keyframes svc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes svc-glint {
+  0%,
+  70%,
+  100% {
+    transform: scale(0.55);
+    opacity: 0.25;
+  }
+  20%,
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.services [data-active='true'] .svc-pol__pad {
+  animation: svc-spin 7s linear infinite;
+}
+.services [data-active='true'] .svc-pol__glint {
+  animation: svc-glint 2.8s ease-in-out infinite;
+}
+.services [data-active='true'] .svc-pol__glint:nth-child(2) {
+  animation-delay: 0.9s;
+}
+.services [data-active='true'] .svc-pol__glint:nth-child(3) {
+  animation-delay: 1.7s;
+}
+
+/* 04 Keramika — shell draws, coat sets inside it, sheen sweeps down. The
+   sheen band starts above the shield and is clipped to it, so at rest it is
+   simply out of frame. */
+@keyframes svc-set-in {
+  from {
+    transform: scale(0.82);
+    opacity: 0;
+  }
+}
+
+@keyframes svc-sheen {
+  0% {
+    transform: translate(0, 0);
+  }
+  45%,
+  100% {
+    transform: translate(0, 152px);
+  }
+}
+
+.services [data-active='true'] .svc-cer__coat {
+  animation: svc-set-in 0.8s 0.55s ease-out both;
+}
+.services [data-active='true'] .svc-cer__bead {
+  animation: svc-set-in 0.8s 0.8s ease-out both;
+}
+.services [data-active='true'] .svc-cer__sheen {
+  animation: svc-sheen 4.2s 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-fig,
+  .svc-fig * {
+    animation: none !important;
+  }
+}

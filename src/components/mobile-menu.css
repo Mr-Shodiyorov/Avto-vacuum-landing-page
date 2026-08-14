@@ -350,6 +350,10 @@ body:has(.mobile-menu[open]) .site-header {
   display: flex;
   gap: 10px;
   margin-bottom: 12px;
+  /* Pushes this row — and the CTA right after it, since that no longer has
+     its own top margin — down as one group, so nav/info fill the top and
+     the pills + call button sit together at the bottom of the panel. */
+  margin-top: auto;
 }
 
 .mobile-menu__pill {
@@ -402,7 +406,9 @@ body:has(.mobile-menu[open]) .site-header {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-top: auto;
+  /* Sits right after the Telegram/Instagram row (was `margin-top: auto`,
+     which pushed it all the way to the bottom of the scrollable panel,
+     stranding it away from the pills it belongs with). */
   padding: 16px;
   border-radius: 14px;
   background: linear-gradient(135deg, #f5871f 0%, #e07410 100%);
