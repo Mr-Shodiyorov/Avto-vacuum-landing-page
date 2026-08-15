@@ -68,20 +68,20 @@ const ScrollRevealContentA = ({
           <div
             className={cn(
               centralColumnStyle,
-              // Top padding is just breathing room — the site header now
-              // auto-hides on scroll (see Motion.tsx + header.css) instead of
-              // permanently occupying this space. Bottom padding still dodges
-              // a real fixed element: the mobile-only call bar (~76px +
-              // buffer — see mobile-cta.css, hidden from 860px up), which
-              // doesn't hide. Height stays a flat 100vh (box-sizing:
-              // border-box eats the padding out of that, not on top of it),
-              // so this only shrinks the visible content box, not the sticky
-              // element itself.
-              "sticky top-0 flex flex-col w-full items-start justify-center h-[100vh] pt-6 pb-[96px] md:pt-8 min-[860px]:pb-0",
+              // `top`/`h` reserve exactly the site header's box (73px below
+              // 860px, 85px from 860px — matches `.site-header__inner`'s
+              // 72px/84px + its 1px border in header.css) so this panel sticks
+              // *below* the header instead of sharing its top:0, which used to
+              // let the header paint over item 01 whenever it was shown (it
+              // auto-hides on scroll-down but reappears on scroll-up/at rest —
+              // see Motion.tsx). Bottom padding still dodges a real fixed
+              // element: the mobile-only call bar (~76px + buffer — see
+              // mobile-cta.css, hidden from 860px up), which doesn't hide.
+              "sticky top-[73px] min-[860px]:top-[85px] flex flex-col w-full items-start justify-center h-[calc(100vh-73px)] min-[860px]:h-[calc(100vh-85px)] pt-3 pb-[96px] md:pt-4 min-[860px]:pb-0",
             )}
           >
             <div className="flex flex-row gap-16 md:gap-24 lg:gap-32 xl:gap-40 2xl:gap-48 w-full h-full">
-              <div className="lg:!w-[50vw] !w-full h-auto flex flex-col justify-center gap-4 md:gap-10">
+              <div className="lg:!w-[50vw] !w-full h-auto flex flex-col justify-center gap-3 md:gap-4">
                 {items.map((item, i) => (
                   <PointItem
                     key={item.title}
@@ -208,7 +208,7 @@ const PointItem = ({
           wrapper carries the ONLY display toggle; nothing inside it competes. */}
       <div className="services__desktop-row w-full">
         <div className="w-full">
-          <h3 className={cn(defaultTitleClass, "mb-1 ml-5 md:mb-4", isActive ? "opacity-100" : "opacity-50")}>{number}</h3>
+          <h3 className={cn(defaultTitleClass, "mb-1 ml-5 md:mb-1", isActive ? "opacity-100" : "opacity-50")}>{number}</h3>
         </div>
         <div className="w-full flex relative left-[16px]">
           <div className="w-[70px] flex items-start justify-center relative">
