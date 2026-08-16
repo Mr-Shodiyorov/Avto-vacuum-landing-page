@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import LoginForm from './login-form';
 
 export const dynamic = 'force-dynamic';
@@ -12,6 +14,9 @@ export default function LoginPage() {
           Davom etish uchun parolni kiriting.
         </p>
         <LoginForm />
+        <Link href="/" className="admin-btn admin-btn--ghost admin__auth-back">
+          Bosh sahifaga qaytish
+        </Link>
       </div>
     </main>
   );

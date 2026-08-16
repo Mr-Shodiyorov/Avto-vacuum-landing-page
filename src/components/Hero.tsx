@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { useRef } from 'react';
 
 import ustaPhoto from '@/assets/avto-vakum-usta-qarshi.webp';
 import InstagramIcon from '@/components/icons/InstagramIcon';
@@ -55,9 +56,32 @@ const stats: Stat[] = [
 
 const groupDigits = (value: number) => String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
+/** Consecutive taps allowed to land within this window before the counter resets. */
+const ADMIN_TAP_WINDOW_MS = 1500;
+const ADMIN_TAP_COUNT = 3;
+
 export default function Hero() {
   const t = useTranslations('hero');
   const headingWords = t('heading').split(' ');
+
+  const tapCount = useRef(0);
+  const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function handlePortraitClick() {
+    tapCount.current += 1;
+
+    if (tapTimer.current) clearTimeout(tapTimer.current);
+
+    if (tapCount.current >= ADMIN_TAP_COUNT) {
+      tapCount.current = 0;
+      window.location.href = '/admin/login';
+      return;
+    }
+
+    tapTimer.current = setTimeout(() => {
+      tapCount.current = 0;
+    }, ADMIN_TAP_WINDOW_MS);
+  }
 
   return (
     <section className="hero" id="top">
@@ -86,7 +110,7 @@ export default function Hero() {
         <p className="hero__lead">{t('lead')}</p>
 
         <div className="hero__media">
-          <div className="hero__portrait">
+          <div className="hero__portrait" onClick={handlePortraitClick}>
             <Image
               src={ustaPhoto}
               alt={t('portraitAlt', { masterTitle: master.title })}
