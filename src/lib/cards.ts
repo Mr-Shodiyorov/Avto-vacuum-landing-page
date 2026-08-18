@@ -63,9 +63,14 @@ export function cardsMatchingKeywords(
 
 /**
  * Descriptive `<img alt>` / lightbox-caption text for one half of a card,
- * e.g. "Kuzov kassa prav — Malibu · 2 soat, oldin: vmyatina". Shared by the
- * homepage gallery and the `/xizmatlar/[slug]` galleries so the two never
- * drift into different alt-text conventions.
+ * e.g. "Kuzov kassa prav — Malibu · 2 soat, oldin: vmyatina — avto vakum
+ * markazi, Qarshi". Shared by the homepage gallery and the
+ * `/xizmatlar/[slug]` galleries so the two never drift into different
+ * alt-text conventions.
+ *
+ * The trailing clause says where the photo was taken, which is true of every
+ * one of these images and is what image search needs in order to surface them
+ * for local queries.
  */
 export function cardImageAlt(
   card: BeforeAfterCard,
@@ -73,5 +78,5 @@ export function cardImageAlt(
   stateLabel: string,
 ): string {
   const context = card.meta ? `${card.title} — ${card.meta}` : card.title;
-  return `${context}, ${state}: ${stateLabel}`;
+  return `${context}, ${state}: ${stateLabel} — avto vakum markazi, Qarshi`;
 }

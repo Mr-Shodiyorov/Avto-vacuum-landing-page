@@ -1,7 +1,7 @@
 {
   "seo": {
-    "title": "Avto Vakum Qarshi — 24/7 avtomobil tozalash va detailing xizmati",
-    "description": "Avto vakum Qarshida — 24/7 avtomobil tozalash, palirovka va keramika. Navbatsiz qabul qilamiz, hoziroq qo'ng'iroq qiling!"
+    "title": "Avto Vakum (Avtovakum) — Qarshida 24/7 avtomobil tozalash xizmati",
+    "description": "Avto Vakum — Qarshida kechayu kunduz ishlaydigan avtomobil tozalash markazi. Salon vakumi, palirovka va keramika, navbatsiz. Hoziroq qo'ng'iroq qiling!"
   },
   "nav": {
     "works": "Ishlarimiz",
@@ -33,7 +33,7 @@
     "badge": "24/7 OCHIQ · HOZIR ISHLAYMIZ",
     "heading": "Avto vakum bilan avtomobilingiz ko'rinishini tiklang",
     "lead": "Avto vakum, kuzov kassa prav, palirovka va keramika. Qarshi markazida, kechayu kunduz. Navbatsiz qabul qilamiz — qo'ng'iroq qiling va keling.",
-    "portraitAlt": "{masterTitle} — Avto Vakum Qarshi ustaxonasida avtomobil tozalash va detailing mutaxassisi",
+    "portraitAlt": "{masterTitle} — Qarshidagi Avto Vakum markazida avtomobil salonini tozalash bo'yicha mutaxassis",
     "stats": {
       "cleaned": { "label": "tozalangan avtomobil" },
       "experience": { "label": "tajribali ustalar", "unit": "yil" },
@@ -55,12 +55,13 @@
       "avto-vakuum": {
         "title": "Avto vakum",
         "cardDescription": "Salonni to'liq tozalash: gilamlar, o'rindiqlar, bagaj va yetib bo'lmaydigan burchaklar.",
-        "metaTitle": "Avto vakum xizmati Qarshi — Avto Vakum",
-        "metaDescription": "Qarshida professional avto vakum xizmati — salon, gilam, o'rindiq va bagajni to'liq tozalaymiz. 24/7 ishlaymiz, hoziroq qo'ng'iroq qiling!",
-        "h1": "Avto vakum — Qarshi",
+        "metaTitle": "Avto vakum Qarshi — salonni chuqur tozalash | Avtovakum",
+        "metaDescription": "Qarshida professional avto vakum xizmati — salon, gilam, o'rindiq va bagajni chuqur tozalaymiz. Navbatsiz, 24/7. Hoziroq qo'ng'iroq qiling!",
+        "h1": "Avto vakum — Qarshida salonni chuqur tozalash",
         "paragraphs": [
           "Avto vakum — avtomobil salonini to'liq, chuqur tozalash xizmati: gilamlar, o'rindiqlar (mato va charm), panel oralig'i, eshik kissalari, bagaj va qo'l yetmaydigan burchaklar — barchasi kuchli sanoat uskunalari va professional kimyo yordamida tozalanadi.",
           "Ish quruq va nam tozalashni birlashtiradi: avval changyutgich bilan yirik iflos olib tashlanadi, so'ng maxsus kimyoviy vositalar bilan dog'lar va hidlar yo'qotiladi. O'rtacha bitta avtomobilga ~40 daqiqa ketadi — salon holatiga qarab farq qilishi mumkin.",
+          "Xizmatni odamlar turlicha ataydi — kimdir avtovakum, kimdir mashina vakum, kimdir oddiygina salon vakumi deydi. Nomi qanday bo'lmasin, ish bitta: salonni ichidan chiqarib tashlanmagan changgacha tozalash.",
           "Har kuni foydalanadigan haydovchilardan tortib, uzoq yo'l safaridan qaytganlar yoki avtomobilini sotishdan oldin tartibga keltirmoqchi bo'lganlargacha — hammaga mos. Tozalash tugagach salon yangi mashinadek hidlaydi va ko'rinadi.",
           "Qarshi markazida, svetofor oldidagi chorrahada joylashganmiz va 24 soat, dam olish kunlarisiz ishlaymiz — navbatsiz qabul qilamiz."
         ]
@@ -68,43 +69,73 @@
       "kuzov-kassa-prav": {
         "title": "Kuzov kassa prav",
         "cardDescription": "Bo'yoqsiz vmyatina to'g'rilash va kuzov geometriyasini tiklash.",
-        "metaTitle": "Kuzov kassa prav Qarshi — Avto Vakum",
+        "metaTitle": "Kuzov kassa prav Qarshi — bo'yoqsiz to'g'rilash | Avto Vakum",
         "metaDescription": "Qarshida bo'yoqsiz kuzov kassa prav — vmyatinalarni bo'yoqni buzmasdan to'g'irlaymiz. Tez, sifatli, 24/7 xizmat. Qo'ng'iroq qiling!",
-        "h1": "Kuzov kassa prav — Qarshi",
+        "h1": "Kuzov kassa prav — Qarshida bo'yoqsiz vmyatina to'g'rilash",
         "paragraphs": [
           "Kuzov kassa prav (bo'yoqsiz vmyatina to'g'irlash) — kuzovdagi botiq va urilish izlarini bo'yoqni buzmasdan, orqa tomondan maxsus asboblar bilan asta-sekin tortib yoki bosib tekislash usuli.",
           "Bo'yoq qatlami saqlanib qolgani uchun avtomobilning zavod bo'yog'i buzilmaydi — bu ham tashqi ko'rinishni, ham avtomobil qiymatini saqlab qoladi, va odatiy bo'yash xizmatiga qaraganda ancha tezroq hamda arzonroq.",
           "Do'kon eshigidan kelgan kichik botiqlardan tortib, do'l yoki to'qnashuv natijasidagi kattaroq shikastgacha — ko'pchilik holatlarni tuzatamiz. Kichik ishlar bir necha soatda, murakkabroqlari bir kun ichida tugaydi.",
-          "Qarshida 7 yildan ortiq tajribaga ega ustalarimiz bu ishni sinchkovlik bilan bajaradi. Manzilimiz — svetofor oldidagi chorraha, 24/7 ochiqmiz."
+          "Qarshida 7 yildan ortiq tajribaga ega ustalarimiz bu ishni sinchkovlik bilan bajaradi. Kuzov tayyor bo'lgach, ko'p mijozlar shu yerda salonni ham vakum qildirib ketadi — avto vakum markazimizda to'liq detailing bir joyda. Manzilimiz svetofor oldidagi chorraha, 24/7 ochiqmiz."
         ]
       },
       "palirovka": {
         "title": "Palirovka",
         "cardDescription": "Tashqi sathni jilolash — mayda chiziqlar va xiralikni yo'qotamiz.",
-        "metaTitle": "Palirovka Qarshi — Avto Vakum",
+        "metaTitle": "Palirovka Qarshi — kuzovni jilolash | Avtovakum markazi",
         "metaDescription": "Qarshida professional palirovka xizmati — mayda chiziqlar va xiralikni yo'qotib, kuzovga asl yaltiroqlikni qaytaramiz. 24/7 ishlaymiz.",
-        "h1": "Palirovka — Qarshi",
+        "h1": "Palirovka — Qarshida kuzovni jilolash",
         "paragraphs": [
           "Palirovka — avtomobil kuzovining tashqi sathini bosqichma-bosqich jilolab, mayda chiziqlar (swirl), oksidlanish izlari va xiralikni yo'qotish xizmati. Natijada bo'yoq asl chuqur rangi va yaltiroqligini qaytaradi.",
           "Ish maxsus polirol pastalar va mashinali buferlar bilan bir necha bosqichda olib boriladi — dag'al abraziv qatlamdan boshlab, nozik yakuniy jilo bilan tugaydi. Har bir panel alohida, diqqat bilan ishlanadi.",
           "Vaqt o'tishi bilan quyosh, avtomoyka cho'tkalari va kundalik ishlatish kuzovda mayda chiziqlar qoldiradi — palirovka bu izlarni olib tashlab, mashinani \"yangidek\" ko'rinishga qaytaradi. Odatda keramik qoplashdan oldin ham bajariladi.",
-          "Ish taxminan 1 kun davom etadi, avtomobil holatiga qarab. Qarshi markazida joylashganmiz, 24/7 qabul qilamiz — qo'ng'iroq qiling va vaqtni birga kelishib olamiz."
+          "Ish taxminan 1 kun davom etadi, avtomobil holatiga qarab. Avto palirovka Qarshi markazidagi avtovakum markazimizda bajariladi va biz 24/7 qabul qilamiz — qo'ng'iroq qiling, vaqtni birga kelishib olamiz."
         ]
       },
       "keramika": {
         "title": "Keramika",
         "cardDescription": "Keramik qoplama: uzoq muddatli himoya, chuqur yorqinlik va oson yuvish.",
-        "metaTitle": "Keramika qoplama Qarshi — Avto Vakum",
+        "metaTitle": "Keramika qoplama Qarshi — kuzov himoyasi | Avto Vakuum",
         "metaDescription": "Qarshida keramik qoplash xizmati — bo'yoqqa uzoq muddatli himoya va chuqur yaltiroqlik beramiz. Kir yuvish osonlashadi. 24/7 qabul qilamiz.",
-        "h1": "Keramika qoplama — Qarshi",
+        "h1": "Keramika qoplama — Qarshida kuzovni uzoq muddat himoyalash",
         "paragraphs": [
           "Keramik qoplama — bo'yoq ustiga qo'llaniladigan nano-qatlam bo'lib, kuzovni suv, kir, UV nurlari va kimyoviy ta'sirlardan uzoq muddat himoya qiladi. Qoplama bo'yoqqa mustahkam yopishib, chuqur, oynadek yaltiroqlik beradi.",
           "Qoplangan kuzovga suv tomchilari yopishmay sirg'alib tushadi — bu avtomobilni yuvishni sezilarli darajada osonlashtiradi va kirning yopishishini kamaytiradi.",
           "Eng yaxshi natija uchun keramika odatda palirovkadan keyin qo'llaniladi — sath avval tekislanadi, so'ng qoplama tekis va bir xilda yotadi. Qoplama oylab, ba'zan yillab davom etadigan himoya beradi.",
-          "Qarshida, svetofor oldidagi markazimizda, professional kimyo va uskunalar bilan ishlaymiz. 24/7 ochiqmiz — narx va vaqtni telefon orqali kelishib olamiz."
+          "Qarshida, svetofor oldidagi avto vakuum markazimizda, professional kimyo va uskunalar bilan ishlaymiz. Keramika — Qarshidagi avto detailing xizmatlarimizning eng uzoq muddatli natija beradigani. 24/7 ochiqmiz, narx va vaqtni telefon orqali kelishib olamiz."
         ]
       }
     }
+  },
+  "faq": {
+    "eyebrow": "SAVOL-JAVOB",
+    "heading": "Ko'p beriladigan savollar",
+    "items": [
+      {
+        "q": "Qarshida avto vakum xizmati qayerda joylashgan?",
+        "a": "Markazimiz Qarshi shahrida, shahar obodonlashtirish ro'parasida, svetofor oldidagi chorrahada. Yo'l chetida, mashinangiz bilan to'g'ridan-to'g'ri kirib kelasiz — oldindan yozilish shart emas."
+      },
+      {
+        "q": "Avtovakum qancha vaqt oladi?",
+        "a": "O'rtacha 40 daqiqa. Salon juda ifloslangan bo'lsa yoki bagaj va o'rindiqlar tagigacha chuqur tozalash kerak bo'lsa, bir soatga cho'zilishi mumkin — mashinani ko'rib, aniq vaqtni darhol aytamiz."
+      },
+      {
+        "q": "Mashina vakum narxi qancha turadi?",
+        "a": "Narx avtomobil rusumi va salon holatiga qarab belgilanadi, shuning uchun uni telefon orqali aniqlashtiramiz. Qo'ng'iroq qilib mashinangizni aytsangiz, bir daqiqada aniq summani eshitasiz."
+      },
+      {
+        "q": "Avto vakuum uchun oldindan yozilish kerakmi?",
+        "a": "Yo'q. Biz navbatsiz qabul qilamiz — kelganingizda bo'sh joy bo'lsa, ish darhol boshlanadi. Xohlasangiz, yo'lda ketayotib qo'ng'iroq qiling, kelguningizcha joy tayyorlab qo'yamiz."
+      },
+      {
+        "q": "Kechasi ham vakum xizmati ishlaydimi?",
+        "a": "Ha, kechayu kunduz. Soat 3:00 bo'ladimi yoki bayram kuni — ustalarimiz joyida va telefonlar javob beradi. Dam olish kunlari ham yopilmaymiz."
+      },
+      {
+        "q": "Salon tozalashdan tashqari yana qanday xizmatlar bor?",
+        "a": "Bir joyda to'liq avto detailing: Qarshida kuzov kassa prav (bo'yoqsiz vmyatina to'g'rilash), palirovka va keramika qoplama ham qilamiz. Ko'pincha mijozlar salonni tozalatib, ayni paytda kuzovni ham tartibga soladi."
+      }
+    ]
   },
   "servicePage": {
     "breadcrumbAriaLabel": "Yo'l",
@@ -120,7 +151,7 @@
     "reasons": [
       { "title": "Kechayu kunduz ochiq", "text": "Soat 3:00 bo'ladimi yoki bayram kunimi — biz ishlaymiz. Oldindan yozilish shart emas." },
       { "title": "Tajribali ustalar", "text": "7 yildan ortiq amaliyot, professional kimyo va uskunalar. Har bir ish uchun javob beramiz." },
-      { "title": "Qarshida ishonchli", "text": "Mahalliy mijozlar va doimiy tavsiyalar. Ishimizni Instagram'da har kuni ko'rsatamiz." }
+      { "title": "Qarshida ishonchli", "text": "Qarshidagi avto vakum markazimizga mijozlar qayta-qayta qaytadi va do'stlariga tavsiya qiladi. Ishimizni Instagram'da har kuni ko'rsatamiz." }
     ]
   },
   "contact": {
@@ -152,6 +183,7 @@
   },
   "footer": {
     "description": "Avto vakum, kuzov kassa prav, palirovka va keramika. Qarshi, 24/7.",
+    "keywords": "Bizni avtovakum yoki avto vakuum deb ham atashadi — Qarshi shahridagi avto tozalash markazimiz o'sha.",
     "phoneLabel": "TELEFON",
     "socialLabel": "IJTIMOIY TARMOQ",
     "instagramText": "Instagram · {handle}",
@@ -186,11 +218,11 @@
     "footerText": "O'RTACHA JAVOB BERISH VAQTI: 5 DAQIQA"
   },
   "marquee": [
-    "Avto vakuum",
+    "Avto vakum Qarshi",
     "Keramika",
     "Palirovka",
     "Kuzov kassa prav",
-    "Salon tozalash",
+    "Salon vakuumi",
     "24/7 xizmat"
   ],
   "common": {

@@ -18,6 +18,11 @@ export default async function Footer() {
             <span className="site-footer__name">AVTO VAKUM</span>
           </div>
           <p className="site-footer__desc">{t('description')}</p>
+          {/* One plain sentence naming the spellings customers search for.
+              A footer is the conventional home for this; keep it to a single
+              sentence so it stays a note about the business, not a keyword
+              dump. */}
+          <p className="site-footer__aka">{t('keywords')}</p>
         </div>
 
         <div className="site-footer__col">

@@ -26,6 +26,13 @@
   color: var(--color-on-primary-deep-muted);
   max-width: 34ch;
 }
+/* Secondary to the description above it — a quiet footnote, not a claim. */
+.site-footer__aka {
+  font: 400 13px/1.6 var(--font-body);
+  color: var(--color-on-primary-deep-faint);
+  max-width: 40ch;
+  margin-top: 8px;
+}
 .site-footer__col {
   display: flex;
   flex-direction: column;

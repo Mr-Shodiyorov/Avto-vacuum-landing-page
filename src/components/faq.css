@@ -1,0 +1,98 @@
+.faq {
+  margin-top: 36px;
+}
+.faq__head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.faq__item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0 18px;
+  transition: border-color 0.2s ease;
+}
+.faq__item:hover,
+.faq__item[open] {
+  border-color: var(--color-badge-border);
+}
+
+.faq__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 16px;
+  cursor: pointer;
+  list-style: none;
+}
+/* Safari still paints the default disclosure triangle without this. */
+.faq__q::-webkit-details-marker {
+  display: none;
+}
+.faq__q-text {
+  font: 700 16px/1.4 var(--font-heading);
+  color: var(--color-text);
+  text-wrap: pretty;
+}
+.faq__q-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-badge-bg);
+  color: var(--color-primary);
+  transition: transform 0.25s ease, background-color 0.2s ease;
+}
+.faq__item[open] .faq__q-icon {
+  transform: rotate(45deg);
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.faq__a {
+  font: 400 15px/1.65 var(--font-body);
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+  padding-bottom: 18px;
+  /* Keeps the answer's left edge aligned with the question text while the
+     icon column stays clear of it. */
+  padding-right: 44px;
+}
+
+@media (min-width: 860px) {
+  .faq {
+    margin-top: 92px;
+  }
+  .faq__head {
+    margin-bottom: 40px;
+  }
+  .faq__item {
+    padding-inline: 26px;
+  }
+  .faq__q {
+    padding-block: 22px;
+  }
+  .faq__q-text {
+    font-size: 19px;
+  }
+  .faq__a {
+    font-size: 16px;
+    padding-bottom: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq__q-icon {
+    transition: none;
+  }
+}

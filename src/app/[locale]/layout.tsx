@@ -105,7 +105,9 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
     '@type': 'AutoRepair',
     '@id': businessId,
     name: site.nameFull,
-    alternateName: site.name,
+    // The short brand name plus the spellings customers actually type — see
+    // `site.alternateNames`.
+    alternateName: [site.name, ...site.alternateNames],
     description: tSeo('description'),
     // Trailing slash matches this site's `trailingSlash: true` config — without
     // it, this route 308-redirects (extensionless metadata routes aren't

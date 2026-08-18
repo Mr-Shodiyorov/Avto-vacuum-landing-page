@@ -31,6 +31,14 @@ function resolveSiteUrl(): string {
 export const site = {
   name: 'Avto Vakum',
   nameFull: 'Avto Vakum Servis',
+  /**
+   * Real-world spellings customers use for this business, for the
+   * LocalBusiness schema's `alternateName`. Structured data is the correct
+   * place to declare alternate spellings — it lets search engines match the
+   * run-together and English-transliterated forms to this entity without
+   * anyone having to write those spellings into visible body copy.
+   */
+  alternateNames: ['Avtovakum', 'Avto Vakuum Servis', 'Auto Vakum Qarshi'],
   city: 'Qarshi',
   description:
     "Avto vakum Qarshida — 24/7 avtomobil tozalash, palirovka va keramika. Navbatsiz qabul qilamiz, hoziroq qo'ng'iroq qiling!",
