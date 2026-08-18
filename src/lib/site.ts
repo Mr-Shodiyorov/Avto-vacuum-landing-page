@@ -23,9 +23,9 @@ function resolveSiteUrl(): string {
 
   console.warn(
     '[site] NEXT_PUBLIC_SITE_URL is not set in production — falling back to ' +
-      'https://avtovakum.uz. Set it in your deployment environment.',
+      'https://www.avtovakum.uz. Set it in your deployment environment.',
   );
-  return 'https://avtovakum.uz';
+  return 'https://www.avtovakum.uz';
 }
 
 export const site = {

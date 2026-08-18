@@ -31,7 +31,7 @@ optimization), drop `output: 'export'` and `images.unoptimized` from
 
 - **Photos**: every `<ImagePlaceholder>` in BeforeAfter/Contact is a placeholder (no network request, no CLS). Swap them for real photography via `next/image` once available.
 - **Address**: `site.address` in `src/lib/site.ts` still has bracketed placeholders (`[ko'cha nomi]`, `[uy raqami]`) — fill in the real street/building.
-- **Domain**: `site.url` in `src/lib/site.ts` (`https://avtovakum.uz`) feeds the canonical URL, sitemap and robots — update it to the real domain.
+- **Domain**: `site.url` in `src/lib/site.ts` (`https://www.avtovakum.uz`) feeds the canonical URL, sitemap and robots — update it to the real domain.
 - **OG image**: no `og:image`/social-share image is set yet (there are `TODO`s in `src/app/layout.tsx`). Add a real 1200×630 image and wire it into both `openGraph.images` and the JSON-LD `image` field.
 
 ## Commands
