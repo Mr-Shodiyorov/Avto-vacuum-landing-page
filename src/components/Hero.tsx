@@ -116,7 +116,8 @@ export default function Hero() {
               alt={t('portraitAlt', { masterTitle: master.title })}
               width={546}
               height={457}
-              priority
+              preload
+              fetchPriority="high"
               className="hero__portrait-img"
             />
           </div>

@@ -1,10 +1,9 @@
 "use client"
 
 import React from "react"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
-import { useMotionValueEvent, useScroll } from "motion/react"
 
 export const centralColumnStyle = "w-[90%] max-w-[1340px] mx-auto"
 export const pageYPadding = "py-10 md:py-12 lg:py-20 xl:py-30 2xl:py-40"
@@ -43,16 +42,44 @@ const ScrollRevealContentA = ({
   ...props
 }: Props) => {
   const [scrollProgress, setScrollProgress] = React.useState(0)
-  const ref0 = useRef(null)
+  const ref0 = useRef<HTMLDivElement>(null)
   const count = items.length
 
-  const { scrollYProgress } = useScroll({
-    target: ref0,
-  })
-  useMotionValueEvent(scrollYProgress, "change", () => {
-    // @ts-ignore
-    setScrollProgress(scrollYProgress.current)
-  })
+  // How far `ref0` has scrolled through the viewport: 0 when its top reaches
+  // the viewport top, 1 when its bottom reaches the viewport bottom — the
+  // same default offset framer-motion's `useScroll` uses, without pulling in
+  // an animation library for one scroll-percentage calculation. Reads are
+  // batched behind requestAnimationFrame (same pattern as the header's
+  // scroll listener in Motion.tsx) so a scroll/resize burst never interleaves
+  // a layout read with a style write and forces a synchronous reflow.
+  useEffect(() => {
+    const el = ref0.current
+    if (!el) return
+
+    let ticking = false
+
+    const measure = () => {
+      ticking = false
+      const rect = el.getBoundingClientRect()
+      const range = rect.height - window.innerHeight
+      const raw = range > 0 ? -rect.top / range : 0
+      setScrollProgress(Math.min(1, Math.max(0, raw)))
+    }
+
+    const onScrollOrResize = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(measure)
+    }
+
+    measure()
+    window.addEventListener("scroll", onScrollOrResize, { passive: true })
+    window.addEventListener("resize", onScrollOrResize)
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize)
+      window.removeEventListener("resize", onScrollOrResize)
+    }
+  }, [])
 
   // Same threshold as the panel crossfade below: the last panel whose threshold
   // has been passed is the one on top, i.e. the one on screen.

@@ -139,9 +139,20 @@
     transparent 72%
   );
   pointer-events: none;
-  animation:
-    preloaderGlowIn 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both,
-    preloaderBreath 3200ms cubic-bezier(0.65, 0, 0.35, 1) 900ms infinite;
+  /* Only ever ONE `animation` declared here, not two: with `preloaderGlowIn`
+     and `preloaderBreath` both present from the start (the latter merely
+     delayed 900ms), the compositor treats them as a standing conflict over
+     `scale` for the element's entire lifetime — even before the delayed one
+     is actually visible — and drops the whole element to the main thread.
+     Preloader.tsx swaps this rule out for `.is-breathing` right as
+     `preloaderGlowIn` ends, so at no point are two declared at once. Fallback
+     if that JS never runs (disabled JS): the glow plays its entrance and
+     holds there, which is a fine degradation. */
+  animation: preloaderGlowIn 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.preloader__glow.is-breathing {
+  animation: preloaderBreath 3200ms cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
 @keyframes preloaderGlowIn {

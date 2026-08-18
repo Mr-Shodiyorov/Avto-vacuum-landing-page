@@ -44,7 +44,21 @@ export default function Preloader() {
 
     const root = document.documentElement;
     const overlay = document.querySelector<HTMLElement>('.preloader');
+    const glow = document.querySelector<HTMLElement>('.preloader__glow');
     const timers: number[] = [];
+
+    // Swaps `preloaderGlowIn` for `preloaderBreath` the moment the entrance
+    // actually finishes, instead of having both declared in CSS from the
+    // start (see the comment in preloader.css on why that pair reads as a
+    // standing animation conflict to the compositor). Their shared values —
+    // `preloaderGlowIn`'s `to` and `preloaderBreath`'s `0%` are identical —
+    // make the swap invisible.
+    const onGlowEnd = (event: AnimationEvent) => {
+      if (event.animationName === 'preloaderGlowIn') {
+        glow?.classList.add('is-breathing');
+      }
+    };
+    glow?.addEventListener('animationend', onGlowEnd);
 
     // Scroll lock. Paired with `scrollbar-gutter: stable` in global.css so
     // removing the scrollbar cannot shift the layout sideways.
@@ -104,6 +118,7 @@ export default function Preloader() {
 
     return () => {
       overlay?.removeEventListener('animationend', onEnd);
+      glow?.removeEventListener('animationend', onGlowEnd);
       document.removeEventListener('visibilitychange', onVisibility);
       timers.forEach((id) => window.clearTimeout(id));
       root.classList.remove(LOCK_CLASS);
