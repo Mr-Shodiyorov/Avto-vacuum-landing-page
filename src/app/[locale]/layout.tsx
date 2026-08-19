@@ -81,7 +81,11 @@ export async function generateMetadata({ params }: RootLayoutProps): Promise<Met
         // Google Search requires a square raster icon at least 48x48 (it
         // won't rasterize the SVG itself for search-result display) — see
         // https://developers.google.com/search/docs/appearance/favicon.
+        { url: '/icon-48.png', type: 'image/png', sizes: '48x48' },
         { url: '/icon-96.png', type: 'image/png', sizes: '96x96' },
+      ],
+      apple: [
+        { url: '/apple-touch-icon.png', type: 'image/png', sizes: '180x180' },
       ],
     },
   };
