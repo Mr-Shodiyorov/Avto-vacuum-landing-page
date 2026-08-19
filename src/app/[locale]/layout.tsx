@@ -78,6 +78,10 @@ export async function generateMetadata({ params }: RootLayoutProps): Promise<Met
     icons: {
       icon: [
         { url: '/favicon.svg', type: 'image/svg+xml' },
+        // Google Search requires a square raster icon at least 48x48 (it
+        // won't rasterize the SVG itself for search-result display) — see
+        // https://developers.google.com/search/docs/appearance/favicon.
+        { url: '/icon-96.png', type: 'image/png', sizes: '96x96' },
       ],
     },
   };
