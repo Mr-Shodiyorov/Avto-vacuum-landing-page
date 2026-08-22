@@ -61,22 +61,22 @@
         "paragraphs": [
           "Avto vakum — avtomobil salonini to'liq, chuqur tozalash xizmati: gilamlar, o'rindiqlar (mato va charm), panel oralig'i, eshik kissalari, bagaj va qo'l yetmaydigan burchaklar — barchasi kuchli sanoat uskunalari va professional kimyo yordamida tozalanadi.",
           "Ish quruq va nam tozalashni birlashtiradi: avval changyutgich bilan yirik iflos olib tashlanadi, so'ng maxsus kimyoviy vositalar bilan dog'lar va hidlar yo'qotiladi. O'rtacha bitta avtomobilga ~40 daqiqa ketadi — salon holatiga qarab farq qilishi mumkin.",
-          "Xizmatni odamlar turlicha ataydi — kimdir avtovakum, kimdir mashina vakum, kimdir oddiygina salon vakumi deydi. Nomi qanday bo'lmasin, ish bitta: salonni ichidan chiqarib tashlanmagan changgacha tozalash.",
+          "Xizmatni odamlar turlicha ataydi — kimdir avtovakum, kimdir mashina vakum yoki moshina vakum, kimdir oddiygina salon vakumi deydi. Ishni bajaradigan odamni esa ko'pchilik vakumchi yoki vakumchi usta deb chaqiradi. Nomi qanday bo'lmasin, ish bitta: salonni ichidan chiqarib tashlanmagan changgacha tozalash.",
           "Har kuni foydalanadigan haydovchilardan tortib, uzoq yo'l safaridan qaytganlar yoki avtomobilini sotishdan oldin tartibga keltirmoqchi bo'lganlargacha — hammaga mos. Tozalash tugagach salon yangi mashinadek hidlaydi va ko'rinadi.",
-          "Qarshi markazida, svetofor oldidagi chorrahada joylashganmiz va 24 soat, dam olish kunlarisiz ishlaymiz — navbatsiz qabul qilamiz."
+          "Qarshi markazida, svetofor oldidagi chorrahada joylashganmiz va 24 soat, dam olish kunlarisiz ishlaymiz — navbatsiz qabul qilamiz. Vakum xizmatlari kechayu kunduz ochiq: qachon kelsangiz, usta joyida bo'ladi."
         ]
       },
       "kuzov-kassa-prav": {
         "title": "Kuzov kassa prav",
-        "cardDescription": "Bo'yoqsiz vmyatina to'g'rilash va kuzov geometriyasini tiklash.",
+        "cardDescription": "Bo'yoqsiz vmyatina (pachoq) to'g'rilash va kuzov geometriyasini tiklash.",
         "metaTitle": "Kuzov kassa prav Qarshi — bo'yoqsiz to'g'rilash | Avto Vakum",
         "metaDescription": "Qarshida bo'yoqsiz kuzov kassa prav — vmyatinalarni bo'yoqni buzmasdan to'g'irlaymiz. Tez, sifatli, 24/7 xizmat. Qo'ng'iroq qiling!",
         "h1": "Kuzov kassa prav — Qarshida bo'yoqsiz vmyatina to'g'rilash",
         "paragraphs": [
-          "Kuzov kassa prav (bo'yoqsiz vmyatina to'g'irlash) — kuzovdagi botiq va urilish izlarini bo'yoqni buzmasdan, orqa tomondan maxsus asboblar bilan asta-sekin tortib yoki bosib tekislash usuli.",
+          "Kuzov kassa prav (bo'yoqsiz vmyatina to'g'irlash) — kuzovdagi botiq va urilish izlarini bo'yoqni buzmasdan, orqa tomondan maxsus asboblar bilan asta-sekin tortib yoki bosib tekislash usuli. Ba'zilar buni oddiygina pachoq tuzatish deb ham ataydi — vmyatina ham, pachoq ham bitta narsa.",
           "Bo'yoq qatlami saqlanib qolgani uchun avtomobilning zavod bo'yog'i buzilmaydi — bu ham tashqi ko'rinishni, ham avtomobil qiymatini saqlab qoladi, va odatiy bo'yash xizmatiga qaraganda ancha tezroq hamda arzonroq.",
-          "Do'kon eshigidan kelgan kichik botiqlardan tortib, do'l yoki to'qnashuv natijasidagi kattaroq shikastgacha — ko'pchilik holatlarni tuzatamiz. Kichik ishlar bir necha soatda, murakkabroqlari bir kun ichida tugaydi.",
-          "Qarshida 7 yildan ortiq tajribaga ega ustalarimiz bu ishni sinchkovlik bilan bajaradi. Kuzov tayyor bo'lgach, ko'p mijozlar shu yerda salonni ham vakum qildirib ketadi — avto vakum markazimizda to'liq detailing bir joyda. Manzilimiz svetofor oldidagi chorraha, 24/7 ochiqmiz."
+          "Do'kon eshigidan kelgan kichik botiqlardan tortib, do'l yoki to'qnashuv natijasidagi kattaroq shikastgacha — ko'pchilik holatlarni tuzatamiz. Moshina pachog'ini tuzatish kichik bo'lsa bir necha soatda, murakkabroq shikastlar bir kun ichida tugaydi.",
+          "Qarshida 7 yildan ortiq tajribaga ega ustalarimiz bu ishni sinchkovlik bilan bajaradi. Kuzov tayyor bo'lgach, ko'p mijozlar shu yerda salonni ham vakum qildirib ketadi — telefonda buni ko'pincha \"pachoq vakum\" deb, ikkala ishni birga so'rashadi. Avto vakum markazimizda to'liq detailing bir joyda: manzilimiz svetofor oldidagi chorraha, 24/7 ochiqmiz."
         ]
       },
       "palirovka": {
@@ -134,6 +134,14 @@
       {
         "q": "Salon tozalashdan tashqari yana qanday xizmatlar bor?",
         "a": "Bir joyda to'liq avto detailing: Qarshida kuzov kassa prav (bo'yoqsiz vmyatina to'g'rilash), palirovka va keramika qoplama ham qilamiz. Ko'pincha mijozlar salonni tozalatib, ayni paytda kuzovni ham tartibga soladi."
+      },
+      {
+        "q": "Pachoq tuzatish Qarshida qancha turadi?",
+        "a": "Narx pachoqning kattaligiga va qaysi panelda ekaniga qarab belgilanadi, shuning uchun mashinani ko'rib yoki suratini Telegram'ga yuborganingizdan keyin aytamiz. Ko'p holatda moshina pachog'ini bo'yoqsiz tuzatish qayta bo'yashdan ancha arzonga tushadi."
+      },
+      {
+        "q": "Qarshida vakumchi qayerda ishlaydi?",
+        "a": "Vakumchi ustalarimiz Qarshi markazida, shahar obodonlashtirish ro'parasidagi svetofor oldida ishlaydi. Kechayu kunduz joyidamiz — salon vakumi, palirovka, keramika va kuzov ishlari uchun to'g'ridan-to'g'ri kirib kelavering."
       }
     ]
   },
@@ -150,7 +158,7 @@
     "heading": "Nega aynan biz",
     "reasons": [
       { "title": "Kechayu kunduz ochiq", "text": "Soat 3:00 bo'ladimi yoki bayram kunimi — biz ishlaymiz. Oldindan yozilish shart emas." },
-      { "title": "Tajribali ustalar", "text": "7 yildan ortiq amaliyot, professional kimyo va uskunalar. Har bir ish uchun javob beramiz." },
+      { "title": "Tajribali ustalar", "text": "7 yildan ortiq amaliyot, professional kimyo va uskunalar. Salonni tajribali vakumchi usta o'zi tozalaydi, har bir ish uchun javob beramiz." },
       { "title": "Qarshida ishonchli", "text": "Qarshidagi avto vakum markazimizga mijozlar qayta-qayta qaytadi va do'stlariga tavsiya qiladi. Ishimizni Instagram'da har kuni ko'rsatamiz." }
     ]
   },
