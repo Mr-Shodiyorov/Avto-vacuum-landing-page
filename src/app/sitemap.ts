@@ -15,6 +15,23 @@ function absoluteUrl(url: string): string {
   return url.startsWith('http') ? url : `${site.url}${url}`;
 }
 
+/**
+ * Next's built-in sitemap serializer drops `images` entries straight into
+ * `<image:loc>...</image:loc>` with no XML-escaping at all (see
+ * `resolveSitemap` in
+ * node_modules/next/dist/build/webpack/loaders/metadata/resolve-route-data.js)
+ * — it's only ever been exercised with plain page URLs before, which never
+ * contain a raw `&`. `canonicalImageUrl` builds a `/_next/image/?url=...&w=...`
+ * URL, whose `&` param separators are otherwise well-formed XML entity refs
+ * gone wrong ("EntityRef: expecting ';'" is exactly this). Must escape here,
+ * not inside `canonicalImageUrl` itself — that same value also goes straight
+ * into `JSON.stringify` for the `ImageObject` schema, where an `&amp;` would
+ * corrupt the actual URL.
+ */
+function xmlSafeImage(url: string): string {
+  return url.replace(/&/g, '&amp;');
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const cards = await getCards();
   // The canonical (indexable) URL, never the raw Supabase one — see
@@ -22,7 +39,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const galleryImages = cards
     .flatMap((card) => [card.before_image_url, card.after_image_url])
     .filter((url): url is string => Boolean(url))
-    .map(canonicalImageUrl);
+    .map(canonicalImageUrl)
+    .map(xmlSafeImage);
 
   const homeImages = [
     absoluteUrl(ustaPhoto.src),
@@ -45,7 +63,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const serviceImages = cardsMatchingKeywords(cards, service.keywords)
         .flatMap((card) => [card.before_image_url, card.after_image_url])
         .filter((url): url is string => Boolean(url))
-        .map(canonicalImageUrl);
+        .map(canonicalImageUrl)
+        .map(xmlSafeImage);
       const path = `/xizmatlar/${service.slug}/`;
 
       return {
