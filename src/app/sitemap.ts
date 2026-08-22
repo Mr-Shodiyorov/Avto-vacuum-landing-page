@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 
 import ustaPhoto from '@/assets/avto-vakum-usta-qarshi.webp';
 import { localeAlternates } from '@/i18n/alternates';
-import { cardsMatchingKeywords, getCards } from '@/lib/cards';
+import { canonicalImageUrl, cardsMatchingKeywords, getCards } from '@/lib/cards';
 import { services } from '@/lib/services';
 import { site } from '@/lib/site';
 
@@ -17,9 +17,12 @@ function absoluteUrl(url: string): string {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const cards = await getCards();
+  // The canonical (indexable) URL, never the raw Supabase one — see
+  // `canonicalImageUrl` in `src/lib/cards.ts` for why.
   const galleryImages = cards
     .flatMap((card) => [card.before_image_url, card.after_image_url])
-    .filter((url): url is string => Boolean(url));
+    .filter((url): url is string => Boolean(url))
+    .map(canonicalImageUrl);
 
   const homeImages = [
     absoluteUrl(ustaPhoto.src),
@@ -41,7 +44,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...services.map((service) => {
       const serviceImages = cardsMatchingKeywords(cards, service.keywords)
         .flatMap((card) => [card.before_image_url, card.after_image_url])
-        .filter((url): url is string => Boolean(url));
+        .filter((url): url is string => Boolean(url))
+        .map(canonicalImageUrl);
       const path = `/xizmatlar/${service.slug}/`;
 
       return {

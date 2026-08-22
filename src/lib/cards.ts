@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { supabaseRead } from '@/lib/supabase';
+import { site } from '@/lib/site';
 
 /** One row of `before_after_cards`. Mirrors supabase/migrations/001_*.sql. */
 export interface BeforeAfterCard {
@@ -79,4 +80,39 @@ export function cardImageAlt(
 ): string {
   const context = card.meta ? `${card.title} — ${card.meta}` : card.title;
   return `${context}, ${state}: ${stateLabel} — avto vakum markazi, Qarshi`;
+}
+
+/** Width/quality used for every SEO-facing reference to a gallery photo (sitemap
+ * `<image:loc>`, JSON-LD `ImageObject.contentUrl`) — one fixed pair so each photo
+ * has a single canonical URL there, rather than the several width variants
+ * `<WorkImage>`'s responsive `srcset` requests for on-screen display. 1920/75
+ * are Next's own defaults (`images.deviceSizes` includes 1920; unset `quality`
+ * on `<Image>` is 75), so this reuses a rendition the optimizer's cache is
+ * already warm for instead of minting a new one. */
+const CANONICAL_IMAGE_WIDTH = 1920;
+const CANONICAL_IMAGE_QUALITY = 75;
+
+/**
+ * Same-origin, indexable URL for a photo stored in Supabase Storage.
+ *
+ * Supabase's own Storage responses carry `X-Robots-Tag: none` on every public
+ * object (confirmed against this project's bucket directly) — search engines
+ * are told outright not to index the raw `*.supabase.co/storage/...` URL, no
+ * matter what a sitemap or structured-data entry says. `next/image`'s built-in
+ * optimizer, reached through our own domain, carries no such header and is
+ * already what real visitors load (see the `srcset`/`src` `<WorkImage>`
+ * renders) — so every surface meant for search engines (sitemap `images`,
+ * `ImageObject.contentUrl`/`url`) must point here instead of at `url` directly.
+ */
+export function canonicalImageUrl(url: string): string {
+  const params = new URLSearchParams({
+    url,
+    w: String(CANONICAL_IMAGE_WIDTH),
+    q: String(CANONICAL_IMAGE_QUALITY),
+  });
+  // Trailing slash: like `/opengraph-image/` elsewhere in this codebase, this
+  // route 308-redirects without it — this site's `trailingSlash: true` isn't
+  // limited to page routes, and a sitemap/schema URL should resolve directly
+  // rather than send every crawler through a redirect hop first.
+  return `${site.url}/_next/image/?${params.toString()}`;
 }

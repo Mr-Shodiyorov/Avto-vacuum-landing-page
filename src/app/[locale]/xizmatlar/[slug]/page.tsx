@@ -10,7 +10,7 @@ import WorkImage from '@/components/WorkImage';
 import { localeAlternates, ogLocale } from '@/i18n/alternates';
 import { Link } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
-import { cardImageAlt, cardsMatchingKeywords, getCards } from '@/lib/cards';
+import { canonicalImageUrl, cardImageAlt, cardsMatchingKeywords, getCards } from '@/lib/cards';
 import { getService, services } from '@/lib/services';
 import { businessId, site } from '@/lib/site';
 
@@ -88,10 +88,16 @@ export default async function ServicePage({ params }: PageProps) {
   const imageObjects = gallery.flatMap((card) => {
     const entries: { url: string; alt: string }[] = [];
     if (card.before_image_url) {
-      entries.push({ url: card.before_image_url, alt: cardImageAlt(card, 'oldin', card.before_label) });
+      entries.push({
+        url: canonicalImageUrl(card.before_image_url),
+        alt: cardImageAlt(card, 'oldin', card.before_label),
+      });
     }
     if (card.after_image_url) {
-      entries.push({ url: card.after_image_url, alt: cardImageAlt(card, 'keyin', card.after_label) });
+      entries.push({
+        url: canonicalImageUrl(card.after_image_url),
+        alt: cardImageAlt(card, 'keyin', card.after_label),
+      });
     }
     return entries;
   });

@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 
 import Lightbox from "@/components/Lightbox";
 import WorkImage from "@/components/WorkImage";
-import { cardImageAlt, getCards, type BeforeAfterCard } from "@/lib/cards";
+import { canonicalImageUrl, cardImageAlt, getCards, type BeforeAfterCard } from "@/lib/cards";
 
 import "./before-after.css";
 
@@ -11,10 +11,16 @@ function imageObjectsFor(cards: BeforeAfterCard[]) {
   const entries: { url: string; alt: string }[] = [];
   for (const card of cards) {
     if (card.before_image_url) {
-      entries.push({ url: card.before_image_url, alt: cardImageAlt(card, 'oldin', card.before_label) });
+      entries.push({
+        url: canonicalImageUrl(card.before_image_url),
+        alt: cardImageAlt(card, 'oldin', card.before_label),
+      });
     }
     if (card.after_image_url) {
-      entries.push({ url: card.after_image_url, alt: cardImageAlt(card, 'keyin', card.after_label) });
+      entries.push({
+        url: canonicalImageUrl(card.after_image_url),
+        alt: cardImageAlt(card, 'keyin', card.after_label),
+      });
     }
   }
   return entries;
